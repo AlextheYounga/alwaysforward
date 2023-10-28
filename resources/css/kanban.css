@@ -1,0 +1,11 @@
+.react-trello-lane {
+    border: 0;
+}
+
+.react-trello-lane a {
+    color: black;
+}
+
+.react-trello-board {
+    background-color: initial;
+}
