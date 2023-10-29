@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\LifeWeeksController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,14 +16,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [PagesController::class, 'dashboard'])
+->name('dashboard');
+
+Route::get('/kanban', [PagesController::class, 'kanban'])
+->name('kanban');
 
 
 Route::middleware('auth')->group(function () {
@@ -32,16 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/calendar', function () {
-    return Inertia::render('LifeCalendar');
-})->name('calendar');
+// Route::get('/dashboard', [PagesController::class, 'dashboard'])
+// ->middleware(['auth', 'verified'])
+// ->name('dashboard');
 
-Route::get('/kanban', function () {
-    return Inertia::render('Kanban');
-})->name('kanban');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

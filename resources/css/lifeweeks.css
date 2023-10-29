@@ -1,0 +1,22 @@
+.week-box:hover::after {
+    content: attr(data-hoverdetails);
+    display: flex;
+    color: black;
+    font-size: 8px;
+    text-align: center;
+    align-items: center;
+    position: absolute;
+    cursor: pointer;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 20%;
+    top: -100%;
+    right: -80%;
+    z-index: 100;
+    flex-flow: column;
+    padding-top: 0.2rem;
+    background-color: #93c5fd;
+}
+.week-box.current:hover::after {
+    background-color: #f43f5e;
+}

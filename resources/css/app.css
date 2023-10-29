@@ -1,4 +1,5 @@
 @import 'kanban.css';
+@import 'lifeweeks.css';
 
 @tailwind base;
 @tailwind components;

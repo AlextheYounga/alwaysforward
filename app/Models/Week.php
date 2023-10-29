@@ -63,4 +63,5 @@ class Week extends Model
 
         return $weeks;
     }
+
 }

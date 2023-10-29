@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+dayjs.extend(isBetween);
 
 export function generateWeeksTimeline(birthday, deathAge) {
-    const birthday = dayjs(birthday || '1995-11-13')
+    birthday = dayjs(birthday || '1995-11-13')
     const death = birthday.add((deathAge || 90), 'years')
 
     const weeks = [
@@ -37,5 +39,34 @@ export function generateWeeksTimeline(birthday, deathAge) {
         if (afterDeath) break;
     }
     return weeks;
+}
+
+export function parseWeeks(weeks) {
+    if (!weeks || weeks.length === 0) return [];
+    const today = dayjs();
+
+    const parsedWeeks = [];
+    for (const week of weeks) {
+        const isCurrentWeek = today.isBetween(week.start, week.end);
+        const isPastWeek = today.isAfter(week.end);
+
+        const color = () => {
+            if (isCurrentWeek) return '#f43f5e';
+            if (isPastWeek) return '#0c0a09';
+            return '#a8a29e';
+        }
+
+        const parsedWeek = {
+            ...week,
+            start: dayjs(week.start).format('YYYY-MM-DD'),
+            end: dayjs(week.end).format('YYYY-MM-DD'),
+            color: color(),
+            current: isCurrentWeek,
+        }
+
+        parsedWeeks.push(parsedWeek)
+    }
+
+    return parsedWeeks;
 }
 
