@@ -51,9 +51,15 @@ export function parseWeeks(weeks) {
         const isPastWeek = today.isAfter(week.end);
 
         const color = () => {
-            if (isCurrentWeek) return '#f43f5e';
-            if (isPastWeek) return '#0c0a09';
-            return '#a8a29e';
+            if (isCurrentWeek) return '#67e8f9';
+            if (isPastWeek) return '#3b82f6';
+            return '#172554'; // future weeks
+        }
+
+        const status = () => {
+            if (isCurrentWeek) return 'current';
+            if (isPastWeek) return 'past';
+            return 'future';
         }
 
         const parsedWeek = {
@@ -61,7 +67,7 @@ export function parseWeeks(weeks) {
             start: dayjs(week.start).format('YYYY-MM-DD'),
             end: dayjs(week.end).format('YYYY-MM-DD'),
             color: color(),
-            current: isCurrentWeek,
+            status: status(),
         }
 
         parsedWeeks.push(parsedWeek)

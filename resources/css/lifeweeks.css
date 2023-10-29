@@ -2,21 +2,39 @@
     content: attr(data-hoverdetails);
     display: flex;
     color: black;
-    font-size: 8px;
+    font-size: 9px;
+    font-weight: 700;
     text-align: center;
     align-items: center;
     position: absolute;
     cursor: pointer;
-    width: 1.9rem;
-    height: 1.9rem;
+    width: 2.4rem;
+    height: 2.4rem;
     border-radius: 20%;
     top: -100%;
     right: -80%;
     z-index: 100;
     flex-flow: column;
-    padding-top: 0.2rem;
-    background-color: #93c5fd;
+    padding-top: 0.4rem;
+    background-color: #38bdf8;
 }
+
+.week-box:hover::after {
+    @apply shadow-xl shadow-cyan-500
+}
+
 .week-box.current:hover::after {
-    background-color: #f43f5e;
+    background-color: #06b6d4;
 }
+
+.week-box.current {
+    @apply shadow-lg shadow-cyan-500 animate-pulse hover:animate-none;
+}
+
+.week-box.future {
+    @apply shadow shadow-cyan-700 border;
+}
+
+/* .week-box.past {
+    @apply shadow shadow-cyan-600;
+  } */

@@ -4,12 +4,14 @@ import WeekModal from './WeekModal';
 
 export default function LifeWeeks({ weeks }) {
     const [open, setOpen] = useState(false)
-    const [modalWeek, setModelWeek] = useState(null)
+    const [selectedWeek, setSelectedWeek] = useState(null)
+
+    // Parse the weeks
     const lifeWeeks = parseWeeks(weeks);
 
-    function handleWeekClick(week) {
-        setModelWeek(week)
+    function handleSelectedWeek(week) {
         setOpen(true)
+        setSelectedWeek(week)
     }
 
     return (
@@ -19,8 +21,8 @@ export default function LifeWeeks({ weeks }) {
                     {lifeWeeks.map((week, index) => {
                         return (
                             <div
-                                onClick={() => handleWeekClick(week)}
-                                className={`week-box relative w-4 h-4 m-[1px] rounded border border-slate-950 ${week.current ? 'current' : ''}`}
+                                onClick={() => handleSelectedWeek(week)}
+                                className={`week-box relative w-4 h-4 m-[1px] rounded border border-slate-950 ${week.status}`}
                                 key={index}
                                 data-hoverdetails={`Age: ${week.age} W:${index}`}
                                 style={{ backgroundColor: week.color }}
@@ -30,7 +32,7 @@ export default function LifeWeeks({ weeks }) {
                 </div>
             </div>
             <div>
-                <WeekModal open={open} setOpen={setOpen} week={modalWeek} />
+                <WeekModal open={open} setOpen={setOpen} week={selectedWeek} />
             </div>
         </section>
 
