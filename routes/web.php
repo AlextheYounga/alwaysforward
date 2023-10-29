@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PagesController::class, 'dashboard'])
 ->name('dashboard');
 
+Route::get('/life', [PagesController::class, 'life'])
+->name('life');
+
 Route::get('/kanban', [PagesController::class, 'kanban'])
 ->name('kanban');
 
