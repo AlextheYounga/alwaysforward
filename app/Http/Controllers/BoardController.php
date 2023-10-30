@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Week;
+use App\Models\Board;
 
-class KanbanController extends Controller
+class BoardController extends Controller
 {
 
     public function index()
@@ -16,10 +17,13 @@ class KanbanController extends Controller
         ]);
     }
 
-    public function show(Request $request, Week $week_id)
+    public function show(Week $week)
     {
+        $board = Board::getOrCreateBoard($week);
+        
         return Inertia::render('Kanban', [
-
+            'week' => $week,
+            'board' => $board,
         ]);
-    }
+    }   
 }

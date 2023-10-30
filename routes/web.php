@@ -3,7 +3,7 @@
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LifeWeeksController;
-use App\Http\Controllers\KanbanController;
+use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,10 +23,10 @@ Route::get('/', [PagesController::class, 'dashboard'])
 Route::get('/life', [LifeWeeksController::class, 'index'])
 ->name('life');
 
-Route::get('/kanban', [KanbanController::class, 'index'])
+Route::get('/kanban', [BoardController::class, 'index'])
 ->name('kanban');
 
-Route::get('/kanban/{week_id}', [KanbanController::class, 'show'])
+Route::get('/kanban/{week}', [BoardController::class, 'show'])
 ->name('kanban');
 
 

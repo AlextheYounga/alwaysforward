@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('week_id');
             $table->json('lanes');
-            $table->json('cards')->nullable();
             $table->json('properties')->nullable();
             $table->timestamps();
         });

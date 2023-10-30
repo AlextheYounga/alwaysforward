@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('week_id');
+            // $table->foreignId('user_id');
+            $table->foreignId('week_id')->nullable();
             $table->foreignId('goal_id')->nullable();
+            $table->foreignId('board_id')->nullable();
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('type')->nullable();
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->json('subtasks')->nullable();
             $table->longText('notes')->nullable();
-            $table->string('status');
+            $table->string('status')->default('todo');
             $table->timestamps();
         });
     }

@@ -28,6 +28,10 @@ class Week extends Model
         return $this->hasMany(LifeEvent::class);
     }
 
+    public function board() {
+        return $this->hasOne(Board::class);
+    }
+
     public static function getWeekByDate($date) {
         $week = Week::where('start', '<=', $date)
             ->where('end', '>=', $date)

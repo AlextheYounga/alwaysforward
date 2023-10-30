@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon, ArrowTopRightOnSquareIcon, ViewColumnsIcon } from '@heroicons/react/24/outline'
 
 export default function WeekModal({ open, setOpen, week }) {
   return (
@@ -72,11 +72,11 @@ export default function WeekModal({ open, setOpen, week }) {
                     <div className="flex w-full mt-6">
                     <span className="flex pr-6">                      
                       <a
-                        href={`/kanban/week/${week?.id}`}
+                        href={`/kanban/${week?.id}`}
                         className="tracking-tight text-indigo-500">
                         Kanban 
                       </a>
-                        <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2 text-indigo-500" />
+                        <ViewColumnsIcon className="w-5 h-5 ml-2 text-indigo-500" />
                       </span>
 
                       <span className="flex pr-6">                      
