@@ -16,20 +16,6 @@ class WeekSeeder extends Seeder
 
         Week::truncate();
 
-        if (PlatformConfig::count() === 0) {
-            PlatformConfig::create([
-                'key' => 'birthday', 
-                'value' => '1995-11-13',
-                'type' => 'string',
-            ]);
-
-            PlatformConfig::create([
-                'key' => 'death_age', 
-                'value' => '90',
-                'type' => 'integer',
-            ]);
-        }
-
         $birthday = PlatformConfig::whereKey('birthday')->getValue();
         $deathAge = PlatformConfig::whereKey('death_age')->getValue();
 
