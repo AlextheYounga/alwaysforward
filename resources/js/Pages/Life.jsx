@@ -1,18 +1,20 @@
 import LifeWeeks from "@/Components/LifeWeeks";
-import DeathClock from "@/Components/DeathClock";
-import AgeClock from "@/Components/AgeClock";
+import CountDown from "@/Components/CountDown";
+import CountUp from "@/Components/CountUp";
+import LifeProgressBar from "@/Components/LifeProgressBar";
 
-export default function Life({ weeks, birthday, deathDate }) {
+
+export default function Life({ weeks, events }) {
 
     return (
         <main>
-
-            <div className="container mx-auto mb-6">
-                <div className="pt-4 pb-2"><AgeClock birthday={birthday} /></div>
-                <div className="pb-2"><DeathClock death={deathDate} /></div>
+            <div className="pt-24">
+                <LifeProgressBar events={events} />
             </div>
 
-            <LifeWeeks weeks={weeks} />
+            <div>
+                <LifeWeeks weeks={weeks} />
+            </div>
         </main>
     );
 }

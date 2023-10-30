@@ -46,6 +46,7 @@ export function parseWeeks(weeks) {
     const today = dayjs();
 
     const parsedWeeks = [];
+
     for (const week of weeks) {
         const isCurrentWeek = today.isBetween(week.start, week.end);
         const isPastWeek = today.isAfter(week.end);
@@ -64,8 +65,6 @@ export function parseWeeks(weeks) {
 
         const parsedWeek = {
             ...week,
-            start: dayjs(week.start).format('YYYY-MM-DD'),
-            end: dayjs(week.end).format('YYYY-MM-DD'),
             color: color(),
             status: status(),
         }

@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.0.18",
+        "@ramonak/react-progress-bar": "^5.0.3",
         "dayjs": "^1.11.10",
         "react-trello": "^2.2.11",
         "recoil": "^0.7.7"

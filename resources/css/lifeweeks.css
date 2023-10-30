@@ -35,6 +35,6 @@
     @apply shadow shadow-cyan-700 border;
 }
 
-/* .week-box.past {
-    @apply shadow shadow-cyan-600;
-  } */
+.week-box .event-icon {
+    font-size: 10px;
+}

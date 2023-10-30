@@ -16,17 +16,23 @@ export default function LifeWeeks({ weeks }) {
 
     return (
         <section className="w-full">
-            <div className="life-calendar container mx-auto py-12">
+            <div className="life-calendar container mx-auto">
                 <div className="flex flex-wrap w-full">
                     {lifeWeeks.map((week, index) => {
                         return (
                             <div
                                 onClick={() => handleSelectedWeek(week)}
-                                className={`week-box relative w-4 h-4 m-[1px] rounded border border-slate-950 ${week.status}`}
+                                className={`week-box relative w-5 h-5 m-[1px] rounded border border-slate-950 ${week.status}`}
                                 key={index}
                                 data-hoverdetails={`Age: ${week.age} W:${index}`}
                                 style={{ backgroundColor: week.color }}
-                            ></div>
+                            >
+                                {week.events.length > 0 && (
+                                    <p className="flex event-icon text-center flex-col p-[0.2rem]">
+                                        {week.events[0]?.properties?.icon}
+                                    </p>
+                                )}
+                            </div>
                         )
                     })}
                 </div>
