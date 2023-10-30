@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\CarbonImmutable;
+use App\Models\LifeEvent;
 
 class Week extends Model
 {
@@ -22,6 +23,18 @@ class Week extends Model
         'end' => 'date',
         'properties' => 'json'
     ];
+
+    public function events() {
+        return $this->hasMany(LifeEvent::class);
+    }
+
+    public static function getWeekByDate($date) {
+        $week = Week::where('start', '<=', $date)
+            ->where('end', '>=', $date)
+            ->first();
+
+        return $week;
+    }
 
     public static function generateWeeksTimeline($birthday, $deathAge)
     {
@@ -42,7 +55,7 @@ class Week extends Model
             $thisWeekStart = $birthday->addWeeks($weekNumber);
             $thisWeekEnd = $birthday->addWeeks($weekNumber + 1);
             $afterDeath = $thisWeekEnd->greaterThan($death);
-            $age = $thisWeekStart->diffInYears($birthday);
+            $age = $thisWeekEnd->diffInYears($birthday);
 
             if ($afterDeath) {
                 $thisWeekEnd = $death;
