@@ -12,6 +12,7 @@ class LifeWeeksController extends Controller
     public function index()
     {
         return Inertia::render('Life', [
+            'route' => route('life', [], false),
             'weeks' => fn() => Week::with('events')->get(),
             'events' => fn() => LifeEvent::getDefaultLifeEventDateMapping(),
         ]);
