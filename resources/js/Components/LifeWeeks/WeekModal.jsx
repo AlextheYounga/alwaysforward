@@ -82,7 +82,9 @@ export default function WeekModal({ open, setOpen, week }) {
                       <span className="flex pr-6">                      
                       <a
                         href={`https://track.toggl.com/timer?start_date=${week?.start}&end_date=${week?.end}`}
-                        className="tracking-tight text-indigo-500">
+                        className="tracking-tight text-indigo-500"
+                        target='_blank'
+                        >
                         Toggl 
                       </a>
                         <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2 text-indigo-500" />

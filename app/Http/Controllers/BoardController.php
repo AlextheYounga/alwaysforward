@@ -20,8 +20,7 @@ class BoardController extends Controller
             'week_id' => $week->id,
         ]);
         
-        return Inertia::render('Kanban', [
-            'route' => '/week',
+        return Inertia::render('Board', [
             'week' => $week,
             'board' => $board,
         ]);
@@ -33,8 +32,7 @@ class BoardController extends Controller
             'week_id' => $week->id,
         ]);
         
-        return Inertia::render('Kanban', [
-            'route' => '/week',
+        return Inertia::render('Board', [
             'week' => $week,
             'board' => $board,
         ]);

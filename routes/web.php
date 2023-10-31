@@ -4,6 +4,8 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LifeWeeksController;
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\GoalController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,11 +25,32 @@ Route::get('/', [PagesController::class, 'dashboard'])
 Route::get('/life', [LifeWeeksController::class, 'index'])
 ->name('life');
 
-Route::get('/week/now', [BoardController::class, 'index'])
-->name('kanban');
+Route::group(['prefix' => 'week'], function () {
+    Route::get('/now', [BoardController::class, 'index'])
+        ->name('week.now');
+    Route::get('/{week}', [BoardController::class, 'show'])
+        ->name('week.show');
+});
 
-Route::get('/week/{week}', [BoardController::class, 'show'])
-->name('kanban');
+Route::group(['prefix' => 'goals'], function () {
+    Route::get('/', [GoalController::class, 'index'])
+        ->name('goal.now');
+    Route::get('/new', [GoalController::class, 'new'])
+        ->name('goal.show');
+    Route::get('/{goal}', [GoalController::class, 'show'])
+        ->name('goal.show');
+});
+
+Route::group(['prefix' => 'tasks'], function () {
+    Route::get('/', [TaskController::class, 'index'])
+        ->name('task.now');
+    Route::get('/new', [TaskController::class, 'new'])
+        ->name('task.show');
+    Route::get('/{goal}', [TaskController::class, 'show'])
+        ->name('task.show');
+});
+
+
 
 
 Route::middleware('auth')->group(function () {

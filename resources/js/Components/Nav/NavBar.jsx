@@ -32,7 +32,7 @@ export default function Navbar({ route }) {
         <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
                 <>
-                    <div className="mx-auto max-w-7xl px-4 sm:px-0">
+                    <div className="mx-auto container px-4 sm:px-0">
                         <div className="flex h-16 items-center justify-between">
                             <div className="flex justify-center items-center">
                                 <div className="text-center text-indigo-500 flex-shrink-0">
