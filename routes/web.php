@@ -23,10 +23,10 @@ Route::get('/', [PagesController::class, 'dashboard'])
 Route::get('/life', [LifeWeeksController::class, 'index'])
 ->name('life');
 
-Route::get('/kanban', [BoardController::class, 'index'])
+Route::get('/week/now', [BoardController::class, 'index'])
 ->name('kanban');
 
-Route::get('/kanban/{week}', [BoardController::class, 'show'])
+Route::get('/week/{week}', [BoardController::class, 'show'])
 ->name('kanban');
 
 

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('boards', function (Blueprint $table) {
             $table->id();
             $table->foreignId('week_id');
-            $table->json('lanes');
             $table->json('properties')->nullable();
             $table->timestamps();
         });

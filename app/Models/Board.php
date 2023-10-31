@@ -6,19 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Task;
 use App\Models\Week;
+use Illuminate\Support\Facades\Hash;
 
 class Board extends Model
 {
     use HasFactory;
 
+    protected $appends = [
+        'lanes'
+    ];
+
     protected $fillable = [
         'week_id',
-        'lanes',
         'properties',
     ];
 
     protected $casts = [
-        'lanes' => 'json',
         'properties' => 'json'
     ];
 
@@ -35,48 +38,69 @@ class Board extends Model
     public static function lanes()
     {
         return [
-            ['id' => 'todo', 'title' => 'Planned Tasks', 'color' => '#cbd5e1'],
+            ['id' => 'todo', 'title' => 'Planned Tasks', 'color' => '#c4b5fd'],
             ['id' => 'in-progress', 'title' => 'In Progress', 'color' => '#fffbeb'],
             ['id' => 'on-hold', 'title' => 'On Hold', 'color' => '#d1d5db'],
             ['id' => 'completed', 'title' => 'Completed', 'color' => '#d1fae5'],
         ];
     }
 
-    public static function createBoardLanes()
+    public static function createLaneCards($tasks)
     {
-        // Build Board Lanes
+        $cards = [];
+
+        foreach($tasks as $task) {
+            array_push($cards, [
+                'id' => $task->id,
+                'title' => $task->title,
+                'description' => $task->description,
+                'label' => $task->priority,
+                'metadata' => [
+                    'sha' => Hash::make($task->id, ['rounds' => 4])
+                ]
+            ]);
+        }
+
+        return $cards;
+    }
+
+    public static function createBacklogLane()
+    {
+        return [
+            'id' => 'backlog',
+            'title' => 'Backlog',
+            'style' => [
+                'backgroundColor' => '#cbd5e1'
+            ],
+            'cards' => Board::createLaneCards(Task::all())
+        ];
+    }
+
+    public function getLanesAttribute()
+    {
         $lanes = [];
         
+        // First build the backlog lane containing all tasks
+        array_push($lanes, Board::createBacklogLane());
+
+        // Then add the remaining lanes with associated tasks
         foreach(Board::lanes() as $lane) {
+            $tasks = $this->tasks()
+                ->where('status', $lane['id'])
+                ->get();
+
             array_push($lanes, [
                 'id' => $lane['id'],
                 'title' => $lane['title'],
                 'style' => [
                     'backgroundColor' => $lane['color']
                 ],
-                'cards' => [],
+                'cards' => Board::createLaneCards($tasks),
             ]);
         }
 
         $data = ['lanes' => $lanes];
 
         return $data;
-    }
-
-    public static function getOrCreateBoard($week)
-    {
-        if ($week->board()->exists()) {
-            return $week->board;
-        }
-
-        $lanes = Board::createBoardLanes();
-
-        // Create board with week relation
-        $week->board()->create([
-            'lanes' => $lanes,
-            'properties' => [],
-        ]);
-
-        return $week->board();
     }
 }
