@@ -15,10 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description')->nullable();
-            $table->string('target_description')->nullable();
             $table->string('target_value')->nullable();
             $table->string('target_units')->nullable();
+            $table->string('target_description')->nullable();
             $table->string('type')->nullable();
+            $table->string('completion_type')->nullable();
+            $table->string('priority')->nullable();
+            $table->date('due_date')->nullable();
+            $table->string('status')->default('active');
             $table->longText('notes')->nullable();
             $table->timestamps();
         });

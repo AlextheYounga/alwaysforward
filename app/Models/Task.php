@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\Status;
+use App\Enums\TaskStatus;
 
 class Task extends Model
 {
@@ -31,7 +31,7 @@ class Task extends Model
     protected $casts = [
         'start_date' => 'date',
         'due_date' => 'date',
-        'status' => Status::class,
+        'status' => TaskStatus::class,
     ];
 
     public function board() {

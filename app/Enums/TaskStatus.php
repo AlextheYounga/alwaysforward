@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Status: string
+enum TaskStatus: string
 {
     case TODO = 'todo';
     case IN_PROGRESS = 'in-progress';
