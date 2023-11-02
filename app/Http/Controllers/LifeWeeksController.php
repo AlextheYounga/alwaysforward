@@ -13,7 +13,7 @@ class LifeWeeksController extends Controller
     {
         return Inertia::render('Life', [
             'weeks' => fn() => Week::with('events')->get(),
-            'events' => fn() => LifeEvent::getDefaultLifeEventDateMapping(),
+            'events' => fn() => LifeEvent::getLifeEventDateMapping(),
         ]);
     }
 }

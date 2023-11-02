@@ -38,7 +38,7 @@ class GoalController extends Controller
 
         Goal::create($goal);
 
-        return to_route('goal');
+        return to_route('goals');
     }
 
     public function update(Request $request)
@@ -58,6 +58,6 @@ class GoalController extends Controller
         $existingGoal = Goal::find($goal['id']);
         $existingGoal->update($goal);
 
-        return to_route('goal');
+        return to_route('goals');
     }
 }

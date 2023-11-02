@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import Navbar from "@/Components/Nav/NavBar";
-
+import PrimaryButton from "@/Components/Buttons/PrimaryButton";
+import TaskModal from "@/Components/TaskModal";
 
 
 function classNames(...classes) {
@@ -7,6 +9,10 @@ function classNames(...classes) {
 }
 
 export default function Task({ tasks }) {
+    const [open, setOpen] = useState(false)
+    const [selectedTask, setSelectedTask] = useState(null)
+    const [editMode, setEditMode] = useState(false)
+
     const statusBubbles = {
         'todo': ['bg-gray-500/20', 'bg-gray-500'],
         'in-progress': ['bg-rose-500/20', 'bg-rose-500'],
@@ -14,18 +20,44 @@ export default function Task({ tasks }) {
         'completed': ['bg-emerald-500/20', 'bg-emerald-500'],
     }
 
+    function handleCreate() {
+        setEditMode(false)
+        setOpen(true)
+    }
+
+    function handleEdit(goal) {
+        setSelectedTask(goal)
+        setEditMode(true)
+        setOpen(true)
+    }
+
     return (
         <>
+            <TaskModal
+                open={open}
+                setOpen={setOpen}
+                task={selectedTask}
+                editMode={editMode}
+            />
+
             <Navbar />
             <main className="container mx-auto pt-12">
                 <section className="max-w-5xl mx-auto">
                     <h1 className="text-sky-100 text-3xl">Tasks</h1>
+                    <div className="w-full flex justify-end">
+                        <PrimaryButton onClick={handleCreate}>
+                            Create new
+                        </PrimaryButton>
+                    </div>
                     <div className="py-12">
                         {
                             tasks.length > 0 ? (
                                 <ul role="list" className="divide-y divide-gray-800">
                                     {tasks.map((task) => (
-                                        <li key={task?.id} className="flex justify-between gap-x-6 py-5">
+                                        <li
+                                            onClick={() => handleEdit(task)}
+                                            key={task?.id}
+                                            className="flex justify-between gap-x-6 py-5">
                                             <div className="flex min-w-0 gap-x-4">
                                                 <div className="min-w-0 flex-auto">
                                                     <p className="text-sm font-semibold leading-6 text-white">{task?.title}</p>
