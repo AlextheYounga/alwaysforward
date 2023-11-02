@@ -93,7 +93,7 @@ class LifeEvent extends Model
         return $deathDate;
     }
 
-    public static function getDefaultLifeEventDateMapping()
+    public static function getLifeEventDateMapping()
     {
         $birthday = LifeEvent::getBirthDate();
         $quarterLife = LifeEvent::getQuarterLifeDate();

@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\TaskStatus;
+use App\Models\Week;
 
 class Task extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        // 'user_id',
         'week_id',
         'goal_id',
         'board_id',
@@ -36,5 +36,9 @@ class Task extends Model
 
     public function board() {
         return $this->belongsTo(Board::class);
+    }
+
+    public function week() {
+        return $this->belongsTo(Week::class);
     }
 }

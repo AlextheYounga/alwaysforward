@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\CarbonImmutable;
 use App\Models\LifeEvent;
+use App\Models\Board;
+use App\Models\Task;
+use Carbon\Carbon;
 
 class Week extends Model
 {
@@ -32,9 +35,22 @@ class Week extends Model
         return $this->hasOne(Board::class);
     }
 
+    public function tasks() {
+        return $this->hasMany(Task::class);
+    }
+
     public static function getWeekByDate($date) {
         $week = Week::where('start', '<=', $date)
             ->where('end', '>=', $date)
+            ->first();
+
+        return $week;
+    }
+
+    public static function getThisWeek() {
+        $today = Carbon::now();
+        $week = Week::where('start', '<=', $today)
+            ->where('end', '>=', $today)
             ->first();
 
         return $week;
