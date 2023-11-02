@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id');
             $table->foreignId('week_id')->nullable();
             $table->foreignId('goal_id')->nullable();
             $table->foreignId('board_id')->nullable();
