@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import Navbar from "@/Components/Nav/NavBar";
-
+import PrimaryButton from "@/Components/Buttons/PrimaryButton";
+import GoalModal from "@/Components/GoalModal";
 
 
 function classNames(...classes) {
@@ -7,24 +9,54 @@ function classNames(...classes) {
 }
 
 export default function Goal({ goals }) {
+    const [open, setOpen] = useState(false)
+    const [selectedGoal, setSelectedGoal] = useState(null)
+    const [editMode, setEditMode] = useState(false)
+
     const statusBubbles = {
         'active': ['bg-amber-500/20', 'bg-amber-500'],
         'completed': ['bg-emerald-500/20', 'bg-emerald-500'],
         'aborted': ['bg-rose-500/20', 'bg-rose-500'],
     }
 
+    function handleCreate() {
+        setEditMode(false)
+        setOpen(true)
+    }
+
+    function handleEdit(goal) {
+        setSelectedGoal(goal)
+        setEditMode(true)
+        setOpen(true)
+    }
+
     return (
         <>
+            <GoalModal
+                open={open}
+                setOpen={setOpen}
+                goal={selectedGoal}
+                editMode={editMode}
+            />
+
             <Navbar />
             <main className="container mx-auto pt-12">
                 <section className="max-w-5xl mx-auto">
                     <h1 className="text-sky-100 text-3xl">Goals</h1>
+                    <div className="w-full flex justify-end">
+                        <PrimaryButton onClick={handleCreate}>
+                            Create new
+                        </PrimaryButton>
+                    </div>
                     <div className="py-12">
                         {
                             goals.length > 0 ? (
                                 <ul role="list" className="divide-y divide-gray-800">
                                     {goals.map((goal) => (
-                                        <li key={goal?.id} className="flex justify-between gap-x-6 py-5">
+                                        <li
+                                            key={goal?.id}
+                                            onClick={() => handleEdit(goal)}
+                                            className="flex cursor-pointer justify-between gap-x-6 py-5">
                                             <div className="flex min-w-0 gap-x-4">
                                                 <div className="min-w-0 flex-auto">
                                                     <p className="text-sm font-semibold leading-6 text-white">{goal?.title}</p>

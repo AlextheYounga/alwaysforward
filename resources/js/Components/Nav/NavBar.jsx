@@ -10,13 +10,12 @@ export default function Navbar({ route }) {
     const navigation = [
         { name: 'Dashboard', href: '/', current: false },
         { name: 'Life', href: '/life', current: false },
-        { name: 'Week', href: '/week', current: false },
+        { name: 'Week', href: '/week/now', current: false },
         { name: 'Goals', href: '/goals', current: false },
         { name: 'Tasks', href: '/tasks', current: false },
     ]
 
     // Set current route to true
-    console.log(route)
     const currentItem = navigation.find((item) => item.href === route)
     if (currentItem) currentItem.current = true
 

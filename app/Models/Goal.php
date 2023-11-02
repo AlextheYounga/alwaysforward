@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\GoalStatus;
 
 class Goal extends Model
 {
@@ -12,10 +13,18 @@ class Goal extends Model
     protected $fillable = [
         'title',
         'description',
-        'target_description',
         'target_value',
         'target_units',
+        'completion_type',
         'type',
+        'priority',
+        'due_date',
+        'status',
         'notes',
+    ];
+
+    protected $casts = [
+        'due_date' => 'date',
+        'status' => GoalStatus::class,
     ];
 }

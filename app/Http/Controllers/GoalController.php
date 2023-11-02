@@ -15,20 +15,49 @@ class GoalController extends Controller
         ]);
     }
 
-    public function new(Request $request) 
+
+
+    public function new(Request $request)
     {
-        $goal = $request->validate([
+        $request->validate([
             'title' => 'required',
-            'description' => 'required',
-            'due_date' => 'required',
             'status' => 'required',
             'priority' => 'required',
+          ]);
+
+        $goal = $request->only([
+            'title',
+            'description',
+            'target_value',
+            'target_units',
+            'priority',
+            'due_date',
+            'status',
+            'notes',
         ]);
 
         Goal::create($goal);
 
-        return response()->json([
-            'message' => 'Goal created successfully',
-        ], 201);
+        return to_route('goal');
+    }
+
+    public function update(Request $request)
+    {
+        $goal = $request->only([
+            'id',
+            'title',
+            'description',
+            'target_value',
+            'target_units',
+            'priority',
+            'due_date',
+            'status',
+            'notes',
+        ]);
+
+        $existingGoal = Goal::find($goal['id']);
+        $existingGoal->update($goal);
+
+        return to_route('goal');
     }
 }

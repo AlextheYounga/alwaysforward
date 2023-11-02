@@ -34,9 +34,11 @@ Route::group(['prefix' => 'week'], function () {
 
 Route::group(['prefix' => 'goals'], function () {
     Route::get('/', [GoalController::class, 'index'])
-        ->name('goal.now');
+        ->name('goal');
     Route::post('/new', [GoalController::class, 'new'])
-        ->name('goal.show');
+        ->name('goal.new');
+    Route::post('/update', [GoalController::class, 'update'])
+        ->name('goal.update');
 });
 
 Route::group(['prefix' => 'tasks'], function () {

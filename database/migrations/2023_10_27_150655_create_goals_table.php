@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('target_value')->nullable();
             $table->string('target_units')->nullable();
-            $table->string('target_description')->nullable();
             $table->string('type')->nullable();
             $table->string('completion_type')->nullable();
             $table->string('priority')->nullable();
