@@ -20,5 +20,8 @@ This planner and task organizer is the conclusion of the following thought-proce
 ## Your Life in Weeks
 I have one of these "Your Life in Weeks" posters hanging in my room, and I always liked the idea. I tried integrating the already built [React Life Calendar](https://github.com/ngduc/life-calendar), but I decided to write my own so I didn't have to use the chakra libraries used in that project. I shamelessly stole some of the very good ideas from that project, such as the emojis on certain blocks to signify important life events. My version only uses Tailwind, and is only 2 jsx files with a css stylesheet. I am thinking about making that its own repo. 
 
+## Me First, and Therefore, Developers First
+I am making this application for me first. All considerations around this application are personal, and only coincidentally may align with the values of others. Since I am a developer, and I inherently try to write code that other developers will also understand and like, other developers should also enjoy this. That is why it will also come with a CLI for handling models and printing out useful task information. I have plans to build an API around it as well. 
+
 ### Other Considerations
 - Integrations with Toggl, which I like for hourly time management.
