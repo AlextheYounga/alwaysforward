@@ -8,7 +8,6 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
     id: task?.id ?? null,
     week_id: editMode ? task.week_id : "",
     goal_id: editMode ? task.goal_id : "",
-    board_id: editMode ? task.board_id : "",
     title: editMode ? task.title : "",
     description: editMode ? task.description : "",
     type: editMode ? task.type : "",

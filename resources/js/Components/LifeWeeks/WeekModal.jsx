@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon, ArrowTopRightOnSquareIcon, ViewColumnsIcon } from '@heroicons/react/24/outline'
+import dayjs from 'dayjs'
 
 export default function WeekModal({ open, setOpen, week }) {
   return (
@@ -54,11 +55,15 @@ export default function WeekModal({ open, setOpen, week }) {
                       </div>
                       <div>
                         <span className="text-base text-gray-600">Start Date: </span>
-                        <span className="font-semibold tracking-tight text-gray-900">{week?.start}</span>
+                        <span className="font-semibold tracking-tight text-gray-900">
+                          {week?.start ? dayjs(week.start).format('dddd, YYYY-MM-DD') : ''}
+                        </span>
                       </div>
                       <div>
                         <span className="text-base text-gray-600">End Date: </span>
-                        <span className="font-semibold tracking-tight text-gray-900">{week?.end}</span>
+                        <span className="font-semibold tracking-tight text-gray-900">
+                          {week?.end ? dayjs(week.end).format('dddd, YYYY-MM-DD') : ''}
+                        </span>
                       </div>
                     </div>
 
@@ -70,23 +75,23 @@ export default function WeekModal({ open, setOpen, week }) {
 
                     {/* Links */}
                     <div className="flex w-full mt-6">
-                    <span className="flex pr-6">                      
-                      <a
-                        href={`/week/${week?.id}`}
-                        className="tracking-tight text-indigo-500">
-                        Kanban 
-                      </a>
+                      <span className="flex pr-6">
+                        <a
+                          href={`/week/${week?.id}`}
+                          className="tracking-tight text-indigo-500">
+                          Kanban
+                        </a>
                         <ViewColumnsIcon className="w-5 h-5 ml-2 text-indigo-500" />
                       </span>
 
-                      <span className="flex pr-6">                      
-                      <a
-                        href={`https://track.toggl.com/timer?start_date=${week?.start}&end_date=${week?.end}`}
-                        className="tracking-tight text-indigo-500"
-                        target='_blank'
+                      <span className="flex pr-6">
+                        <a
+                          href={`https://track.toggl.com/timer?start_date=${week?.start}&end_date=${week?.end}`}
+                          className="tracking-tight text-indigo-500"
+                          target='_blank'
                         >
-                        Toggl 
-                      </a>
+                          Toggl
+                        </a>
                         <ArrowTopRightOnSquareIcon className="w-5 h-5 ml-2 text-indigo-500" />
                       </span>
                     </div>
