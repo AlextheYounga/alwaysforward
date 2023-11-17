@@ -29,11 +29,12 @@ class ShowGoals extends Command
         $goals = Goal::all(['title', 'description', 'due_date'])->toArray();
 
         if (empty($goals)) {
-            $this->info("\nNo goals yet");
+            $this->info("No goals yet");
             return;
         }
 
-        $this->info("\nGoals");
+        $this->info('Goals');
+        $this->info('-----------------');
         $this->table(
             ['Name', 'Description', 'Due Date'],
             $goals

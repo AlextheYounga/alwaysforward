@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 
 if (!function_exists('getTableSchema')) {
@@ -8,6 +7,8 @@ if (!function_exists('getTableSchema')) {
     {
         $typeMapping = [
             'text' => 'string',
+            'date' => 'string',
+            'datetime' => 'string',
         ];
 
         return $typeMapping[$type] ?? $type;

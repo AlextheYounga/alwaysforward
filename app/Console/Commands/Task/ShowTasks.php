@@ -29,11 +29,12 @@ class ShowTasks extends Command
         $tasks = Task::current(['title', 'description', 'due_date'])->toArray();
 
         if (empty($tasks)) {
-            $this->info("\nNo tasks yet");
+            $this->info("No tasks yet");
             return;
         }
 
-        $this->info("\Tasks");
+        $this->info('Tasks');
+        $this->info('-----------------');
         $this->table(
             ['Name', 'Description', 'Due Date'],
             $tasks

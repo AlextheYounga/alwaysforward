@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\LifeEvent;
 use App\Models\Week;
-use App\Models\Task;
 use Carbon\CarbonImmutable;
 
 class Time extends Command
@@ -29,7 +28,8 @@ class Time extends Command
      */
     public function handle()
     {
-        $today = CarbonImmutable::now();
+        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $today = CarbonImmutable::now($timezone);
         $events = LifeEvent::getLifeEventDateMapping();
         $thisWeek = Week::current();
 
@@ -52,7 +52,7 @@ class Time extends Command
             $events['birth']->month, 
             $events['birth']->day,
             0, 0, 0
-        );
+        )->timezone($timezone);
 
         $timeUntilBirthday = $thisYearBirthday->diffAsCarbonInterval($today);
 
