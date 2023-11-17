@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Task;
 
 use Illuminate\Console\Command;
+use App\Models\Task;
 
 class ShowTasks extends Command
 {
@@ -11,20 +12,31 @@ class ShowTasks extends Command
      *
      * @var string
      */
-    protected $signature = 'app:show-tasks';
+    protected $signature = 'tasks:show';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Show tasks for this week';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        //
+        $tasks = Task::current(['title', 'description', 'due_date'])->toArray();
+
+        if (empty($tasks)) {
+            $this->info("\nNo tasks yet");
+            return;
+        }
+
+        $this->info("\Tasks");
+        $this->table(
+            ['Name', 'Description', 'Due Date'],
+            $tasks
+        );
     }
 }

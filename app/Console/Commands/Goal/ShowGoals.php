@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Goal;
 
 use Illuminate\Console\Command;
+use App\Models\Goal;
 
 class ShowGoals extends Command
 {
@@ -11,20 +12,31 @@ class ShowGoals extends Command
      *
      * @var string
      */
-    protected $signature = 'tasks:show';
+    protected $signature = 'goals:show';
 
     /**
      * The console command description.
      *
      * @var stringTas
      */
-    protected $description = 'Show tasks for this week.';
+    protected $description = 'Show goals';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        //
+        $goals = Goal::all(['title', 'description', 'due_date'])->toArray();
+
+        if (empty($goals)) {
+            $this->info("\nNo goals yet");
+            return;
+        }
+
+        $this->info("\nGoals");
+        $this->table(
+            ['Name', 'Description', 'Due Date'],
+            $goals
+        );
     }
 }

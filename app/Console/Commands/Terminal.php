@@ -11,7 +11,7 @@ class Terminal extends Command
      *
      * @var string
      */
-    protected $signature = 'app:terminal';
+    protected $signature = 'app:cli';
 
     /**
      * The console command description.
@@ -40,16 +40,16 @@ class Terminal extends Command
                 $this->call('life:time');
                 break;
             case 'See Goals':
-                echo 'test';
+                $this->call('goals:show');
                 break;
             case 'See Tasks':
-                echo 'test';
+                $this->call('tasks:show');
                 break;
-            case 'Make Goal':
-                echo 'test';
+            case 'New Goal':
+                $this->call('goals:new');
                 break;
-            case 'Make Task':
-                echo 'test';
+            case 'New Task':
+                $this->call('tasks:new');
                 break;
         }
     }

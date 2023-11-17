@@ -31,7 +31,7 @@ class Time extends Command
     {
         $today = CarbonImmutable::now();
         $events = LifeEvent::getLifeEventDateMapping();
-        $thisWeek = Week::getThisWeek();
+        $thisWeek = Week::current();
 
         // Calculate time left
         $weekNumber = $thisWeek->id;
@@ -41,6 +41,11 @@ class Time extends Command
         $timeUntil50 = $events['midLife']->diffAsCarbonInterval($today);
         $age = $today->diffAsCarbonInterval($events['birth']);
         $thisWeekTimeLeft = $thisWeek->end->diffAsCarbonInterval($today);
+        
+        $timeLeft = $events['death']->diffAsCarbonInterval($today);
+        $totalLife = $events['death']->diffInDays($events['birth']);
+        $lifeLived = $today->diffInDays($events['birth']);
+        $percentComplete = round($lifeLived / $totalLife * 100, 4);
 
         $thisYearBirthday = CarbonImmutable::create(
             $today->year, 
@@ -58,6 +63,7 @@ class Time extends Command
         $this->info("Time Until 30\t\t" . '=> ' . $timeUntil30->forHumans(['parts' => 4]));
         $this->info("Time Until 50\t\t" . '=> ' . $timeUntil50->forHumans(['parts' => 4]));
         $this->info("Time Left\t\t" . '=> ' . $timeLeft->forHumans(['parts' => 4]));
+        $this->info("Percent Complete\t" . '=> ' . $percentComplete . "%");
 
         $this->info("\nWeeks");
         $this->info('-----------------');
