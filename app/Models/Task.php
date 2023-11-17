@@ -14,7 +14,6 @@ class Task extends Model
     protected $fillable = [
         'week_id',
         'goal_id',
-        'board_id',
         'title',
         'description',
         'type',
@@ -34,11 +33,12 @@ class Task extends Model
         'status' => TaskStatus::class,
     ];
 
-    public function board() {
-        return $this->belongsTo(Board::class);
-    }
-
     public function week() {
         return $this->belongsTo(Week::class);
+    }
+
+    public static function current() {
+        $week_id = Week::current()->id;
+        return Task::where('week_id', $week_id)->get();
     }
 }

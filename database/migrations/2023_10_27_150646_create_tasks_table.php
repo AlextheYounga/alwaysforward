@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('week_id')->nullable();
             $table->foreignId('goal_id')->nullable();
-            $table->foreignId('board_id')->nullable();
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('type')->nullable();

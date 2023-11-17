@@ -30,11 +30,6 @@ class Board extends Model
         return $this->belongsTo(Week::class);
     }
 
-    public function tasks()
-    {
-        return $this->hasMany(Task::class);
-    }
-
     public static function lanes()
     {
         return [
@@ -85,7 +80,9 @@ class Board extends Model
 
         // Then add the remaining lanes with associated tasks
         foreach(Board::lanes() as $lane) {
-            $tasks = $this->tasks()
+            $week = $this->week()->first();
+
+            $tasks = $week->tasks()
                 ->where('status', $lane['id'])
                 ->get();
 
@@ -95,7 +92,7 @@ class Board extends Model
                 'style' => [
                     'backgroundColor' => $lane['color']
                 ],
-                'cards' => Board::createLaneCards($tasks),
+                'cards' => Board::createLaneCards($tasks ?? []),
             ]);
         }
 

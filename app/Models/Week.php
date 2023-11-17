@@ -47,7 +47,7 @@ class Week extends Model
         return $week;
     }
 
-    public static function getThisWeek() {
+    public static function current() {
         $today = Carbon::now();
         $week = Week::where('start', '<=', $today)
             ->where('end', '>=', $today)
