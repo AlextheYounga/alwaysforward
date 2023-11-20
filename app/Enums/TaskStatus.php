@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum TaskStatus: string
 {
+    case BACKLOG = 'backlog';
     case TODO = 'todo';
     case IN_PROGRESS = 'in-progress';
     case ON_HOLD = 'on-hold';

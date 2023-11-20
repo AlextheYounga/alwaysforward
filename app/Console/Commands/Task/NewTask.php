@@ -73,7 +73,7 @@ class NewTask extends Command
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
             'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date'])->timezone($timezone) : null,
             'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,
-            'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::TODO,
+            'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::BACKLOG,
         ];
 
         $week = Week::current();

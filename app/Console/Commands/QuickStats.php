@@ -96,7 +96,7 @@ class QuickStats extends Command
 
         // Goals
         $goals = Goal::all();
-        if (empty($goals)) {
+        if ($goals->isEmpty()) {
             $this->line("No goals yet");
         } else {
             $this->info('Goals');
@@ -112,13 +112,13 @@ class QuickStats extends Command
 
         // Tasks
         $tasks = Task::current();
-        if (empty($tasks)) {
+        if ($tasks->isEmpty()) {
             $this->line("No tasks yet");
         } else {
             $this->info('Tasks');
             foreach($tasks as $task) {
                 $timeLeft = $task->time_left->forHumans(['parts' => 3]);
-                $dateString = $task->due_date ? (' | ' . $goal->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
+                $dateString = $task->due_date ? (' | ' . $task->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
                 $output = $task->title . $dateString;
                 $this->line($output);
             }

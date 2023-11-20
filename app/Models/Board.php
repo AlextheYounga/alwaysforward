@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Task;
 use App\Models\Week;
+use App\Enums\TaskStatus;
 use Illuminate\Support\Facades\Hash;
 
 class Board extends Model
@@ -33,6 +34,7 @@ class Board extends Model
     public static function lanes()
     {
         return [
+            ['id' => 'backlog', 'title' => 'Backlog', 'color' => '#cbd5e1'],
             ['id' => 'todo', 'title' => 'Planned Tasks', 'color' => '#c4b5fd'],
             ['id' => 'in-progress', 'title' => 'In Progress', 'color' => '#fffbeb'],
             ['id' => 'on-hold', 'title' => 'On Hold', 'color' => '#d1d5db'],
@@ -49,7 +51,7 @@ class Board extends Model
                 'id' => $task->id,
                 'title' => $task->title,
                 'description' => $task->description,
-                'label' => $task->priority,
+                'label' => $task->priority->name,
                 'metadata' => [
                     'sha' => Hash::make($task->id, ['rounds' => 4])
                 ]
@@ -59,32 +61,21 @@ class Board extends Model
         return $cards;
     }
 
-    public static function createBacklogLane()
-    {
-        return [
-            'id' => 'backlog',
-            'title' => 'Backlog',
-            'style' => [
-                'backgroundColor' => '#cbd5e1'
-            ],
-            'cards' => Board::createLaneCards(Task::all())
-        ];
-    }
-
     public function getLanesAttribute()
     {
         $lanes = [];
-        
-        // First build the backlog lane containing all tasks
-        array_push($lanes, Board::createBacklogLane());
 
         // Then add the remaining lanes with associated tasks
         foreach(Board::lanes() as $lane) {
             $week = $this->week()->first();
-
             $tasks = $week->tasks()
-                ->where('status', $lane['id'])
+                ->where('status', '=', $lane['id'])
                 ->get();
+
+            if ($lane['id'] === 'backlog') {
+                $tasks = Task::where('status', '=', TaskStatus::BACKLOG)
+                    ->get();
+            }
 
             array_push($lanes, [
                 'id' => $lane['id'],

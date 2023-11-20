@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Task;
+use App\Models\Week;
 
 class TaskController extends Controller
 {
@@ -36,7 +37,9 @@ class TaskController extends Controller
             'status',
         ]);
 
-        Task::create($task);
+        $week = Week::current();
+        $taskRecord = Task::create($task);
+        $week->tasks()->attach($taskRecord->id);
 
         return to_route('tasks');
     }

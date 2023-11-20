@@ -13,7 +13,7 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
     priority: editMode ? task.priority : "0",
     due_date: editMode ? task.due_date : "",
     notes: editMode ? task.notes : "",
-    status: editMode ? task.status : "todo",
+    status: editMode ? task.status : "backlog",
   }
 
   const modalTitle = editMode ? 'Edit' : 'Create';
@@ -138,12 +138,12 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
                         </div>
 
                         <div className="py-4">
-                          <label htmlFor="Goal" className="block text-sm font-medium leading-6 text-gray-900">
+                          <label htmlFor="goal_id" className="block text-sm font-medium leading-6 text-gray-900">
                             Goal (Optional)
                           </label>
                           <select
-                            id="Goal"
-                            name="Goal"
+                            id="goal_id"
+                            name="goal_id"
                             className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             onChange={handleChange}
                             value={values.goal_id ?? ""}
@@ -151,7 +151,7 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
                           <option value={null}>No Goal</option>
                             {
                               goals.map((goal) => (
-                                <option key={goal.id} value={`goal.id`}>{goal.title}</option>
+                                <option key={goal.id} value={`${goal.id}`}>{goal.title}</option>
                               ))
                             }
                           </select>

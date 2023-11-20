@@ -3,10 +3,24 @@ import Board from 'react-trello'
 import Navbar from "@/Components/Nav/NavBar";
 import { Head } from '@inertiajs/react';
 import dayjs from 'dayjs';
+import axios from 'axios';
 
 export default function Kanban({ week, board }) {
     const weekStart = dayjs(week.start).format('ddd MMM D, YYYY');
     const weekEnd = dayjs(week.end).format('ddd MMM D, YYYY');
+
+    function handleLaneChange(data) {
+        const url = '/board/update'
+        const lanes = data.lanes;
+
+        axios.post(url, {lanes})
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+          console.error('Error posting data:', error);
+        });
+    }
 
     return (
         <>
@@ -20,7 +34,11 @@ export default function Kanban({ week, board }) {
                     </div>
 
                     <div className="flex justify-center">
-                        <Board data={board.lanes} editable />
+                        <Board 
+                        data={board.lanes} 
+                        onDataChange={handleLaneChange}
+                        editable 
+                        />
                     </div>
                 </div>
             </main>
