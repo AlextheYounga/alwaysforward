@@ -15,8 +15,6 @@ class GoalController extends Controller
         ]);
     }
 
-
-
     public function new(Request $request)
     {
         $request->validate([
