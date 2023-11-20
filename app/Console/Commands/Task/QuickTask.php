@@ -35,8 +35,6 @@ class QuickTask extends Command
         $onlyColumns = ['goal_id', 'title', 'description', 'due_date'];
         $schema = getTableSchema('tasks');
 
-        $week = Week::current();
-
         foreach ($schema as $column => $type) {
             if (in_array($column, $onlyColumns)) {
                 if ($column === 'goal_id') {
@@ -61,7 +59,6 @@ class QuickTask extends Command
         $timezone = env('APP_TIMEZONE', 'America/New_York');
 
         $task = [
-            'week_id' => $week->id,
             'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
@@ -76,7 +73,10 @@ class QuickTask extends Command
             'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::TODO,
         ];
 
-        Task::create($task);
+        $week = Week::current();
+        $taskRecord = Task::create($task);
+        $week->tasks()->attach($taskRecord->id);
+
         $this->info('Task created!');
     }
 }

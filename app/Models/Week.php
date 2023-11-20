@@ -36,7 +36,7 @@ class Week extends Model
     }
 
     public function tasks() {
-        return $this->belongsToMany(Task::class, 'week_task');
+        return $this->belongsToMany(Task::class);
     }
 
     public static function getWeekByDate($date) {

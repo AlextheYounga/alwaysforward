@@ -12,7 +12,6 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = [
-        'week_id',
         'goal_id',
         'title',
         'description',
@@ -34,11 +33,11 @@ class Task extends Model
     ];
 
     public function weeks() {
-        return $this->belongsToMany(Week::class, 'week_task');
+        return $this->belongsToMany(Week::class);
     }
 
     public static function current() {
-        $week_id = Week::current()->id;
-        return Task::where('week_id', $week_id)->get();
+        $week = Week::current();
+        return $week->tasks()->get();
     }
 }

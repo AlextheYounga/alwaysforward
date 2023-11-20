@@ -46,7 +46,7 @@ class QuickStats extends Command
         $totalLife = $events['death']->diffInDays($events['birth']);
         $lifeLived = $today->diffInDays($events['birth']);
         $percentComplete = round($lifeLived / $totalLife * 100, 4);
- 
+
         $thisYearBirthday = CarbonImmutable::create(
             $today->year,
             $events['birth']->month,
@@ -62,11 +62,10 @@ class QuickStats extends Command
 
         $timeUntilBirthday = $thisYearBirthday->diffAsCarbonInterval($today);
 
-        # Goals
-        $goals = Goal::all(['title', 'due_date'])->toArray();
-        $tasks = Task::all(['title', 'due_date'])->toArray();
-
         $this->info('MEMENTO MORI');
+        $this->newLine();
+
+        $this->line('Run `forward` to start goals app.');
         $this->newLine();
 
         // Lifetime
@@ -97,29 +96,29 @@ class QuickStats extends Command
         $this->newLine();
 
         // Goals
+        $goals = Goal::all(['title', 'due_date'])->toArray();
         if (empty($goals)) {
-            $this->info("No goals yet");
+            $this->line("No goals yet");
         } else {
-            $this->info('GOALS');
-            $this->table(
-                ['Title', 'Due Date'],
-                $goals,
-                'symfony-style-guide'
-            );
-            $this->newLine();
+            $this->info('Goals');
+            foreach($goals as $goal) {
+                $output = $goal['title'] . ($goal['due_date'] ? (' => ' . $goal['due_date']) : '');
+                $this->line($output);
+            }
         }
 
-        // Tasks
-        if (empty($tasks)) {
-            $this->info("No tasks yet");
-        } else {
-            $this->info('TASKS');
+        $this->newLine();
 
-            $this->table(
-                ['Title', 'Due Date'],
-                $tasks,
-                'symfony-style-guide'
-            );
+        // Tasks
+        $tasks = Task::current(['title', 'due_date'])->toArray();
+        if (empty($tasks)) {
+            $this->line("No tasks yet");
+        } else {
+            $this->info('Tasks');
+            foreach($tasks as $task) {
+                $output = $task['title'] . ($task['due_date'] ? ' => ' . $task['due_date'] : '');
+                $this->line($output);
+            }
         }
     }
 }

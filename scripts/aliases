@@ -6,7 +6,7 @@
 
 ( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:quick-stats)
 
-alias fw="( cd $ALWAYS_FORWARD_DIRECTORY ; pnpm start)"
+alias forward="( cd $ALWAYS_FORWARD_DIRECTORY ; pnpm start)"
 alias goal="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:new )"
 alias goals="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:show )"
 alias task="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan tasks:new )"
