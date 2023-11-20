@@ -7,6 +7,9 @@ use App\Models\Task;
 use App\Models\Goal;
 use App\Enums\Priority;
 use App\Enums\TaskStatus;
+use App\Models\Week;
+use Illuminate\Support\Carbon;
+
 class NewTask extends Command
 {
     /**
@@ -31,6 +34,8 @@ class NewTask extends Command
         $userInput = [];
         $skipColumns = ['id', 'created_at', 'updated_at'];
         $schema = getTableSchema('tasks');
+
+        $week = Week::current();
 
         foreach ($schema as $column => $type) {
             if (in_array($column, $skipColumns)) {
@@ -58,29 +63,31 @@ class NewTask extends Command
                 $userInput[$column] = $this->choice("Choose $column?", TaskStatus::values(), 'todo');
                 continue;
             }
+
             $value = $this->ask("What is the $column?");
             \settype($value, $type);
-
             $userInput[$column] = $value;
         }
 
-        $goal = [
-            'week_id' => !empty($userInput['week_id']) ? $userInput['week_id'] : null,
+        $timezone = env('APP_TIMEZONE', 'America/New_York');
+
+        $task = [
+            'week_id' => $week->id,
             'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
             'type' => !empty($userInput['type']) ? $userInput['type'] : null,
-            'priority' => !empty($userInput['priority']) ? $userInput['priority'] : null,
+            'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
             'duration' => !empty($userInput['duration']) ? $userInput['duration'] : null,
             'time_spent' => !empty($userInput['time_spent']) ? $userInput['time_spent'] : null,
-            'start_date' => !empty($userInput['start_date']) ? $userInput['start_date'] : null,
-            'due_date' => !empty($userInput['due_date']) ? $userInput['due_date'] : null,
+            'start_date' => !empty($userInput['start_date']) ? Carbon::parse($userInput['start_date'])->timezone($timezone) : null,
+            'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date'])->timezone($timezone) : null,
             'subtasks' => !empty($userInput['subtasks']) ? $userInput['subtasks'] : null,
             'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,
-            'status' => !empty($userInput['status']) ? $userInput['status'] : null
+            'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::TODO,
         ];
 
-        Goal::create($goal);
-        $this->info('Goal created!');
+        Task::create($task);
+        $this->info('Task created!');
     }
 }

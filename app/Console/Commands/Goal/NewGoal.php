@@ -53,6 +53,7 @@ class NewGoal extends Command
 
             $userInput[$column] = $value;
         }
+        $timezone = env('APP_TIMEZONE', 'America/New_York');
 
         $goal = [
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
@@ -62,7 +63,7 @@ class NewGoal extends Command
             'type' => !empty($userInput['type']) ? $userInput['type'] : null,
             'completion_type' => !empty($userInput['completion_type']) ? $userInput['completion_type'] : null,
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
-            'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date']) : null,
+            'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date'])->timezone($timezone) : null,
             'status' => !empty($userInput['status']) ? GoalStatus::tryFrom($userInput['status']) : GoalStatus::ACTIVE,
             'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,
         ];

@@ -8,6 +8,7 @@ use App\Models\Week;
 use Carbon\CarbonImmutable;
 use App\Models\Goal;
 use App\Models\Task;
+use App\Modules\LifeStatistics;
 
 class QuickStats extends Command
 {
@@ -32,25 +33,32 @@ class QuickStats extends Command
     {
         $timezone = env('APP_TIMEZONE', 'America/New_York');
         $today = CarbonImmutable::now($timezone);
-        $events = LifeEvent::getLifeEventDateMapping();
+        $events = LifeStatistics::getLifeEventDateMapping();
         $thisWeek = Week::current();
 
         // Calculate time left
         $timeLeft = $events['death']->diffAsCarbonInterval($today);
         $thisWeekTimeLeft = $thisWeek->end->diffAsCarbonInterval($today);
         $thisDayTimeLeft = $today->endOfDay()->diffAsCarbonInterval($today);
-        
+
+        $age = $today->diffAsCarbonInterval($events['birth']);
         $timeLeft = $events['death']->diffAsCarbonInterval($today);
         $totalLife = $events['death']->diffInDays($events['birth']);
         $lifeLived = $today->diffInDays($events['birth']);
         $percentComplete = round($lifeLived / $totalLife * 100, 4);
-
+ 
         $thisYearBirthday = CarbonImmutable::create(
-            $today->year, 
-            $events['birth']->month, 
+            $today->year,
+            $events['birth']->month,
             $events['birth']->day,
-            0, 0, 0
+            0,
+            0,
+            0
         )->timezone($timezone);
+
+        if ($thisYearBirthday->isPast()) {
+            $thisYearBirthday = $thisYearBirthday->addYear();
+        }
 
         $timeUntilBirthday = $thisYearBirthday->diffAsCarbonInterval($today);
 
@@ -58,38 +66,60 @@ class QuickStats extends Command
         $goals = Goal::all(['title', 'due_date'])->toArray();
         $tasks = Task::all(['title', 'due_date'])->toArray();
 
-        $this->info('Momento Mori');
-        $this->info('-----------------');
-        $this->info("This Day Left\t\t" . '=> ' . $thisDayTimeLeft->forHumans(['parts' => 4]));
-        $this->info("Week Time Left\t\t" . '=> ' . $thisWeekTimeLeft->forHumans(['parts' => 4]));
-        $this->info("Time Until Birthday\t" . '=> ' . $timeUntilBirthday->forHumans(['parts' => 4]));
-        $this->info("Lifetime Left\t\t" . '=> ' . $timeLeft->forHumans(['parts' => 4]));
-        $this->info("Percent Complete\t" . '=> ' . $percentComplete . "%");
-        $this->info("");
+        $this->info('MEMENTO MORI');
+        $this->newLine();
 
+        // Lifetime
+        $rows = [[
+                "Age" => $age->forHumans(['parts' => 3]) . ' ' . "($percentComplete%)" . '   ',
+                "Birthday" => $timeUntilBirthday->forHumans(['parts' => 4]) . '   ',
+                "Life Left" => $timeLeft->forHumans(['parts' => 4]) . '   '
+            ]];
+
+        $this->table(
+            ['Age', 'Birthday', 'Life Left'],
+            $rows,
+            'compact',
+        );
+        $this->newLine();
+
+        // This Week
+        $rows = [[
+            'Time Left Today' => $thisDayTimeLeft->forHumans(['parts' => 3]) . '   ',
+            "Time Left This Week" => $thisWeekTimeLeft->forHumans(['parts' => 3]) . '   ',
+            ]];
+
+        $this->table(
+            ['Time Left Today', 'Time Left This Week'],
+            $rows,
+            'compact'
+        );
+        $this->newLine();
+
+        // Goals
         if (empty($goals)) {
             $this->info("No goals yet");
         } else {
-            $this->info('Goals');
-            $this->info('-----------------');
-
-            foreach($goals as $goal) {
-                $dueDate = CarbonImmutable::parse($goal['due_date'])->toFormattedDayDateString();
-                $this->info($goal['title'] . ' => ' . $dueDate);
-            }
-            $this->info('');
+            $this->info('GOALS');
+            $this->table(
+                ['Title', 'Due Date'],
+                $goals,
+                'symfony-style-guide'
+            );
+            $this->newLine();
         }
 
+        // Tasks
         if (empty($tasks)) {
             $this->info("No tasks yet");
         } else {
-            $this->info('Tasks');
-            $this->info('-----------------');
+            $this->info('TASKS');
 
-            foreach($tasks as $task) {
-                $dueDate = CarbonImmutable::parse($task['due_date'])->toFormattedDayDateString();
-                $this->info($task['title'] . '=> ' . $dueDate);
-            }
+            $this->table(
+                ['Title', 'Due Date'],
+                $tasks,
+                'symfony-style-guide'
+            );
         }
     }
 }

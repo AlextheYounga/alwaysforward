@@ -1,12 +1,16 @@
+#!/bin/bash
+
 # Add this to the bottom of your .bash_profile file in your home directory.
 # ALWAYS_FORWARD_DIRECTORY="path/to/alwaysforward"
 # source path/to/alwaysforward/scripts/.aliases
 
 ( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:quick-stats)
 
-alias forward="( cd $ALWAYS_FORWARD_DIRECTORY ; pnpm start)"
+alias fw="( cd $ALWAYS_FORWARD_DIRECTORY ; pnpm start)"
 alias goal="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:new )"
 alias goals="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:show )"
 alias task="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan tasks:new )"
 alias tasks="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan tasks:show )"
+alias qt="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan tasks:quick )" 
 alias t-="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan life:time )"
+alias fwmanager="( code $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )"
