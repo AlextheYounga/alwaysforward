@@ -3,10 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\LifeEvent;
-use App\Models\Week;
 use App\Modules\LifeStatistics;
-use Carbon\CarbonImmutable;
 
 class Time extends Command
 {
@@ -49,7 +46,6 @@ class Time extends Command
             $this->info($headingMapping[$key]);
             $this->line($value);
             $this->newLine();
-
         }
     }
 }

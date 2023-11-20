@@ -16,13 +16,8 @@ return new class extends Migration
             $table->foreignId('goal_id')->nullable();
             $table->string('title');
             $table->string('description')->nullable();
-            $table->string('type')->nullable();
             $table->integer('priority')->default(0);
-            $table->integer('duration')->nullable();
-            $table->integer('time_spent')->nullable();
-            $table->date('start_date')->nullable();
             $table->date('due_date')->nullable();
-            $table->json('subtasks')->nullable();
             $table->longText('notes')->nullable();
             $table->string('status')->default('todo');
             $table->timestamps();

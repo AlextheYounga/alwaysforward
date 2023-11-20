@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\LifeEvent;
 use App\Models\Week;
 use Carbon\CarbonImmutable;
 use App\Models\Goal;
@@ -96,13 +95,15 @@ class QuickStats extends Command
         $this->newLine();
 
         // Goals
-        $goals = Goal::all(['title', 'due_date'])->toArray();
+        $goals = Goal::all();
         if (empty($goals)) {
             $this->line("No goals yet");
         } else {
             $this->info('Goals');
             foreach($goals as $goal) {
-                $output = $goal['title'] . ($goal['due_date'] ? (' => ' . $goal['due_date']) : '');
+                $timeLeft = $goal->time_left->forHumans(['parts' => 4]);
+                $dateString = $goal->due_date ? (' | ' . $goal->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
+                $output = $goal->title . $dateString;
                 $this->line($output);
             }
         }
@@ -110,13 +111,15 @@ class QuickStats extends Command
         $this->newLine();
 
         // Tasks
-        $tasks = Task::current(['title', 'due_date'])->toArray();
+        $tasks = Task::current();
         if (empty($tasks)) {
             $this->line("No tasks yet");
         } else {
             $this->info('Tasks');
             foreach($tasks as $task) {
-                $output = $task['title'] . ($task['due_date'] ? ' => ' . $task['due_date'] : '');
+                $timeLeft = $task->time_left->forHumans(['parts' => 3]);
+                $dateString = $task->due_date ? (' | ' . $goal->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
+                $output = $task->title . $dateString;
                 $this->line($output);
             }
         }
