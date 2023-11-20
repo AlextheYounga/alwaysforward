@@ -30,7 +30,7 @@ class NewGoal extends Command
     public function handle()
     {
         $userInput = [];
-        $skipColumns = ['id', 'created_at', 'updated_at'];
+        $skipColumns = ['id', 'created_at', 'target_units', 'target_value', 'status', 'updated_at'];
         $schema = getTableSchema('goals');
 
         foreach ($schema as $column => $type) {
@@ -38,13 +38,21 @@ class NewGoal extends Command
                 continue;
             }
 
-            if ($column === 'priority') {
-                $userInput[$column] = $this->choice("What is the $column?", Priority::values(), 0);
+            if ($column === 'has_target') {
+                $hasTargetInput = $this->ask("Does this goal have a measurable target? (y/n)", false);
+                $hasTarget = $hasTargetInput === 'y' ? true : false;
+                $userInput['has_target'] = $hasTarget;
+
+                if ($hasTarget) {
+                    $userInput['target_units'] = $this->choice("What are the $column?", Priority::values(), null);
+                    $userInput['target_value'] = $this->choice("What is the $column?", Priority::values(), 0);
+                }
+
                 continue;
             }
 
-            if ($column === 'status') {
-                $userInput[$column] = $this->choice("What is the $column?", GoalStatus::values(), 'active');
+            if ($column === 'priority') {
+                $userInput[$column] = $this->choice("What is the $column?", Priority::values(), 0);
                 continue;
             }
 
@@ -58,10 +66,9 @@ class NewGoal extends Command
         $goal = [
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
+            'has_target' => !empty($userInput['target_value']) ? $userInput['has_target'] : false,
             'target_value' => !empty($userInput['target_value']) ? $userInput['target_value'] : null,
             'target_units' => !empty($userInput['target_units']) ? $userInput['target_units'] : null,
-            'type' => !empty($userInput['type']) ? $userInput['type'] : null,
-            'completion_type' => !empty($userInput['completion_type']) ? $userInput['completion_type'] : null,
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
             'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date'])->timezone($timezone) : null,
             'status' => !empty($userInput['status']) ? GoalStatus::tryFrom($userInput['status']) : GoalStatus::ACTIVE,

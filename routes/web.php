@@ -35,6 +35,8 @@ Route::group(['prefix' => 'week'], function () {
 Route::group(['prefix' => 'goals'], function () {
     Route::get('/', [GoalController::class, 'index'])
         ->name('goals');
+    Route::get('/fetch', [GoalController::class, 'fetch'])
+        ->name('goals.fetch');
     Route::post('/new', [GoalController::class, 'new'])
         ->name('goal.new');
     Route::post('/update', [GoalController::class, 'update'])

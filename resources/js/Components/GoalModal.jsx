@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Dialog, Transition, Switch } from '@headlessui/react'
 import { router } from '@inertiajs/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -9,6 +9,7 @@ export default function GoalModal({ open, setOpen, goal, editMode }) {
     id: goal?.id ?? null,
     title: editMode ? goal.title : '',
     description: editMode ? goal.description : '',
+    has_target: editMode ? goal.has_target : false,
     target_value: editMode ? goal.target_value : '',
     target_units: editMode ? goal.target_units : '',
     priority: editMode ? goal.priority : "0",
@@ -124,46 +125,69 @@ export default function GoalModal({ open, setOpen, goal, editMode }) {
                           <p className="mt-3 text-sm leading-6 text-gray-400">What's this goal about?</p>
                         </div>
 
-                        <div className="flex flex-wrap w-full py-4">
-                          <div className="w-1/2 pr-1">
-                            <label htmlFor="target_value" className="block text-sm font-medium leading-6 text-gray-700">
-                              Target Value
-                            </label>
-                            <div className="mt-2">
-                              <div className="flex border border-gray-100 rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                <input
-                                  type="text"
-                                  name="target_value"
-                                  id="target_value"
-                                  autoComplete="target_value"
-                                  className="flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-800 focus:ring-0 sm:text-sm sm:leading-6"
-                                  placeholder="1"
-                                  onChange={handleChange}
-                                  defaultValue={values.target_value}
-                                />
+                        <Switch
+                          checked={values.has_target}
+                          onChange={handleChange}
+                          className={classNames(
+                            values.has_target ? 'bg-indigo-600' : 'bg-gray-200',
+                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2'
+                          )}
+                        >
+                          <span className="sr-only">Has Target</span>
+                          <span
+                            aria-hidden="true"
+                            className={classNames(
+                              enabled ? 'translate-x-5' : 'translate-x-0',
+                              'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                            )}
+                          />
+                        </Switch>
+
+                        {
+                          values.has_target && (
+                            <div className="flex flex-wrap w-full py-4">
+                              <div className="w-1/2 pr-1">
+                                <label htmlFor="target_value" className="block text-sm font-medium leading-6 text-gray-700">
+                                  Target Value
+                                </label>
+                                <div className="mt-2">
+                                  <div className="flex border border-gray-100 rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                                    <input
+                                      type="text"
+                                      name="target_value"
+                                      id="target_value"
+                                      autoComplete="target_value"
+                                      className="flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-800 focus:ring-0 sm:text-sm sm:leading-6"
+                                      placeholder="1"
+                                      onChange={handleChange}
+                                      defaultValue={values.target_value}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="w-1/2 pxl-1">
+                                <label htmlFor="target_units" className="block text-sm font-medium leading-6 text-gray-700">
+                                  Target Units
+                                </label>
+                                <div className="mt-2">
+                                  <div className="flex border border-gray-100 rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                                    <input
+                                      type="text"
+                                      name="target_units"
+                                      id="target_units"
+                                      autoComplete="target_units"
+                                      className="flex-1 border-0 px-2 bg-transparent py-1.5 pl-1 text-gray-800 focus:ring-0 sm:text-sm sm:leading-6"
+                                      placeholder="Months"
+                                      onChange={handleChange}
+                                      defaultValue={values.target_units}
+                                    />
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="w-1/2 pxl-1">
-                            <label htmlFor="target_units" className="block text-sm font-medium leading-6 text-gray-700">
-                              Target Units
-                            </label>
-                            <div className="mt-2">
-                              <div className="flex border border-gray-100 rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                <input
-                                  type="text"
-                                  name="target_units"
-                                  id="target_units"
-                                  autoComplete="target_units"
-                                  className="flex-1 border-0 px-2 bg-transparent py-1.5 pl-1 text-gray-800 focus:ring-0 sm:text-sm sm:leading-6"
-                                  placeholder="Months"
-                                  onChange={handleChange}
-                                  defaultValue={values.target_units}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                          )
+                        }
+
                         <div className="flex flex-wrap w-full py-4">
                           <div className="w-1/2 pr-1">
                             <label htmlFor="priority" className="block text-sm font-medium leading-6 text-gray-900">

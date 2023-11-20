@@ -58,4 +58,8 @@ class GoalController extends Controller
 
         return to_route('goals');
     }
+
+    public function fetch() {
+        return response()->json(Goal::all());
+    }
 }

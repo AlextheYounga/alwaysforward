@@ -2,26 +2,22 @@ import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { router } from '@inertiajs/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import axios from 'axios'
 
 export default function TaskModal({ open, setOpen, task, editMode }) {
   const form = {
     id: task?.id ?? null,
-    week_id: editMode ? task.week_id : "",
     goal_id: editMode ? task.goal_id : "",
     title: editMode ? task.title : "",
     description: editMode ? task.description : "",
-    type: editMode ? task.type : "",
     priority: editMode ? task.priority : "0",
-    duration: editMode ? task.duration : "",
-    time_spent: editMode ? task.time_spent : "",
-    start_date: editMode ? task.start_date : "",
     due_date: editMode ? task.due_date : "",
-    subtasks: editMode ? task.subtasks : "",
     notes: editMode ? task.notes : "",
     status: editMode ? task.status : "todo",
   }
 
   const modalTitle = editMode ? 'Edit' : 'Create';
+  const [goals, setGoals] = useState([])
   const [values, setValues] = useState(form)
 
   function handleChange(e) {
@@ -31,6 +27,8 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
       ...values,
       [key]: value,
     }))
+
+    console.log(values)
   }
 
   function handleSubmit(e) {
@@ -45,6 +43,17 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
 
   useEffect(() => {
     setValues(form)
+
+    const url = `/goals/fetch`;
+    axios.get(url)
+      .then(response => {
+        const goalsData = response.data ?? [];
+        console.log(goalsData)
+        setGoals(goalsData);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   }, [editMode])
 
   return (
@@ -128,46 +137,26 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
                           <p className="mt-3 text-sm leading-6 text-gray-400">What's this task about?</p>
                         </div>
 
-                        <div className="flex flex-wrap w-full py-4">
-                          <div className="w-1/2 pr-1">
-                            <label htmlFor="target_value" className="block text-sm font-medium leading-6 text-gray-700">
-                              Target Value
-                            </label>
-                            <div className="mt-2">
-                              <div className="flex border border-gray-100 rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                <input
-                                  type="text"
-                                  name="target_value"
-                                  id="target_value"
-                                  autoComplete="target_value"
-                                  className="flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-800 focus:ring-0 sm:text-sm sm:leading-6"
-                                  placeholder="1"
-                                  onChange={handleChange}
-                                  defaultValue={values.target_value}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="w-1/2 pxl-1">
-                            <label htmlFor="target_units" className="block text-sm font-medium leading-6 text-gray-700">
-                              Target Units
-                            </label>
-                            <div className="mt-2">
-                              <div className="flex border border-gray-100 rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                <input
-                                  type="text"
-                                  name="target_units"
-                                  id="target_units"
-                                  autoComplete="target_units"
-                                  className="flex-1 border-0 px-2 bg-transparent py-1.5 pl-1 text-gray-800 focus:ring-0 sm:text-sm sm:leading-6"
-                                  placeholder="Months"
-                                  onChange={handleChange}
-                                  defaultValue={values.target_units}
-                                />
-                              </div>
-                            </div>
-                          </div>
+                        <div className="py-4">
+                          <label htmlFor="Goal" className="block text-sm font-medium leading-6 text-gray-900">
+                            Goal (Optional)
+                          </label>
+                          <select
+                            id="Goal"
+                            name="Goal"
+                            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            onChange={handleChange}
+                            value={values.goal_id ?? ""}
+                          >
+                          <option value={null}>No Goal</option>
+                            {
+                              goals.map((goal) => (
+                                <option key={goal.id} value={`goal.id`}>{goal.title}</option>
+                              ))
+                            }
+                          </select>
                         </div>
+
                         <div className="flex flex-wrap w-full py-4">
                           <div className="w-1/2 pr-1">
                             <label htmlFor="priority" className="block text-sm font-medium leading-6 text-gray-900">
