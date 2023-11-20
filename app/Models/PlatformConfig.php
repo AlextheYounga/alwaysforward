@@ -24,10 +24,11 @@ class PlatformConfig extends Model
     ];
 
     public function getValue() {
+        $timezone = env('APP_TIMEZONE', 'America/New_York');
         $type = $this->type;
 
         if ($type == 'date') {
-            return Carbon::parse($this->value);
+            return Carbon::parse($this->value)->timezone($timezone);
         }
 
         $value = $this->value;

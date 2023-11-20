@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Week;
 use App\Models\LifeEvent;
+use App\Modules\LifeStatistics;
 
 class LifeEventSeeder extends Seeder
 {
@@ -16,11 +17,11 @@ class LifeEventSeeder extends Seeder
 
         LifeEvent::truncate();
 
-        $birthday = LifeEvent::getBirthDate();
-        $quarterLife = LifeEvent::getQuarterLifeDate();
-        $age30 = LifeEvent::getAge30Date();
-        $midLife = LifeEvent::getMidLifeDate();
-        $deathDate = LifeEvent::getDeathDate();
+        $birthday = LifeStatistics::getBirthDate();
+        $quarterLife = LifeStatistics::getQuarterLifeDate();
+        $age30 = LifeStatistics::getAge30Date();
+        $midLife = LifeStatistics::getMidLifeDate();
+        $deathDate = LifeStatistics::getDeathDate();
 
         $defaultLifeEvents = [
             [

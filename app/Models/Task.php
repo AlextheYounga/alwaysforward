@@ -28,13 +28,13 @@ class Task extends Model
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'due_date' => 'date',
+        'start_date' => 'datetime:Y-m-d',
+        'due_date' => 'datetime:Y-m-d',
         'status' => TaskStatus::class,
     ];
 
-    public function week() {
-        return $this->belongsTo(Week::class);
+    public function weeks() {
+        return $this->belongsToMany(Week::class, 'week_task');
     }
 
     public static function current() {

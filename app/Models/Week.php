@@ -36,7 +36,7 @@ class Week extends Model
     }
 
     public function tasks() {
-        return $this->hasMany(Task::class);
+        return $this->belongsToMany(Task::class, 'week_task');
     }
 
     public static function getWeekByDate($date) {
@@ -48,7 +48,8 @@ class Week extends Model
     }
 
     public static function current() {
-        $today = Carbon::now();
+        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $today = Carbon::now()->timezone($timezone);
         $week = Week::where('start', '<=', $today)
             ->where('end', '>=', $today)
             ->first();
@@ -58,7 +59,8 @@ class Week extends Model
 
     public static function generateWeeksTimeline($birthday, $deathAge)
     {
-        $birthday = CarbonImmutable::create($birthday);
+        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $birthday = CarbonImmutable::create($birthday)->timezone($timezone);
         $death = $birthday->addYears($deathAge);
 
         $weeks = [

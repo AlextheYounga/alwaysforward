@@ -24,7 +24,7 @@ class Goal extends Model
     ];
 
     protected $casts = [
-        'due_date' => 'date',
+        'due_date' => 'datetime:Y-m-d',
         'status' => GoalStatus::class,
     ];
 }
