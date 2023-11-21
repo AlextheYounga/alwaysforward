@@ -40,6 +40,9 @@ class Week extends Model
     }
 
     public static function getWeekByDate($date) {
+        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $date = Carbon::parse($date)->timezone($timezone);
+        
         $week = Week::where('start', '<=', $date)
             ->where('end', '>=', $date)
             ->first();

@@ -44,12 +44,19 @@ class NewTask extends Command
 
             if ($column === 'goal_id') {
                 $goals = Goal::all();
-                $goalChoices = $goals->map(fn($goal) => $goal->title)->toArray();
+                $goalsArray = $goals->map(fn($goal) => $goal->title)->toArray();
+                $goalChoices = array_merge([0 => 'None'], $goalsArray);
 
                 if ($goals) {
                     $goalSelect = $this->choice("Attach to goal?", $goalChoices, null);
-                    $goal = $goals->firstWhere('title', $goalSelect);
-                    $userInput['goal_id'] = $goal->id;
+                    $goalSelect = $goalSelect === 'None' ? null : $goalSelect;
+                    
+                    if ($goalSelect) {
+                        $goal = $goals->firstWhere('title', $goalSelect);
+                        $userInput['goal_id'] = $goal->id;
+                    } else {
+                        $userInput['goal_id'] = null;
+                    }
                 }
                 continue;
             }

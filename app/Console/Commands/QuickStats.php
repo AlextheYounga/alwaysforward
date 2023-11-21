@@ -46,21 +46,6 @@ class QuickStats extends Command
         $lifeLived = $today->diffInDays($events['birth']);
         $percentComplete = round($lifeLived / $totalLife * 100, 4);
 
-        $thisYearBirthday = CarbonImmutable::create(
-            $today->year,
-            $events['birth']->month,
-            $events['birth']->day,
-            0,
-            0,
-            0
-        )->timezone($timezone);
-
-        if ($thisYearBirthday->isPast()) {
-            $thisYearBirthday = $thisYearBirthday->addYear();
-        }
-
-        $timeUntilBirthday = $thisYearBirthday->diffAsCarbonInterval($today);
-
         $this->info('MEMENTO MORI');
         $this->newLine();
 
@@ -70,12 +55,11 @@ class QuickStats extends Command
         // Lifetime
         $rows = [[
                 "Age" => $age->forHumans(['parts' => 3]) . ' ' . "($percentComplete%)" . '   ',
-                "Birthday" => $timeUntilBirthday->forHumans(['parts' => 4]) . '   ',
                 "Life Left" => $timeLeft->forHumans(['parts' => 4]) . '   '
             ]];
 
         $this->table(
-            ['Age', 'Birthday', 'Life Left'],
+            ['Age', 'Life Left'],
             $rows,
             'compact',
         );
@@ -123,5 +107,6 @@ class QuickStats extends Command
                 $this->line($output);
             }
         }
+        $this->newLine();
     }
 }

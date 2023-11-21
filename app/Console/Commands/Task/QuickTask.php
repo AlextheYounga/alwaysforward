@@ -38,9 +38,20 @@ class QuickTask extends Command
         foreach ($schema as $column => $type) {
             if (in_array($column, $onlyColumns)) {
                 if ($column === 'goal_id') {
-                    $goals = Goal::all(['title'])->toArray();
+                    $goals = Goal::all();
+                    $goalsArray = $goals->map(fn($goal) => $goal->title)->toArray();
+                    $goalChoices = array_merge([0 => 'None'], $goalsArray);
+
                     if ($goals) {
-                        $userInput[$column] = $this->choice("Attach to goal?", $goals, null);
+                        $goalSelect = $this->choice("Attach to goal?", $goalChoices, null);
+                        $goalSelect = $goalSelect === 'None' ? null : $goalSelect;
+                        
+                        if ($goalSelect) {
+                            $goal = $goals->firstWhere('title', $goalSelect);
+                            $userInput['goal_id'] = $goal->id;
+                        } else {
+                            $userInput['goal_id'] = null;
+                        }
                     }
                     continue;
                 }
