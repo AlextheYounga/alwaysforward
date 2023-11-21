@@ -26,7 +26,10 @@ class ShowGoals extends Command
      */
     public function handle()
     {
-        $goals = Goal::all(['title', 'description', 'due_date'])->toArray();
+        $goals = Goal::select(['title', 'description', 'due_date'])
+            ->active()
+            ->get()
+            ->toArray();
 
         if (empty($goals)) {
             $this->info("No goals yet");

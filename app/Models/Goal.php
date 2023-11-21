@@ -8,6 +8,7 @@ use App\Enums\GoalStatus;
 use App\Enums\Priority;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Builder;
 
 class Goal extends Model
 {
@@ -47,5 +48,10 @@ class Goal extends Model
         } else {
             return null;
         }
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('status', '!=', GoalStatus::COMPLETED);
     }
 }

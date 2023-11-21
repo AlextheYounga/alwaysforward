@@ -30,7 +30,9 @@ class Terminal extends Command
             'See Goals',
             'See Tasks',
             'New Goal',
-            'New Task'
+            'New Task',
+            'Change Task Status',
+            'Change Goal Status',
         ];
 
         $choice = $this->choice('Select an option', $directory);
@@ -50,6 +52,12 @@ class Terminal extends Command
                 break;
             case 'New Task':
                 $this->call('tasks:new');
+                break;
+            case 'Change Task Status':
+                $this->call('tasks:mark');
+                break;
+            case 'Change Goal Status':
+                $this->call('goals:mark');
                 break;
         }
     }

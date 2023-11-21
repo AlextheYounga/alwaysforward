@@ -9,6 +9,7 @@ use App\Enums\Priority;
 use App\Models\Week;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Builder;
 
 class Task extends Model
 {
@@ -35,12 +36,6 @@ class Task extends Model
         return $this->belongsToMany(Week::class);
     }
 
-    public static function current()
-    {
-        $week = Week::current();
-        return $week->tasks()->get();
-    }
-
     protected function timeLeft(): Attribute
     {
         return Attribute::make(
@@ -57,5 +52,16 @@ class Task extends Model
         } else {
             return null;
         }
+    }
+
+    public function scopeCurrent(Builder $query): void
+    {
+        $week = Week::current();
+        $query->where('week_id', $week->id);
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('status', '!=', TaskStatus::COMPLETED);
     }
 }

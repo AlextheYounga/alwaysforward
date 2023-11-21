@@ -79,8 +79,9 @@ class QuickStats extends Command
         $this->newLine();
 
         // Goals
-        $goals = Goal::all();
-        if ($goals->isEmpty()) {
+        $goals = Goal::active()->get();
+
+        if (empty($goals)) {
             $this->line("No goals yet");
         } else {
             $this->info('Goals');
@@ -95,8 +96,11 @@ class QuickStats extends Command
         $this->newLine();
 
         // Tasks
-        $tasks = Task::current();
-        if ($tasks->isEmpty()) {
+        $tasks = Task::select(['title', 'description', 'due_date'])
+            ->active()
+            ->get();
+
+        if (empty($tasks)) {
             $this->line("No tasks yet");
         } else {
             $this->info('Tasks');

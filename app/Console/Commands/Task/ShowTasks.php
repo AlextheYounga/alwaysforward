@@ -26,7 +26,10 @@ class ShowTasks extends Command
      */
     public function handle()
     {
-        $tasks = Task::current(['title', 'description', 'due_date'])->toArray();
+        $tasks = Task::select(['title', 'description', 'due_date'])
+            ->active()
+            ->get()
+            ->toArray();
 
         if (empty($tasks)) {
             $this->info("No tasks yet");

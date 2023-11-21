@@ -43,7 +43,7 @@ class NewTask extends Command
             }
 
             if ($column === 'goal_id') {
-                $goals = Goal::all();
+                $goals = Goal::all()->active();
                 $goalsArray = $goals->map(fn($goal) => $goal->title)->toArray();
                 $goalChoices = array_merge([0 => 'None'], $goalsArray);
 
