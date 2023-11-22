@@ -33,6 +33,7 @@ class Terminal extends Command
             'New Task',
             'Change Task Status',
             'Change Goal Status',
+            'Backup'
         ];
 
         $choice = $this->choice('Select an option', $directory);
@@ -58,6 +59,9 @@ class Terminal extends Command
                 break;
             case 'Change Goal Status':
                 $this->call('goals:mark');
+                break;
+            case 'Backup':
+                $this->call('app:backup');
                 break;
         }
     }

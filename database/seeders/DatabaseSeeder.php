@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\WeekSeeder;
 use Database\Seeders\LifeEventSeeder;
 use Database\Seeders\PlatformConfigSeeder;
+use Database\Seeders\BackupSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
             PlatformConfigSeeder::class,
             WeekSeeder::class,
             LifeEventSeeder::class,
+            BackupSeeder::class,
         ]);
     }
 }
