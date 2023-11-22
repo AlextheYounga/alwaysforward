@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('goal_id')->nullable();
             $table->string('title');
             $table->string('description')->nullable();
+            $table->string('type');
             $table->integer('priority')->default(0);
             $table->date('due_date')->nullable();
             $table->longText('notes')->nullable();

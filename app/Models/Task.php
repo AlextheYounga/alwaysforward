@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\TaskStatus;
 use App\Enums\Priority;
+use App\Enums\Type;
 use App\Models\Week;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,6 +20,7 @@ class Task extends Model
         'goal_id',
         'title',
         'description',
+        'type',
         'priority',
         'due_date',
         'notes',
@@ -27,6 +29,7 @@ class Task extends Model
 
     protected $casts = [
         'due_date' => 'datetime:Y-m-d',
+        'type' => Type::class,
         'priority' => Priority::class,
         'status' => TaskStatus::class,
     ];

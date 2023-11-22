@@ -48,10 +48,10 @@ class Board extends Model
 
         foreach($tasks as $task) {
             array_push($cards, [
-                'id' => $task->id,
-                'title' => $task->title,
-                'description' => $task->description,
-                'label' => $task->priority->name,
+                'id' => (string) $task->id,
+                'title' => $task->title ?? '',
+                'description' => $task->description ?? '',
+                'label' => $task->priority->name ?? '',
                 'metadata' => [
                     'sha' => Hash::make($task->id, ['rounds' => 4])
                 ]

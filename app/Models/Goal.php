@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\GoalStatus;
 use App\Enums\Priority;
+use App\Enums\Type;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,6 +18,7 @@ class Goal extends Model
     protected $fillable = [
         'title',
         'description',
+        'type',
         'priority',
         'due_date',
         'has_target',
@@ -28,6 +30,7 @@ class Goal extends Model
 
     protected $casts = [
         'due_date' => 'datetime:Y-m-d',
+        'type' => Type::class,
         'priority' => Priority::class,
         'status' => GoalStatus::class,
     ];
