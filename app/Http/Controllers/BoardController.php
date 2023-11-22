@@ -23,7 +23,7 @@ class BoardController extends Controller
         $board = Board::firstOrCreate([
             'week_id' => $week->id,
         ]);
-        
+
         return Inertia::render('Board', [
             'week' => $week,
             'board' => $board,

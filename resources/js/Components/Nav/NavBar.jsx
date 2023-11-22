@@ -10,7 +10,7 @@ export default function Navbar({ route }) {
     const navigation = [
         { name: 'Dashboard', href: '/', current: false },
         { name: 'Life', href: '/life', current: false },
-        { name: 'Week', href: '/week/now', current: false },
+        { name: 'Week', href: '/week', current: false },
         { name: 'Goals', href: '/goals', current: false },
         { name: 'Tasks', href: '/tasks', current: false },
     ]

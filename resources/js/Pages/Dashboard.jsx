@@ -12,7 +12,7 @@ export default function Dashboard({ auth, laravelVersion, phpVersion }) {
 
     const directory = [
         { name: 'Life', href: '/life', icon: CalendarDaysIcon, description: "Your entire life in weeks, from a bird's eye view." },
-        { name: 'Week', href: '/week/now', icon: ViewColumnsIcon, description: "This week of your life." },
+        { name: 'Week', href: '/week', icon: ViewColumnsIcon, description: "This week of your life." },
         { name: 'Goals', href: '/goals', icon: FlagIcon, description: "The road you are paving ahead." },
         { name: 'Tasks', href: '/tasks', icon: RectangleStackIcon, description: "The little things you have to do to get there." },
     ];

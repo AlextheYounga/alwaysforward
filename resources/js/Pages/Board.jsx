@@ -22,6 +22,8 @@ export default function Kanban({ week, board }) {
         });
     }
 
+    console.log(board.lanes)
+
     return (
         <>
             <Head title="Week" />

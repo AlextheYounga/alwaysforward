@@ -26,8 +26,8 @@ Route::get('/life', [LifeWeeksController::class, 'index'])
 ->name('life');
 
 Route::group(['prefix' => 'week'], function () {
-    Route::get('/now', [BoardController::class, 'index'])
-        ->name('week.now');
+    Route::get('/', [BoardController::class, 'index'])
+        ->name('week');
     Route::get('/{week}', [BoardController::class, 'show'])
         ->name('week.show');
 });
