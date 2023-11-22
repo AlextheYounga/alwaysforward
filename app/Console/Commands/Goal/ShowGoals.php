@@ -26,21 +26,36 @@ class ShowGoals extends Command
      */
     public function handle()
     {
-        $goals = Goal::select(['title', 'description', 'due_date'])
-            ->active()
-            ->get()
-            ->toArray();
+        $this->newLine();
 
-        if (empty($goals)) {
+        $goals = Goal::all();
+        $work = Goal::select(['title', 'description', 'due_date'])->work();
+        $personal = Goal::select(['title', 'description', 'due_date'])->personal();
+
+        if ($goals->count() === 0) {
             $this->info("No goals yet");
             return;
         }
 
-        $this->info('Goals');
-        $this->info('-----------------');
-        $this->table(
-            ['Name', 'Description', 'Due Date'],
-            $goals
-        );
+        if ($personal->count() !== 0) {
+            $this->comment('Personal');
+            $this->table(
+                ['Name', 'Description', 'Due Date'],
+                $personal->get()
+                    ->toArray()
+            );
+
+            $this->newLine();
+        }
+
+
+        if ($work->count() !== 0) {
+            $this->comment('Work');
+            $this->table(
+                ['Name', 'Description', 'Due Date'],
+                $work->get()
+                    ->toArray()
+            );
+        }
     }
 }

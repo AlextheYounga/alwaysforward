@@ -57,4 +57,14 @@ class Goal extends Model
     {
         $query->where('status', '!=', GoalStatus::COMPLETED);
     }
+
+    public function scopeWork(Builder $query): void
+    {
+        $query->where('type', '=', Type::WORK);
+    }
+
+    public function scopePersonal(Builder $query): void
+    {
+        $query->where('type', '=', Type::PERSONAL);
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\Goal;
 use App\Enums\Priority;
 use App\Enums\TaskStatus;
+use App\Enums\Type;
 use App\Models\Week;
 use Illuminate\Support\Carbon;
 
@@ -32,7 +33,7 @@ class QuickTask extends Command
     public function handle()
     {
         $userInput = [];
-        $onlyColumns = ['goal_id', 'title', 'description', 'due_date'];
+        $onlyColumns = ['goal_id', 'title', 'description', 'due_date', 'type'];
         $schema = getTableSchema('tasks');
 
         foreach ($schema as $column => $type) {
@@ -56,8 +57,8 @@ class QuickTask extends Command
                     continue;
                 }
 
-                if ($column === 'priority') {
-                    $userInput[$column] = $this->choice("Choose $column?", Priority::values(), 0);
+                if ($column === 'type') {
+                    $userInput[$column] = $this->choice("Choose type", Type::values(), "personal");
                     continue;
                 }
 
@@ -73,7 +74,7 @@ class QuickTask extends Command
             'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
-            'type' => null,
+            'type' => !empty($userInput['type']) ? $userInput['type'] : Type::PERSONAL,
             'priority' => Priority::NORMAL,
             'duration' => null,
             'time_spent' => null,

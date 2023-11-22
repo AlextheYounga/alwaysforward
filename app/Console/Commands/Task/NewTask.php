@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\Goal;
 use App\Enums\Priority;
 use App\Enums\TaskStatus;
+use App\Enums\Type;
 use App\Models\Week;
 use Illuminate\Support\Carbon;
 
@@ -61,8 +62,13 @@ class NewTask extends Command
                 continue;
             }
 
+            if ($column === 'type') {
+                $userInput[$column] = $this->choice("Choose type", Type::values(), "personal");
+                continue;
+            }
+
             if ($column === 'priority') {
-                $userInput[$column] = $this->choice("Choose priority?", Priority::values(), 0);
+                $userInput[$column] = $this->choice("Choose priority", Priority::values(), 0);
                 continue;
             }
 
@@ -77,6 +83,7 @@ class NewTask extends Command
             'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
+            'type' => !empty($userInput['type']) ? Priority::tryFrom($userInput['type']) : Type::PERSONAL,
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
             'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date'])->timezone($timezone) : null,
             'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,

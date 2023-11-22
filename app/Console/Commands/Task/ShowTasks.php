@@ -26,21 +26,36 @@ class ShowTasks extends Command
      */
     public function handle()
     {
-        $tasks = Task::select(['title', 'description', 'due_date'])
-            ->active()
-            ->get()
-            ->toArray();
+        $this->newLine();
 
-        if (empty($tasks)) {
+        $tasks = Task::all();
+        $work = Task::select(['title', 'description', 'due_date'])->work();
+        $personal = Task::select(['title', 'description', 'due_date'])->personal();
+
+        if ($tasks->count() === 0) {
             $this->info("No tasks yet");
             return;
         }
 
-        $this->info('Tasks');
-        $this->info('-----------------');
-        $this->table(
-            ['Name', 'Description', 'Due Date'],
-            $tasks
-        );
+        if ($personal->count() !== 0) {
+            $this->comment('Personal');
+            $this->table(
+                ['Name', 'Description', 'Due Date'],
+                $personal->get()
+                    ->toArray()
+            );
+
+            $this->newLine();
+        }
+
+
+        if ($work->count() !== 0) {
+            $this->comment('Work');
+            $this->table(
+                ['Name', 'Description', 'Due Date'],
+                $work->get()
+                    ->toArray()
+            );
+        }
     }
 }

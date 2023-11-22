@@ -25,10 +25,7 @@ class QuickStats extends Command
      */
     protected $description = 'Displays in terminal on each login if enabled in scripts/aliases';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    private function listTimeStats()
     {
         $timezone = env('APP_TIMEZONE', 'America/New_York');
         $today = CarbonImmutable::now($timezone);
@@ -46,71 +43,124 @@ class QuickStats extends Command
         $lifeLived = $today->diffInDays($events['birth']);
         $percentComplete = round($lifeLived / $totalLife * 100, 4);
 
+
+
+        // Lifetime
+        $this->comment('Life');
+        $life = [
+                "Age" => $age->forHumans(['parts' => 3]) . ' ' . "($percentComplete%)",
+                "Life Left" => $timeLeft->forHumans(['parts' => 4]),
+                'Time Left Today' => $thisDayTimeLeft->forHumans(['parts' => 3]),
+                "Time Left This Week" => $thisWeekTimeLeft->forHumans(['parts' => 3]),
+            ];
+
+        $tabs = 3;
+        foreach($life as $key => $value) {
+            $tabString = $tabs > 0 ? str_repeat("\t", $tabs) : "\t";
+            $this->line("\t<fg=green> $key </>" . $tabString . $value);
+            $tabs--;
+        }
+
+        $this->newLine();
+    }
+
+    private function listGoals()
+    {
+        $work = Goal::work()->get();
+        $personal = Goal::personal()->get();
+
+        function buildGoalDetails($goal)
+        {
+            $timeLeft = $goal->time_left->forHumans(['parts' => 4]);
+            $dateString = $goal->due_date ? (' | ' . $goal->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
+            $goalDetails = $goal->title . $dateString;
+            return $goalDetails;
+        }
+
+        if ($work->count() === 0 && $personal->count() === 0) {
+            $this->line("No goals yet");
+        } else {
+            $this->comment('Goals');
+
+            // Personal
+            if ($personal->count() !== 0) {
+                $this->line("\t<fg=green> Personal </>");
+            }
+            foreach($personal as $goal) {
+                $goalDetails = buildGoalDetails($goal);
+                $this->line("\t  $goalDetails");
+            }
+
+            // Work
+            if ($work->count() !== 0) {
+                $this->line("\t<fg=green> Work </>");
+            }
+            foreach($work as $goal) {
+                $goalDetails = buildGoalDetails($goal);
+                $this->line("\t  $goalDetails");
+            }
+        }
+
+        $this->newLine();
+    }
+
+    private function listTasks()
+    {
+        $work = Task::work()->get();
+        $personal = Task::personal()->get();
+
+        function buildTaskDetails($task)
+        {
+            $timeLeft = $task->time_left->forHumans(['parts' => 4]);
+            $dateString = $task->due_date ? (' | ' . $task->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
+            $taskDetails = $task->title . $dateString;
+            return $taskDetails;
+        }
+
+        if ($work->count() === 0 && $personal->count() === 0) {
+            $this->line("No tasks yet");
+        } else {
+            $this->comment('Tasks');
+
+            // Personal
+            if ($personal->count() !== 0) {
+                $this->line("\t<fg=green> Personal </>");
+            }
+            foreach($personal as $task) {
+                $taskDetails = buildTaskDetails($task);
+                $this->line("\t  $taskDetails");
+            }
+
+            // Work
+            if ($work->count() !== 0) {
+                $this->line("\t<fg=green> Work </>");
+            }
+            foreach($work as $task) {
+                $taskDetails = buildTaskDetails($task);
+                $this->line("\t  $taskDetails");
+            }
+        }
+
+        $this->newLine();
+    }
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
         $this->info('MEMENTO MORI');
         $this->newLine();
 
-        $this->line('Run `forward` to start goals app.');
+        $this->line('Run `forward` to start app.');
         $this->newLine();
 
-        // Lifetime
-        $rows = [[
-                "Age" => $age->forHumans(['parts' => 3]) . ' ' . "($percentComplete%)" . '   ',
-                "Life Left" => $timeLeft->forHumans(['parts' => 4]) . '   '
-            ]];
+        $this->listTimeStats();
 
-        $this->table(
-            ['Age', 'Life Left'],
-            $rows,
-            'compact',
-        );
-        $this->newLine();
+        $this->listGoals();
 
-        // This Week
-        $rows = [[
-            'Time Left Today' => $thisDayTimeLeft->forHumans(['parts' => 3]) . '   ',
-            "Time Left This Week" => $thisWeekTimeLeft->forHumans(['parts' => 3]) . '   ',
-            ]];
+        $this->listTasks();
 
-        $this->table(
-            ['Time Left Today', 'Time Left This Week'],
-            $rows,
-            'compact'
-        );
-        $this->newLine();
-
-        // Goals
-        $goals = Goal::active()->get();
-
-        if (empty($goals)) {
-            $this->line("No goals yet");
-        } else {
-            $this->info('Goals');
-            foreach($goals as $goal) {
-                $timeLeft = $goal->time_left->forHumans(['parts' => 4]);
-                $dateString = $goal->due_date ? (' | ' . $goal->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
-                $output = $goal->title . $dateString;
-                $this->line($output);
-            }
-        }
-
-        $this->newLine();
-
-        // Tasks
-        $tasks = Task::select(['title', 'description', 'due_date'])
-            ->active()
-            ->get();
-
-        if (empty($tasks)) {
-            $this->line("No tasks yet");
-        } else {
-            $this->info('Tasks');
-            foreach($tasks as $task) {
-                $timeLeft = $task->time_left->forHumans(['parts' => 3]);
-                $dateString = $task->due_date ? (' | ' . $task->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
-                $output = $task->title . $dateString;
-                $this->line($output);
-            }
-        }
         $this->newLine();
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Goal;
 use App\Enums\Priority;
 use App\Enums\GoalStatus;
+use App\Enums\Type;
 use Carbon\Carbon;
 
 class NewGoal extends Command
@@ -51,6 +52,11 @@ class NewGoal extends Command
                 continue;
             }
 
+            if ($column === 'type') {
+                $userInput[$column] = $this->choice("Choose type", Type::values(), "personal");
+                continue;
+            }
+
             if ($column === 'priority') {
                 $userInput[$column] = $this->choice("What is the $column?", Priority::values(), 0);
                 continue;
@@ -69,6 +75,7 @@ class NewGoal extends Command
             'has_target' => !empty($userInput['target_value']) ? $userInput['has_target'] : false,
             'target_value' => !empty($userInput['target_value']) ? $userInput['target_value'] : null,
             'target_units' => !empty($userInput['target_units']) ? $userInput['target_units'] : null,
+            'type' => !empty($userInput['type']) ? Priority::tryFrom($userInput['type']) : Type::PERSONAL,
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
             'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date'])->timezone($timezone) : null,
             'status' => !empty($userInput['status']) ? GoalStatus::tryFrom($userInput['status']) : GoalStatus::ACTIVE,
