@@ -25,6 +25,17 @@ class QuickStats extends Command
      */
     protected $description = 'Displays in terminal on each login if enabled in scripts/aliases';
 
+    private function buildTableRows($items)
+    {
+        return $items->map(function ($item) {
+            return [
+                "\t  " . $item->title,
+                "\t" . ($item->due_date ? $item->due_date->toFormattedDayDateString() : ''),
+                "\t" . $item->time_left->forHumans(['parts' => 4]),
+            ];
+        });
+    }
+
     private function listTimeStats()
     {
         $timezone = env('APP_TIMEZONE', 'America/New_York');
@@ -42,8 +53,6 @@ class QuickStats extends Command
         $totalLife = $events['death']->diffInDays($events['birth']);
         $lifeLived = $today->diffInDays($events['birth']);
         $percentComplete = round($lifeLived / $totalLife * 100, 4);
-
-
 
         // Lifetime
         $this->comment('Life');
@@ -66,16 +75,8 @@ class QuickStats extends Command
 
     private function listGoals()
     {
-        $work = Goal::work()->get();
-        $personal = Goal::personal()->get();
-
-        function buildGoalDetails($goal)
-        {
-            $timeLeft = $goal->time_left->forHumans(['parts' => 4]);
-            $dateString = $goal->due_date ? (' | ' . $goal->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
-            $goalDetails = $goal->title . $dateString;
-            return $goalDetails;
-        }
+        $work = Goal::work()->active()->get();
+        $personal = Goal::personal()->active()->get();
 
         if ($work->count() === 0 && $personal->count() === 0) {
             $this->line("No goals yet");
@@ -86,19 +87,17 @@ class QuickStats extends Command
             if ($personal->count() !== 0) {
                 $this->line("\t<fg=green> Personal </>");
             }
-            foreach($personal as $goal) {
-                $goalDetails = buildGoalDetails($goal);
-                $this->line("\t  $goalDetails");
-            }
+
+            $goalDetails = $this->buildTableRows($personal);
+            $this->table(null, $goalDetails, 'compact');
 
             // Work
             if ($work->count() !== 0) {
                 $this->line("\t<fg=green> Work </>");
             }
-            foreach($work as $goal) {
-                $goalDetails = buildGoalDetails($goal);
-                $this->line("\t  $goalDetails");
-            }
+
+            $goalDetails = $this->buildTableRows($work);
+            $this->table(null, $goalDetails, 'compact');
         }
 
         $this->newLine();
@@ -106,16 +105,8 @@ class QuickStats extends Command
 
     private function listTasks()
     {
-        $work = Task::work()->get();
-        $personal = Task::personal()->get();
-
-        function buildTaskDetails($task)
-        {
-            $timeLeft = $task->time_left->forHumans(['parts' => 4]);
-            $dateString = $task->due_date ? (' | ' . $task->due_date->toFormattedDayDateString() . ' | ' . $timeLeft) : '';
-            $taskDetails = $task->title . $dateString;
-            return $taskDetails;
-        }
+        $work = Task::work()->active()->get();
+        $personal = Task::personal()->active()->get();
 
         if ($work->count() === 0 && $personal->count() === 0) {
             $this->line("No tasks yet");
@@ -126,19 +117,17 @@ class QuickStats extends Command
             if ($personal->count() !== 0) {
                 $this->line("\t<fg=green> Personal </>");
             }
-            foreach($personal as $task) {
-                $taskDetails = buildTaskDetails($task);
-                $this->line("\t  $taskDetails");
-            }
+
+            $taskDetails = $this->buildTableRows($personal);
+            $this->table(null, $taskDetails, 'compact');
 
             // Work
             if ($work->count() !== 0) {
                 $this->line("\t<fg=green> Work </>");
             }
-            foreach($work as $task) {
-                $taskDetails = buildTaskDetails($task);
-                $this->line("\t  $taskDetails");
-            }
+
+            $taskDetails = $this->buildTableRows($work);
+            $this->table(null, $taskDetails, 'compact');
         }
 
         $this->newLine();
