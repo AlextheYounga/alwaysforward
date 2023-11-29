@@ -5,30 +5,28 @@ namespace App\Modules;
 use Carbon\CarbonImmutable;
 use App\Models\Week;
 use App\Models\PlatformConfig;
-use App\Models\LifeEvent;
-
 class LifeStatistics
 {
     public static function getBirthDate()
     {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $timezone = env('APP_TIMEZONE');
         $birthday = PlatformConfig::whereKey('birthday')->getValue();
         if ($birthday == null) {
             return null;
         }
 
-        return CarbonImmutable::parse($birthday)->timezone($timezone);
+        return CarbonImmutable::parse($birthday, $timezone);
     }
 
     public static function getQuarterLifeDate()
     {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $timezone = env('APP_TIMEZONE');
         $birthday = PlatformConfig::whereKey('birthday')->getValue();
         if ($birthday == null) {
             return null;
         }
 
-        $birthDate = CarbonImmutable::parse($birthday)->timezone($timezone);
+        $birthDate = CarbonImmutable::parse($birthday, $timezone);
         $quarterLife = $birthDate->addYears(25);
 
         return $quarterLife;
@@ -36,13 +34,13 @@ class LifeStatistics
 
     public static function getAge30Date()
     {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $timezone = env('APP_TIMEZONE');
         $birthday = PlatformConfig::whereKey('birthday')->getValue();
         if ($birthday == null) {
             return null;
         }
 
-        $birthDate = CarbonImmutable::parse($birthday)->timezone($timezone);
+        $birthDate = CarbonImmutable::parse($birthday, $timezone);
         $age30Date = $birthDate->addYears(30);
 
         return $age30Date;
@@ -50,13 +48,13 @@ class LifeStatistics
 
     public static function getMidLifeDate()
     {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $timezone = env('APP_TIMEZONE');
         $birthday = PlatformConfig::whereKey('birthday')->getValue();
         if ($birthday == null) {
             return null;
         }
 
-        $birthDate = CarbonImmutable::parse($birthday)->timezone($timezone);
+        $birthDate = CarbonImmutable::parse($birthday, $timezone);
         $midlifeDate = $birthDate->addYears(50);
 
         return $midlifeDate;
@@ -64,7 +62,7 @@ class LifeStatistics
 
     public static function getDeathDate()
     {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $timezone = env('APP_TIMEZONE');
         $birthday = PlatformConfig::whereKey('birthday')->getValue();
         $deathAge = PlatformConfig::whereKey('death_age')->getValue();
 
@@ -72,7 +70,7 @@ class LifeStatistics
             return null;
         }
 
-        $birthDate = CarbonImmutable::parse($birthday)->timezone($timezone);
+        $birthDate = CarbonImmutable::parse($birthday, $timezone);
         $deathDate = $birthDate->addYears($deathAge);
 
         return $deathDate;
@@ -99,7 +97,7 @@ class LifeStatistics
 
     public static function calculateTimeLeftStatistics()
     {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $timezone = env('APP_TIMEZONE');
         $today = CarbonImmutable::now($timezone);
         $events = LifeStatistics::getLifeEventDateMapping();
         $thisWeek = Week::current();

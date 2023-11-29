@@ -40,8 +40,8 @@ class Week extends Model
     }
 
     public static function getWeekByDate($date) {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
-        $date = Carbon::parse($date)->timezone($timezone);
+        $timezone = env('APP_TIMEZONE');
+        $date = Carbon::parse($date, $timezone);
         
         $week = Week::where('start', '<=', $date)
             ->where('end', '>=', $date)
@@ -51,8 +51,8 @@ class Week extends Model
     }
 
     public static function current() {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
-        $today = Carbon::now()->timezone($timezone);
+        $timezone = env('APP_TIMEZONE');
+        $today = Carbon::now($timezone);
         $week = Week::where('start', '<=', $today)
             ->where('end', '>=', $today)
             ->first();
@@ -62,7 +62,7 @@ class Week extends Model
 
     public static function generateWeeksTimeline($birthday, $deathAge)
     {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $timezone = env('APP_TIMEZONE');
         $birthday = CarbonImmutable::create($birthday)->timezone($timezone);
         $death = $birthday->addYears($deathAge);
 

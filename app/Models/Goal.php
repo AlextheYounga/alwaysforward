@@ -29,11 +29,20 @@ class Goal extends Model
     ];
 
     protected $casts = [
-        'due_date' => 'datetime:Y-m-d',
         'type' => Type::class,
         'priority' => Priority::class,
         'status' => GoalStatus::class,
     ];
+
+    protected function serializeDate($date): string
+    {
+        return CarbonImmutable::parse($date, env('APP_TIMEZONE', 'UTC'));
+    }
+
+    public function setDueDateAttribute($value)
+    {
+        $this->attributes['due_date'] = CarbonImmutable::parse($value, env('APP_TIMEZONE', 'UTC'))->utc();
+    }
 
     protected function timeLeft(): Attribute
     {
@@ -45,8 +54,8 @@ class Goal extends Model
     public function getTimeLeft()
     {
         if ($this->due_date) {
-            $now = CarbonImmutable::now(env('APP_TIMEZONE', 'America/New_York'));
-            $dueDate = CarbonImmutable::parse($this->due_date);
+            $now = CarbonImmutable::now(env('APP_TIMEZONE'));
+            $dueDate = CarbonImmutable::parse($this->due_date, env('APP_TIMEZONE'));
             return $now->diffAsCarbonInterval($dueDate);
         } else {
             return null;

@@ -77,15 +77,13 @@ class NewTask extends Command
             $userInput[$column] = $value;
         }
 
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
-
         $task = [
             'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
             'type' => !empty($userInput['type']) ? Priority::tryFrom($userInput['type']) : Type::PERSONAL,
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
-            'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date'])->timezone($timezone) : null,
+            'due_date' => !empty($userInput['due_date']) ? $userInput['due_date'] : null,
             'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,
             'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::BACKLOG,
         ];

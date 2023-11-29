@@ -68,8 +68,6 @@ class QuickTask extends Command
             }
         }
 
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
-
         $task = [
             'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
@@ -79,7 +77,7 @@ class QuickTask extends Command
             'duration' => null,
             'time_spent' => null,
             'start_date' => null,
-            'due_date' => !empty($userInput['due_date']) ? Carbon::parse($userInput['due_date'])->timezone($timezone) : null,
+            'due_date' => !empty($userInput['due_date']) ? $userInput['due_date'] : null,
             'subtasks' => null,
             'notes' => null,
             'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::TODO,

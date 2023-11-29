@@ -24,7 +24,7 @@ class PlatformConfig extends Model
     ];
 
     public function getValue() {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
+        $timezone = env('APP_TIMEZONE');
         $type = $this->type;
 
         if ($type == 'date') {
