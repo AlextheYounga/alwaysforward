@@ -9,14 +9,14 @@ use App\Models\Goal;
 use App\Models\Task;
 use App\Modules\LifeStatistics;
 
-class QuickStats extends Command
+class Overview extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:quick-stats';
+    protected $signature = 'app:overview';
 
     /**
      * The console command description.
@@ -27,19 +27,33 @@ class QuickStats extends Command
 
     private function buildTableRows($items)
     {
+
         return $items->map(function ($item) {
+            $dueDate = $item->due_date? CarbonImmutable::parse($item->due_date, env('APP_TIMEZONE'))->toFormattedDayDateString() : '';
+            $timeLeft = $item->time_left->forHumans(['parts' => 4]);
+            $hoursLeft = $item->time_left->totalHours;
+            $overdue = $hoursLeft < 0;
+            $color = '';
+
+            if ($hoursLeft > 24 && $hoursLeft < 48) {
+                $color = '<fg=yellow>';
+            }
+            if ($hoursLeft < 24) {
+                $color = '<fg=red>';
+            }
+            $colorBreak = $color === '' ? '' : '</>';
+
             return [
                 "\t  " . $item->title,
-                "\t" . ($item->due_date ? $item->due_date->toFormattedDayDateString() : ''),
-                "\t" . $item->time_left->forHumans(['parts' => 4]),
+                "\t" . $dueDate,
+                "\t" . $color  . ($overdue ? '(Overdue) -' : '') .  $timeLeft . $colorBreak,
             ];
         });
     }
 
     private function listTimeStats()
     {
-        $timezone = env('APP_TIMEZONE', 'America/New_York');
-        $today = CarbonImmutable::now($timezone);
+        $today = CarbonImmutable::now();
         $events = LifeStatistics::getLifeEventDateMapping();
         $thisWeek = Week::current();
 

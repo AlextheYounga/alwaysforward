@@ -4,7 +4,7 @@
 # ALWAYS_FORWARD_DIRECTORY="path/to/alwaysforward"
 # source path/to/alwaysforward/scripts/.aliases
 
-( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:quick-stats)
+( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:overview)
 
 alias forward="( cd $ALWAYS_FORWARD_DIRECTORY ; pnpm start)"
 alias goal="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:new )"
