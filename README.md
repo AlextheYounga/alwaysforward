@@ -23,7 +23,9 @@ I have one of these "Your Life in Weeks" posters hanging in my room, and I alway
 ![Your life in weeks](./resources/images/docs/lifeweeks.png)
 
 ## Me First, and Therefore, Developers First
-I am making this application for me first. All considerations around this application are personal, and only coincidentally may align with the values of others. Since I am a developer, and I inherently try to write code that other developers will also understand and like, other developers should also enjoy this. That is why it will also come with a CLI for handling models and printing out useful task information. I have plans to build an API around it as well. 
+I am making this application for me first. All considerations around this application are personal, and only coincidentally may align with the values of others. Since I am a developer, and I inherently try to write code that other developers will also understand and like, other developers should also enjoy this. That is why it will also come with a CLI for handling models and printing out useful task information. I have plans to build an API around it as well.
+
+![Your life in weeks](./resources/images/docs/cli.png)
 
 ### Other Considerations
 - Integrations with Toggl, which I like for hourly time management.
