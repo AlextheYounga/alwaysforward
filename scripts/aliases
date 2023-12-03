@@ -1,16 +1,32 @@
 #!/bin/bash
 
-# Add this to the bottom of your .bash_profile file in your home directory.
-# ALWAYS_FORWARD_DIRECTORY="path/to/alwaysforward"
-# source path/to/alwaysforward/scripts/.aliases
+# Always Forward App Aliases
 
+# This command runs on every terminal load
 ( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:overview)
 
-alias forward="( cd $ALWAYS_FORWARD_DIRECTORY ; pnpm start)"
+# App Commands
+alias forward="( cd $ALWAYS_FORWARD_DIRECTORY ; ./scripts/start.sh)"
+alias taskcli="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:cli )"
+alias taskmanager="( open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )" # TablePlus command
+alias board="( cd $ALWAYS_FORWARD_DIRECTORY ; ./scripts/board.sh )"
+alias fwquit="kill $(lsof -t -i:8000)"
+
+# Goals
 alias goal="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:new )"
 alias goals="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:show )"
+
+# Tasks
 alias task="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan tasks:new )"
 alias tasks="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan tasks:show )"
 alias qt="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan tasks:quick )" 
+
+
+# Life
 alias t-="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan life:time )"
-alias fwmanager="( code $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )"
+
+
+# Add this code to the bottom of your .bash_profile file in your home directory.
+# 
+# ALWAYS_FORWARD_DIRECTORY="path/to/alwaysforward"
+# source path/to/alwaysforward/scripts/.aliases
