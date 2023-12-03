@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon, ArrowUpCircleIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import AlwaysForwardLogo from '../../../images/always_forward.jpeg';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -36,7 +37,7 @@ export default function Navbar({ route }) {
                             <div className="flex justify-center items-center">
                                 <div className="text-center text-indigo-500 flex-shrink-0">
                                     <a href="/">
-                                        <ArrowUpCircleIcon className="h-10 w-10" />
+                                    <img src={AlwaysForwardLogo} className="w-12 h-12 rounded-full shadow-2xl shadow-gray-500/20 dark:shadow-none" />
                                     </a>
                                 </div>
                                 <div className="hidden sm:ml-6 sm:block">
