@@ -28,7 +28,7 @@ export default function Kanban({ week, board }) {
         <>
             <Head title="Week" />
             <main>
-                <Navbar route='/week' />
+                <Navbar route='/board' />
                 <div className="container mx-auto">
                     <div className="flex justify-between">
                         <h1 className="py-4 text-3xl text-sky-100">Week {week.id} Board</h1>

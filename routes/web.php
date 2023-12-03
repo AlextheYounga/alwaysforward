@@ -25,14 +25,11 @@ Route::get('/', [PagesController::class, 'dashboard'])
 Route::get('/life', [LifeWeeksController::class, 'index'])
 ->name('life');
 
-Route::group(['prefix' => 'week'], function () {
-    Route::get('/', [BoardController::class, 'index'])
-        ->name('week');
-    Route::get('/{week}', [BoardController::class, 'show'])
-        ->name('week.show');
-});
-
 Route::group(['prefix' => 'board'], function () {
+    Route::get('/', [BoardController::class, 'index'])
+        ->name('board');
+    Route::get('/{week}', [BoardController::class, 'show'])
+        ->name('board.show');
     Route::post('/update', [BoardController::class, 'update'])
         ->name('board.update');
 });

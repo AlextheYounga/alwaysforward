@@ -77,7 +77,7 @@ export default function WeekModal({ open, setOpen, week }) {
                     <div className="flex w-full mt-6">
                       <span className="flex pr-6">
                         <a
-                          href={`/week/${week?.id}`}
+                          href={`/board/${week?.id}`}
                           className="tracking-tight text-indigo-500">
                           Kanban
                         </a>
