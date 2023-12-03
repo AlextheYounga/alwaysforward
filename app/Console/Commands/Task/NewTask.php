@@ -41,7 +41,7 @@ class NewTask extends Command
             }
 
             if ($column === 'goal_id') {
-                $goals = Goal::all()->active();
+                $goals = Goal::active()->get();
                 $goalsArray = $goals->map(fn($goal) => $goal->title)->toArray();
                 $goalChoices = array_merge([0 => 'None'], $goalsArray);
 
@@ -79,7 +79,7 @@ class NewTask extends Command
             'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
             'title' => !empty($userInput['title']) ? $userInput['title'] : null,
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
-            'type' => !empty($userInput['type']) ? Priority::tryFrom($userInput['type']) : Type::PERSONAL,
+            'type' => !empty($userInput['type']) ? Type::tryFrom($userInput['type']) : Type::PERSONAL,
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
             'due_date' => !empty($userInput['due_date']) ? $userInput['due_date'] : null,
             'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,

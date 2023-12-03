@@ -75,7 +75,7 @@ class NewGoal extends Command
             'has_target' => !empty($userInput['target_value']) ? $userInput['has_target'] : false,
             'target_value' => !empty($userInput['target_value']) ? $userInput['target_value'] : null,
             'target_units' => !empty($userInput['target_units']) ? $userInput['target_units'] : null,
-            'type' => !empty($userInput['type']) ? Priority::tryFrom($userInput['type']) : Type::PERSONAL,
+            'type' => !empty($userInput['type']) ? Type::tryFrom($userInput['type']) : Type::PERSONAL,
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
             'due_date' => !empty($userInput['due_date']) ? $userInput['due_date'] : null,
             'status' => !empty($userInput['status']) ? GoalStatus::tryFrom($userInput['status']) : GoalStatus::ACTIVE,
