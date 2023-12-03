@@ -1,4 +1,5 @@
-import { Link, Head } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
+import AlwaysForwardLogo from '../../images/always_forward.jpeg';
 import {
     ArrowUpCircleIcon,
     ViewColumnsIcon,
@@ -23,10 +24,10 @@ export default function Dashboard({ auth, laravelVersion, phpVersion }) {
             <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-cyan-500 selection:text-white">
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                     <div className="flex flex-wrap justify-center">
-                        <ArrowUpCircleIcon className="w-24 h-24 text-cyan-500" />
+                    <img src={AlwaysForwardLogo} className="w-36 h-36 rounded-full shadow-2xl shadow-gray-500/20 dark:shadow-none" />
                         <h1 className="text-center text-3xl w-full block text-cyan-300">Always Forward</h1>
                     </div>
-                    <div className="mt-16">
+                    <div className="mt-12">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
 
                             {directory.map((item) => (
