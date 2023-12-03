@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('type');
             $table->integer('priority')->default(0);
             $table->date('due_date')->nullable();
+            $table->date('date_completed')->nullable();
             $table->longText('notes')->nullable();
             $table->string('status')->default('backlog');
             $table->timestamps();

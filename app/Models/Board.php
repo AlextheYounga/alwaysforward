@@ -65,16 +65,14 @@ class Board extends Model
     {
         $lanes = [];
 
-        // Then add the remaining lanes with associated tasks
         foreach(Board::lanes() as $lane) {
-            $week = $this->week()->first();
-            $tasks = $week->tasks()
-                ->where('status', '=', $lane['id'])
+            $tasks = Task::where('status', '=', TaskStatus::tryFrom($lane['id']))
                 ->get();
 
-            if ($lane['id'] === 'backlog') {
-                $tasks = Task::where('status', '=', TaskStatus::BACKLOG)
-                    ->get();
+            if ($lane['id'] === 'completed') {
+                $tasks = Task::where('status', '=', 'completed')
+                ->completedThisWeek()
+                ->get();
             }
 
             array_push($lanes, [
