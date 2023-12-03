@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Week;
 use App\Models\LifeEvent;
 use App\Modules\LifeStatistics;
+use App\Enums\LifeEventType;
 
 class LifeEventSeeder extends Seeder
 {
@@ -29,6 +30,7 @@ class LifeEventSeeder extends Seeder
                 'title' => 'Birth',
                 'date' => $birthday,
                 'description' => 'You were born!',
+                'type' => LifeEventType::INEVITABLE,
                 'properties' => [
                     'icon' => '👶🏼',
                 ]
@@ -38,6 +40,7 @@ class LifeEventSeeder extends Seeder
                 'title' => 'Quarter Life',
                 'date' => $quarterLife,
                 'description' => 'Quarter of the way there',
+                'type' => LifeEventType::INEVITABLE,
                 'properties' => [
                     'icon' => '¼',
                 ]
@@ -47,6 +50,7 @@ class LifeEventSeeder extends Seeder
                 'title' => 'Age 30',
                 'date' => $age30,
                 'description' => 'Ugh',
+                'type' => LifeEventType::INEVITABLE,
                 'properties' => [
                     'icon' => '😫',
                 ]
@@ -56,6 +60,7 @@ class LifeEventSeeder extends Seeder
                 'title' => 'Mid Life',
                 'date' => $midLife,
                 'description' => 'Halfway there',
+                'type' => LifeEventType::INEVITABLE,
                 'properties' => [
                     'icon' => '🌗',
                 ]
@@ -65,6 +70,7 @@ class LifeEventSeeder extends Seeder
                 'title' => 'Death',
                 'date' => $deathDate,
                 'description' => 'It\'s time to go',
+                'type' => LifeEventType::INEVITABLE,
                 'properties' => [
                     'icon' => '💀',
                 ]
@@ -75,6 +81,5 @@ class LifeEventSeeder extends Seeder
         foreach($defaultLifeEvents as $lifeEvent) {
             LifeEvent::create($lifeEvent);
         }
-
     }
 }

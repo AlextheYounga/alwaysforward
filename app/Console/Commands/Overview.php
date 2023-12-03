@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Week;
 use Carbon\CarbonImmutable;
 use App\Models\Goal;
+use App\Models\LifeEvent;
 use App\Models\Task;
 use App\Modules\LifeStatistics;
 
@@ -25,11 +26,11 @@ class Overview extends Command
      */
     protected $description = 'Displays in terminal on each login if enabled in scripts/aliases';
 
-    private function buildTableRows($items)
+    private function buildTaskDataTable($items)
     {
 
         return $items->map(function ($item) {
-            $dueDate = $item->due_date? CarbonImmutable::parse($item->due_date, env('APP_TIMEZONE'))->toFormattedDayDateString() : '';
+            $dueDate = $item->due_date ? CarbonImmutable::parse($item->due_date, env('APP_TIMEZONE'))->toFormattedDayDateString() : '';
             $timeLeft = $item->time_left->forHumans(['parts' => 4]);
             $hoursLeft = $item->time_left->totalHours;
             $overdue = $hoursLeft < 0;
@@ -46,7 +47,22 @@ class Overview extends Command
             return [
                 "\t  " . $item->title,
                 "\t" . $dueDate,
-                "\t" . $color  . ($overdue ? '(Overdue) -' : '') .  $timeLeft . $colorBreak,
+                "\t" . $color . ($overdue ? '(Overdue) -' : '') . $timeLeft . $colorBreak,
+            ];
+        });
+    }
+
+    private function buildEventTable($events)
+    {
+
+        return $events->map(function ($event) {
+            $date = CarbonImmutable::parse($event->date, env('APP_TIMEZONE'))->toFormattedDayDateString();
+            $timeLeft = $event->time_left->forHumans(['parts' => 4]);
+
+            return [
+                "\t" . $event->title,
+                "\t" . $date,
+                "\t" . $timeLeft,
             ];
         });
     }
@@ -71,10 +87,10 @@ class Overview extends Command
         // Lifetime
         $this->comment('Life');
         $life = [
-                "Age" => $age->forHumans(['parts' => 3]) . ' ' . "($percentComplete%)",
+                "Age" => $age->forHumans(['parts' => 4]) . ' ' . "($percentComplete%)",
                 "Life Left" => $timeLeft->forHumans(['parts' => 4]),
-                'Time Left Today' => $thisDayTimeLeft->forHumans(['parts' => 3]),
-                "Time Left This Week" => $thisWeekTimeLeft->forHumans(['parts' => 3]),
+                'Time Left Today' => $thisDayTimeLeft->forHumans(['parts' => 4]),
+                "Time Left This Week" => $thisWeekTimeLeft->forHumans(['parts' => 4]),
             ];
 
         $tabs = 3;
@@ -102,7 +118,7 @@ class Overview extends Command
                 $this->line("\t<fg=green> Personal </>");
             }
 
-            $goalDetails = $this->buildTableRows($personal);
+            $goalDetails = $this->buildTaskDataTable($personal);
             $this->table(null, $goalDetails, 'compact');
 
             // Work
@@ -110,7 +126,7 @@ class Overview extends Command
                 $this->line("\t<fg=green> Work </>");
             }
 
-            $goalDetails = $this->buildTableRows($work);
+            $goalDetails = $this->buildTaskDataTable($work);
             $this->table(null, $goalDetails, 'compact');
         }
 
@@ -132,7 +148,7 @@ class Overview extends Command
                 $this->line("\t<fg=green> Personal </>");
             }
 
-            $taskDetails = $this->buildTableRows($personal);
+            $taskDetails = $this->buildTaskDataTable($personal);
             $this->table(null, $taskDetails, 'compact');
 
             // Work
@@ -140,12 +156,30 @@ class Overview extends Command
                 $this->line("\t<fg=green> Work </>");
             }
 
-            $taskDetails = $this->buildTableRows($work);
+            $taskDetails = $this->buildTaskDataTable($work);
             $this->table(null, $taskDetails, 'compact');
         }
 
         $this->newLine();
     }
+
+    private function listLifeEvents()
+    {
+        $events = LifeEvent::upcoming()->get();
+
+        if ($events->count() === 0) {
+            $this->line("No events yet");
+        } else {
+            $this->comment('Events');
+
+            $taskDetails = $this->buildEventTable($events);
+            $this->table(null, $taskDetails, 'compact');
+        }
+
+
+        $this->newLine();
+    }
+
 
     /**
      * Execute the console command.
@@ -163,6 +197,8 @@ class Overview extends Command
         $this->listGoals();
 
         $this->listTasks();
+
+        $this->listLifeEvents();
 
         $this->newLine();
     }

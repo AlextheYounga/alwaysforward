@@ -61,8 +61,9 @@ class NewGoal extends Command
                 $userInput[$column] = $this->choice("What is the $column?", Priority::values(), 0);
                 continue;
             }
-
-            $value = $this->ask("What is the $column?");
+            
+            $verb = $column === 'notes' ? 'are' : 'is';
+            $value = $this->ask("What $verb the $column?");
             \settype($value, $type);
 
             $userInput[$column] = $value;

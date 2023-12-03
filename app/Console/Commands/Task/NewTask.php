@@ -9,7 +9,6 @@ use App\Enums\Priority;
 use App\Enums\TaskStatus;
 use App\Enums\Type;
 use App\Models\Week;
-use Illuminate\Support\Carbon;
 
 class NewTask extends Command
 {
@@ -33,10 +32,8 @@ class NewTask extends Command
     public function handle()
     {
         $userInput = [];
-        $skipColumns = ['id', 'status', 'created_at', 'updated_at'];
+        $skipColumns = ['id', 'status', 'date_completed', 'created_at', 'updated_at'];
         $schema = getTableSchema('tasks');
-
-        
 
         foreach ($schema as $column => $type) {
             if (in_array($column, $skipColumns)) {
@@ -72,7 +69,8 @@ class NewTask extends Command
                 continue;
             }
 
-            $value = $this->ask("What is the $column?");
+            $verb = $column === 'notes' ? 'are' : 'is';
+            $value = $this->ask("What $verb the $column?");
             \settype($value, $type);
             $userInput[$column] = $value;
         }

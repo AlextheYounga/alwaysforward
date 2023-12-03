@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('week_id');
             $table->date('date');
             $table->string('title');
+            $table->string('type');
             $table->string('description')->nullable();
+            $table->longText('notes')->nullable();
             $table->json('properties')->nullable();
             $table->timestamps();
         });
