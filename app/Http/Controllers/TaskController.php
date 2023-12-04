@@ -28,11 +28,7 @@ class TaskController extends Controller
             'description',
             'type',
             'priority',
-            'duration',
-            'time_spent',
-            'start_date',
             'due_date',
-            'subtasks',
             'notes',
             'status',
         ]);
@@ -47,16 +43,13 @@ class TaskController extends Controller
     public function update(Request $request)
     {
         $task = $request->only([
+            'id',
             'goal_id',
             'title',
             'description',
             'type',
             'priority',
-            'duration',
-            'time_spent',
-            'start_date',
             'due_date',
-            'subtasks',
             'notes',
             'status',
         ]);
