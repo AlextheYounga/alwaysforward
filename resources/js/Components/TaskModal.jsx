@@ -10,6 +10,7 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
     goal_id: editMode ? task.goal_id : "",
     title: editMode ? task.title : "",
     description: editMode ? task.description : "",
+    type: editMode ? task.type : "personal",
     priority: editMode ? task.priority : "0",
     due_date: editMode ? task.due_date : "",
     notes: editMode ? task.notes : "",
@@ -27,8 +28,6 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
       ...values,
       [key]: value,
     }))
-
-    console.log(values)
   }
 
   function handleSubmit(e) {
@@ -48,7 +47,6 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
     axios.get(url)
       .then(response => {
         const goalsData = response.data ?? [];
-        console.log(goalsData)
         setGoals(goalsData);
       })
       .catch(error => {
@@ -136,25 +134,41 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
                           </div>
                           <p className="mt-3 text-sm leading-6 text-gray-400">What's this task about?</p>
                         </div>
-
-                        <div className="py-4">
-                          <label htmlFor="goal_id" className="block text-sm font-medium leading-6 text-gray-900">
-                            Goal (Optional)
-                          </label>
-                          <select
-                            id="goal_id"
-                            name="goal_id"
-                            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            onChange={handleChange}
-                            value={values.goal_id ?? ""}
-                          >
-                          <option value={null}>No Goal</option>
-                            {
-                              goals.map((goal) => (
-                                <option key={goal.id} value={`${goal.id}`}>{goal.title}</option>
-                              ))
-                            }
-                          </select>
+                        <div className="flex flex-wrap w-full py-4">
+                          <div className="w-1/2 pr-1">
+                            <label htmlFor="goal_id" className="block text-sm font-medium leading-6 text-gray-900">
+                              Goal (Optional)
+                            </label>
+                            <select
+                              id="goal_id"
+                              name="goal_id"
+                              className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              onChange={handleChange}
+                              value={values.goal_id ?? ""}
+                            >
+                              <option value={null}>No Goal</option>
+                              {
+                                goals.map((goal) => (
+                                  <option key={goal.id} value={`${goal.id}`}>{goal.title}</option>
+                                ))
+                              }
+                            </select>
+                          </div>
+                          <div className="w-1/2 pl-1">
+                            <label htmlFor="type" className="block text-sm font-medium leading-6 text-gray-900">
+                              Type
+                            </label>
+                            <select
+                              id="type"
+                              name="type"
+                              className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              onChange={handleChange}
+                              value={values.type ?? "personal"}
+                            >
+                              <option value="personal">Personal</option>
+                              <option value="work">Work</option>
+                            </select>
+                          </div>
                         </div>
 
                         <div className="flex flex-wrap w-full py-4">
@@ -176,7 +190,7 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
                             </select>
                           </div>
 
-                          <div className="w-1/2 px=l-1">
+                          <div className="w-1/2 pl-1">
                             <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
                               Status
                             </label>
@@ -195,6 +209,7 @@ export default function TaskModal({ open, setOpen, task, editMode }) {
                           </div>
                         </div>
                         <div className="py-4">
+
                           <label htmlFor="due_date" className="block text-sm font-medium leading-6 text-gray-700">
                             Due Date
                           </label>

@@ -14,6 +14,7 @@ export default function Task({ tasks }) {
     const [editMode, setEditMode] = useState(false)
 
     const statusBubbles = {
+        'backlog': ['bg-gray-400/20', 'bg-gray-400'],
         'todo': ['bg-gray-500/20', 'bg-gray-500'],
         'in-progress': ['bg-rose-500/20', 'bg-rose-500'],
         'on-hold': ['bg-violet-500/20', 'bg-violet-500'],

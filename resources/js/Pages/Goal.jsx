@@ -4,10 +4,6 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import GoalModal from "@/Components/GoalModal";
 
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
-
 export default function Goal({ goals }) {
     const [open, setOpen] = useState(false)
     const [selectedGoal, setSelectedGoal] = useState(null)
@@ -17,6 +13,11 @@ export default function Goal({ goals }) {
         'active': ['bg-amber-500/20', 'bg-amber-500'],
         'completed': ['bg-emerald-500/20', 'bg-emerald-500'],
         'aborted': ['bg-rose-500/20', 'bg-rose-500'],
+        'failed': ['bg-red-500/20', 'bg-red-500'],
+    }
+
+    function classNames(...classes) {
+        return classes.filter(Boolean).join(' ')
     }
 
     function handleCreate() {

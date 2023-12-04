@@ -12,6 +12,7 @@ export default function GoalModal({ open, setOpen, goal, editMode }) {
     has_target: editMode ? goal.has_target : false,
     target_value: editMode ? goal.target_value : '',
     target_units: editMode ? goal.target_units : '',
+    type: editMode ? goal.type : 'personal',
     priority: editMode ? goal.priority : "0",
     due_date: editMode ? goal.due_date : '',
     status: editMode ? goal.status : 'active',
@@ -20,6 +21,10 @@ export default function GoalModal({ open, setOpen, goal, editMode }) {
 
   const modalTitle = editMode ? 'Edit' : 'Create';
   const [values, setValues] = useState(form)
+
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
 
   function handleChange(e) {
     const key = e.target.id;
@@ -125,23 +130,47 @@ export default function GoalModal({ open, setOpen, goal, editMode }) {
                           <p className="mt-3 text-sm leading-6 text-gray-400">What's this goal about?</p>
                         </div>
 
-                        <Switch
-                          checked={values.has_target}
-                          onChange={handleChange}
-                          className={classNames(
-                            values.has_target ? 'bg-indigo-600' : 'bg-gray-200',
-                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2'
-                          )}
-                        >
-                          <span className="sr-only">Has Target</span>
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              enabled ? 'translate-x-5' : 'translate-x-0',
-                              'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-                            )}
-                          />
-                        </Switch>
+                        <div className="flex flex-wrap w-full">
+                          <div className="w-1/2">
+                            <label htmlFor="has_target" className="mb-3 block text-sm font-medium leading-6 text-gray-700">
+                              Has Target?
+                            </label>
+                            <Switch
+                              id="has_target"
+                              name="has_target"
+                              checked={values.has_target}
+                              onChange={(e) => setValues(values => ({ ...values, has_target: e }))}
+                              className={classNames(
+                                values.has_target ? 'bg-indigo-600' : 'bg-gray-200',
+                                'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2'
+                              )}
+                            >
+                              <span className="sr-only">Has Target</span>
+                              <span
+                                aria-hidden="true"
+                                className={classNames(
+                                  values.has_target ? 'translate-x-5' : 'translate-x-0',
+                                  'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
+                                )}
+                              />
+                            </Switch>
+                          </div>
+                          <div className="w-1/2">
+                            <label htmlFor="type" className="block text-sm font-medium leading-6 text-gray-900">
+                              Type
+                            </label>
+                            <select
+                              id="type"
+                              name="type"
+                              className="mt-2 block w-full rounded-md border-0 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                              onChange={handleChange}
+                              value={values.type ?? "personal"}
+                            >
+                              <option value="personal">Personal</option>
+                              <option value="work">Work</option>
+                            </select>
+                          </div>
+                        </div>
 
                         {
                           values.has_target && (
