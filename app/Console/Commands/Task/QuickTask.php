@@ -46,7 +46,7 @@ class QuickTask extends Command
                     if ($goals) {
                         $goalSelect = $this->choice("Attach to goal?", $goalChoices, null);
                         $goalSelect = $goalSelect === 'None' ? null : $goalSelect;
-                        
+
                         if ($goalSelect) {
                             $goal = $goals->firstWhere('title', $goalSelect);
                             $userInput['goal_id'] = $goal->id;
@@ -74,11 +74,7 @@ class QuickTask extends Command
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
             'type' => !empty($userInput['type']) ? $userInput['type'] : Type::PERSONAL,
             'priority' => Priority::NORMAL,
-            'duration' => null,
-            'time_spent' => null,
-            'start_date' => null,
-            'due_date' => !empty($userInput['due_date']) ? $userInput['due_date'] : null,
-            'subtasks' => null,
+            'due_date' => $this->parseDueDate($userInput['due_date']),
             'notes' => null,
             'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::TODO,
         ];
@@ -88,5 +84,14 @@ class QuickTask extends Command
         $week->tasks()->attach($taskRecord->id);
 
         $this->info('Task created!');
+    }
+
+    private function parseDueDate($input)
+    {
+        if ($input === 'eow') {
+            return Carbon::now(env('APP_TIMEZONE', 'UTC'))->endOfWeek();
+        }
+
+        return !empty($input['due_date']) ? Carbon::parse($input['due_date'])->endOfDay() : null;
     }
 }

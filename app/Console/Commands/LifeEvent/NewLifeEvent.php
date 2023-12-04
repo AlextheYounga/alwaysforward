@@ -14,7 +14,7 @@ class NewLifeEvent extends Command
      *
      * @var string
      */
-    protected $signature = 'events:new';
+    protected $signature = 'life-event:new';
 
     /**
      * The console command description.

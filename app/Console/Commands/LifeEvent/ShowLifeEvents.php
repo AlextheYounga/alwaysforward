@@ -12,7 +12,7 @@ class ShowLifeEvents extends Command
      *
      * @var string
      */
-    protected $signature = 'events:show';
+    protected $signature = 'life-events:new';
 
     /**
      * The console command description.

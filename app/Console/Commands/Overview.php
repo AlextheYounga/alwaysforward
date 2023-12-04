@@ -190,6 +190,8 @@ class Overview extends Command
         $this->newLine();
 
         $this->line('Run `forward` to start app.');
+        $this->line('Link to Board: <fg=cyan>http://localhost:8000/board </>');
+        $this->line('Try to track your time: <fg=cyan>https://track.toggl.com/timer </>');
         $this->newLine();
 
         $this->listTimeStats();

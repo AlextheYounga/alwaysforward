@@ -9,6 +9,7 @@ use App\Enums\Priority;
 use App\Enums\TaskStatus;
 use App\Enums\Type;
 use App\Models\Week;
+use Illuminate\Support\Carbon;
 
 class NewTask extends Command
 {
@@ -48,7 +49,7 @@ class NewTask extends Command
                 if ($goals) {
                     $goalSelect = $this->choice("Attach to goal?", $goalChoices, null);
                     $goalSelect = $goalSelect === 'None' ? null : $goalSelect;
-                    
+
                     if ($goalSelect) {
                         $goal = $goals->firstWhere('title', $goalSelect);
                         $userInput['goal_id'] = $goal->id;
@@ -81,7 +82,7 @@ class NewTask extends Command
             'description' => !empty($userInput['description']) ? $userInput['description'] : null,
             'type' => !empty($userInput['type']) ? Type::tryFrom($userInput['type']) : Type::PERSONAL,
             'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
-            'due_date' => !empty($userInput['due_date']) ? $userInput['due_date'] : null,
+            'due_date' => $this->parseDueDate($userInput['due_date']),
             'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,
             'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::BACKLOG,
         ];
@@ -91,5 +92,14 @@ class NewTask extends Command
         $week->tasks()->attach($taskRecord->id);
 
         $this->info('Task created!');
+    }
+
+    private function parseDueDate($input)
+    {
+        if ($input === 'eow') {
+            return Carbon::now()->endOfWeek();
+        }
+
+        return !empty($input['due_date']) ? Carbon::parse($input['due_date'])->endOfDay() : null;
     }
 }

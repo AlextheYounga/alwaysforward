@@ -45,8 +45,8 @@ class NewGoal extends Command
                 $userInput['has_target'] = $hasTarget;
 
                 if ($hasTarget) {
-                    $userInput['target_units'] = $this->choice("What are the $column?", Priority::values(), null);
-                    $userInput['target_value'] = $this->choice("What is the $column?", Priority::values(), 0);
+                    $userInput['target_units'] = $this->ask("What are the target units?");
+                    $userInput['target_value'] = $this->ask("What is the target value?");
                 }
 
                 continue;
@@ -61,7 +61,7 @@ class NewGoal extends Command
                 $userInput[$column] = $this->choice("What is the $column?", Priority::values(), 0);
                 continue;
             }
-            
+
             $verb = $column === 'notes' ? 'are' : 'is';
             $value = $this->ask("What $verb the $column?");
             \settype($value, $type);
