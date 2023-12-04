@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\CarbonImmutable;
 use App\Models\LifeEvent;
 use App\Models\Board;
 use App\Models\Task;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use DateTimeInterface;
 
 class Week extends Model
 {
@@ -22,27 +22,38 @@ class Week extends Model
     ];
 
     protected $casts = [
-        'start' => 'date',
-        'end' => 'date',
+        'start' => 'datetime',
+        'end' => 'datetime',
         'properties' => 'json'
     ];
 
-    public function events() {
+    public function events()
+    {
         return $this->hasMany(LifeEvent::class);
     }
 
-    public function board() {
+    public function board()
+    {
         return $this->hasOne(Board::class);
     }
 
-    public function tasks() {
+    public function tasks()
+    {
         return $this->belongsToMany(Task::class);
     }
 
-    public static function getWeekByDate($date) {
-        $timezone = env('APP_TIMEZONE');
-        $date = Carbon::parse($date, $timezone);
-        
+    /**
+     * Prepare a date for array / JSON serialization.
+     */
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d');
+    }
+
+    public static function getWeekByDate($date)
+    {
+        $date = CarbonImmutable::parse($date, env('APP_TIMEZONE', 'UTC'));
+
         $week = Week::where('start', '<=', $date)
             ->where('end', '>=', $date)
             ->first();
@@ -50,9 +61,9 @@ class Week extends Model
         return $week;
     }
 
-    public static function current() {
-        $timezone = env('APP_TIMEZONE');
-        $today = Carbon::now($timezone);
+    public static function current()
+    {
+        $today = CarbonImmutable::now(env('APP_TIMEZONE', 'UTC'));
         $week = Week::where('start', '<=', $today)
             ->where('end', '>=', $today)
             ->first();
@@ -62,8 +73,7 @@ class Week extends Model
 
     public static function generateWeeksTimeline($birthday, $deathAge)
     {
-        $timezone = env('APP_TIMEZONE');
-        $birthday = CarbonImmutable::create($birthday)->timezone($timezone);
+        $birthday = CarbonImmutable::create($birthday, env('APP_TIMEZONE', 'UTC'));
         $death = $birthday->addYears($deathAge);
 
         $weeks = [

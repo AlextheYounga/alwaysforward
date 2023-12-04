@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,11 +24,10 @@ class PlatformConfig extends Model
     ];
 
     public function getValue() {
-        $timezone = env('APP_TIMEZONE');
         $type = $this->type;
 
         if ($type == 'date') {
-            return Carbon::parse($this->value)->timezone($timezone);
+            return CarbonImmutable::parse($this->value, env('APP_TIMEZONE', 'UTC'));
         }
 
         $value = $this->value;

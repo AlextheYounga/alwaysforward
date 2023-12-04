@@ -30,7 +30,7 @@ class Overview extends Command
     {
 
         return $items->map(function ($item) {
-            $dueDate = $item->due_date ? CarbonImmutable::parse($item->due_date, env('APP_TIMEZONE'))->toFormattedDayDateString() : '';
+            $dueDate = $item->due_date ? CarbonImmutable::parse($item->due_date)->toFormattedDayDateString() : '';
             $timeLeft = $item->time_left->forHumans(['parts' => 4]);
             $hoursLeft = $item->time_left->totalHours;
             $overdue = $hoursLeft < 0;
@@ -56,7 +56,7 @@ class Overview extends Command
     {
 
         return $events->map(function ($event) {
-            $date = CarbonImmutable::parse($event->date, env('APP_TIMEZONE'))->toFormattedDayDateString();
+            $date = CarbonImmutable::parse($event->date)->toFormattedDayDateString();
             $timeLeft = $event->time_left->forHumans(['parts' => 4]);
 
             return [

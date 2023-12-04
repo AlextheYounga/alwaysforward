@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('life_events', function (Blueprint $table) {
             $table->id();
             $table->foreignId('week_id');
-            $table->date('date');
+            $table->datetime('date');
             $table->string('title');
             $table->string('type');
             $table->string('description')->nullable();

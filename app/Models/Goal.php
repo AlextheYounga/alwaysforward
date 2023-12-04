@@ -8,6 +8,7 @@ use App\Enums\GoalStatus;
 use App\Enums\Priority;
 use App\Enums\Type;
 use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -29,20 +30,11 @@ class Goal extends Model
     ];
 
     protected $casts = [
+        'due_date' => 'datetime',
         'type' => Type::class,
         'priority' => Priority::class,
         'status' => GoalStatus::class,
     ];
-
-    protected function serializeDate($date): string
-    {
-        return CarbonImmutable::parse($date, env('APP_TIMEZONE', 'UTC'));
-    }
-
-    public function setDueDateAttribute($value)
-    {
-        $this->attributes['due_date'] = CarbonImmutable::parse($value, env('APP_TIMEZONE', 'UTC'))->utc();
-    }
 
     protected function timeLeft(): Attribute
     {
@@ -54,12 +46,20 @@ class Goal extends Model
     public function getTimeLeft()
     {
         if ($this->due_date) {
-            $now = CarbonImmutable::now(env('APP_TIMEZONE'));
-            $dueDate = CarbonImmutable::parse($this->due_date, env('APP_TIMEZONE'));
+            $now = CarbonImmutable::now(env('APP_TIMEZONE', 'UTC'));
+            $dueDate = CarbonImmutable::parse($this->due_date);
             return $now->diffAsCarbonInterval($dueDate);
         } else {
             return null;
         }
+    }
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     */
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d');
     }
 
     public function scopeActive(Builder $query): void

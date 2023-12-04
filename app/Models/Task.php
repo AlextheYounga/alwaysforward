@@ -9,6 +9,7 @@ use App\Enums\Priority;
 use App\Enums\Type;
 use App\Models\Week;
 use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -25,7 +26,7 @@ class Task extends Model
             $markedAsCompleted = $model->status === TaskStatus::COMPLETED && $originalStatus !== TaskStatus::COMPLETED;
 
             if ($markedAsCompleted) {
-                $model->date_completed = CarbonImmutable::now(env('APP_TIMEZONE'));
+                $model->date_completed = CarbonImmutable::now(env('APP_TIMEZONE', 'UTC'));
             }
         });
     }
@@ -42,24 +43,23 @@ class Task extends Model
     ];
 
     protected $casts = [
+        'due_date' => 'datetime',
         'type' => Type::class,
         'priority' => Priority::class,
         'status' => TaskStatus::class,
     ];
 
-    protected function serializeDate($date): string
-    {
-        return CarbonImmutable::parse($date, env('APP_TIMEZONE', 'UTC'));
-    }
-
-    public function setDueDateAttribute($value)
-    {
-        $this->attributes['due_date'] = CarbonImmutable::parse($value, env('APP_TIMEZONE', 'UTC'))->utc();
-    }
-
     public function weeks()
     {
         return $this->belongsToMany(Week::class);
+    }
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     */
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d');
     }
 
     protected function timeLeft(): Attribute
@@ -72,8 +72,8 @@ class Task extends Model
     public function getTimeLeft()
     {
         if ($this->due_date) {
-            $now = CarbonImmutable::now(env('APP_TIMEZONE'));
-            $dueDate = CarbonImmutable::parse($this->due_date, env('APP_TIMEZONE'));
+            $now = CarbonImmutable::now(env('APP_TIMEZONE', 'UTC'));
+            $dueDate = CarbonImmutable::parse($this->due_date, env('APP_TIMEZONE', 'UTC'));
             return $now->diffAsCarbonInterval($dueDate, false);
         } else {
             return null;

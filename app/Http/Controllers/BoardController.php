@@ -16,8 +16,7 @@ class BoardController extends Controller
 
     public function index()
     {
-        $timezone = env('APP_TIMEZONE');
-        $today = Carbon::today()->timezone($timezone);
+        $today = Carbon::now(env('APP_TIMEZONE', 'UTC'));
         $week = Week::getWeekByDate($today);
         
         $board = Board::firstOrCreate([

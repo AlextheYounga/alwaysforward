@@ -23,7 +23,7 @@ class LifeEvent extends Model
     ];
 
     protected $casts = [
-        'date' => 'date',
+        'date' => 'datetime',
         'properties' => 'json'
     ];
 
@@ -34,7 +34,8 @@ class LifeEvent extends Model
 
     public function scopeUpcoming() {
         return $this->where('type', '!=', 'inevitable')
-            ->where('date', '>=', CarbonImmutable::now()->toDateString());
+            ->where('date', '>=', CarbonImmutable::now(env('APP_TIMEZONE', 'UTC'))
+            ->toDateString());
     }
 
     public function isUpcoming()
@@ -52,8 +53,8 @@ class LifeEvent extends Model
     public function getTimeLeft()
     {
         if ($this->isUpcoming()) {
-            $now = CarbonImmutable::now(env('APP_TIMEZONE'));
-            $date = CarbonImmutable::parse($this->date, env('APP_TIMEZONE'));
+            $now = CarbonImmutable::now(env('APP_TIMEZONE', 'UTC'));
+            $date = CarbonImmutable::parse($this->date);
             return $now->diffAsCarbonInterval($date, false);
         } else {
             return null;

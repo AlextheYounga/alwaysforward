@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('type');
             $table->string('priority')->default(0);
-            $table->date('due_date')->nullable();
+            $table->datetime('due_date')->nullable();
             $table->boolean('has_target')->default(false);
             $table->integer('target_value')->nullable();
             $table->string('target_units')->nullable();

@@ -26,7 +26,7 @@ class LifeEventSeeder extends Seeder
 
         $defaultLifeEvents = [
             [
-                'week_id' => Week::getWeekByDate($birthday)->id, 
+                'week_id' => Week::first()->id, 
                 'title' => 'Birth',
                 'date' => $birthday,
                 'description' => 'You were born!',
@@ -66,7 +66,7 @@ class LifeEventSeeder extends Seeder
                 ]
             ],
             [
-                'week_id' => Week::getWeekByDate($deathDate)->id, 
+                'week_id' => Week::all()->last()->id, 
                 'title' => 'Death',
                 'date' => $deathDate,
                 'description' => 'It\'s time to go',

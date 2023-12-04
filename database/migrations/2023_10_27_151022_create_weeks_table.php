@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('weeks', function (Blueprint $table) {
             $table->id();
-            $table->date('start');
-            $table->date('end');
+            $table->datetime('start');
+            $table->datetime('end');
             $table->integer('age');
             $table->json('properties')->nullable();
             $table->timestamps();
