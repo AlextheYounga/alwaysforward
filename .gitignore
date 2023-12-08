@@ -20,3 +20,5 @@ yarn-error.log
 __deprecated__
 .DS_Store
 *.DS_Store
+out
+www
