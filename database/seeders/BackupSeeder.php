@@ -40,6 +40,12 @@ class BackupSeeder extends Seeder
             } catch (\Exception $e) {
                 echo $e->getMessage();
             }
+
+            try {
+                DB::table('life_events')->insert($data['events']);
+            } catch (\Exception $e) {
+                echo $e->getMessage();
+            }
         }
 
     }
