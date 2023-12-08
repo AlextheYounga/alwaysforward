@@ -10,7 +10,7 @@ alias forward="( cd $ALWAYS_FORWARD_DIRECTORY ; ./scripts/start.sh)"
 alias taskcli="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:cli )"
 alias taskmanager="( open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )" # TablePlus command
 alias board="( cd $ALWAYS_FORWARD_DIRECTORY ; ./scripts/board.sh )"
-alias fwquit="kill $(lsof -t -i:8000)"
+alias fwquit="pkill -9 php"
 
 # Goals
 alias goal="( cd $ALWAYS_FORWARD_DIRECTORY ; cal; php artisan goals:new )"
