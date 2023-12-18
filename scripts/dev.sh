@@ -1,4 +1,4 @@
 #!/bin/bash
-
-open http://localhost:8000
-concurrently  "php artisan config:cache" "php artisan serve" "yarn dev"
+PORT=8123
+open http://localhost:$PORT
+concurrently  "php artisan config:cache" "php artisan serve --port=$PORT" "yarn dev"

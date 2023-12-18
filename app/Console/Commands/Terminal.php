@@ -17,7 +17,7 @@ class Terminal extends Command
      *
      * @var string
      */
-    protected $signature = 'app:overview';
+    protected $signature = 'app:terminal';
 
     /**
      * The console command description.
@@ -35,7 +35,7 @@ class Terminal extends Command
         $this->newLine();
 
         $this->line('Run `forward` to start app.');
-        $this->line('Link to Board: <fg=cyan>http://localhost:8000/board </>');
+        $this->line('Link to Board: <fg=cyan>http://localhost:8123/board </>');
         $this->line('Try to track your time: <fg=cyan>https://track.toggl.com/timer </>');
         $this->newLine();
 
@@ -54,7 +54,6 @@ class Terminal extends Command
     {
         $today = CarbonImmutable::now();
         $events = LifeStatistics::getLifeEventDateMapping();
-        $thisWeek = Week::current();
 
         // Calculate time left
         $timeLeft = $events['death']->diffAsCarbonInterval($today);
@@ -116,8 +115,8 @@ class Terminal extends Command
 
     private function listTasks()
     {
-        $work = Task::work()->active()->get();
-        $personal = Task::personal()->active()->get();
+        $work = Task::work()->ongoing()->get();
+        $personal = Task::personal()->ongoing()->get();
 
         if ($work->count() === 0 && $personal->count() === 0) {
             $this->line("No tasks yet");

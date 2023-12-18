@@ -1,1 +1,1 @@
-open http://localhost:8000/board
+open http://localhost:8123/board
