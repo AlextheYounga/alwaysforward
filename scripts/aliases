@@ -5,10 +5,7 @@
 
 # Always Forward App Aliases
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-cd $SCRIPT_DIR
-cd ..
-
-ALWAYS_FORWARD_DIRECTORY=$(pwd)
+ALWAYS_FORWARD_DIRECTORY="$(dirname "$SCRIPT_DIR")"
 
 # This command runs on every terminal load
 ( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:terminal)
@@ -17,7 +14,7 @@ ALWAYS_FORWARD_DIRECTORY=$(pwd)
 alias fw="cd $ALWAYS_FORWARD_DIRECTORY"
 alias forward="$ALWAYS_FORWARD_DIRECTORY/scripts/start.sh"
 alias taskcli="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:cli )"
-alias taskmanager="( open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )" # TablePlus command
+alias openfwdb="( open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )" # TablePlus command
 alias board="$ALWAYS_FORWARD_DIRECTORY/scripts/board.sh"
 
 # Goals

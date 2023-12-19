@@ -9,7 +9,7 @@ export default function Kanban({ week, board }) {
     const weekStart = dayjs(week.start).format('ddd MMM D, YYYY');
     const weekEnd = dayjs(week.end).format('ddd MMM D, YYYY');
 
-    function handleLaneChange(data) {
+    function handleBoardChange(data) {
         const url = '/board/update'
         const lanes = data.lanes;
 
@@ -21,8 +21,6 @@ export default function Kanban({ week, board }) {
           console.error('Error posting data:', error);
         });
     }
-
-    console.log(board.lanes)
 
     return (
         <>
@@ -38,7 +36,7 @@ export default function Kanban({ week, board }) {
                     <div className="flex justify-center">
                         <Board 
                         data={board.lanes} 
-                        onDataChange={handleLaneChange}
+                        onDataChange={handleBoardChange}
                         editable 
                         />
                     </div>
