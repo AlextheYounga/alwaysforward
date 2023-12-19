@@ -104,6 +104,11 @@ class Task extends Model
             ->where('status', '!=', TaskStatus::ON_HOLD);
     }
 
+    public function scopeTimed(Builder $query): void
+    {
+        $query->where('due_date', '!=', null);
+    }
+
     public function scopeWork(Builder $query): void
     {
         $query->where('type', '=', Type::WORK);

@@ -67,6 +67,11 @@ class Goal extends Model
         $query->where('status', '!=', GoalStatus::COMPLETED);
     }
 
+    public function scopeTimed(Builder $query): void
+    {
+        $query->where('due_date', '!=', null);
+    }
+
     public function scopeWork(Builder $query): void
     {
         $query->where('type', '=', Type::WORK);

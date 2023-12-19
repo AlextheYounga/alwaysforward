@@ -85,8 +85,15 @@ class Terminal extends Command
 
     private function listGoals()
     {
-        $work = Goal::work()->active()->get();
-        $personal = Goal::personal()->active()->get();
+        $work = Goal::work()
+            ->timed()
+            ->active()
+            ->get();
+            
+        $personal = Goal::personal()
+            ->timed()
+            ->active()
+            ->get();
 
         if ($work->count() === 0 && $personal->count() === 0) {
             $this->line("No goals yet");
@@ -115,8 +122,15 @@ class Terminal extends Command
 
     private function listTasks()
     {
-        $work = Task::work()->ongoing()->get();
-        $personal = Task::personal()->ongoing()->get();
+        $work = Task::work()
+            ->timed()
+            ->ongoing()
+            ->get();
+
+        $personal = Task::personal()
+            ->timed()
+            ->ongoing()
+            ->get();
 
         if ($work->count() === 0 && $personal->count() === 0) {
             $this->line("No tasks yet");
