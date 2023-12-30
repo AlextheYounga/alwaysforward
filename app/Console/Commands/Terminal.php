@@ -34,7 +34,6 @@ class Terminal extends Command
         $this->info('MEMENTO MORI');
         $this->newLine();
 
-        $this->line('Run `forward` to start app.');
         $this->line('Link to Board: <fg=cyan>http://localhost:8123/board </>');
         $this->line('Try to track your time: <fg=cyan>https://track.toggl.com/timer </>');
         $this->newLine();
