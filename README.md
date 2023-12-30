@@ -22,7 +22,8 @@ I am making this application for me first. All considerations around this applic
 
 If you encounter issues, I apologize, but it works on my machine. Feel free to add issues, and I will attempt to fix them. 
 
-![Your life in weeks](./resources/images/docs/cli.png)
+![CLI](./resources/images/docs/cli.png)
+![CLI Intro](./resources/images/docs/terminal.png)
 
 ## Your Life in Weeks
 I have one of these "Your Life in Weeks" posters hanging in my room, and I always liked the idea. 
@@ -48,3 +49,55 @@ On MacOS, you can package the application into a desktop app by simply running `
 I think it looks quite nice.
 
 ![Dock Icon](resources/images/docs/dock-icon.png)
+
+## Set up on your machine
+
+### Laravel configuration
+For more information on initial Laravel setup, see [Laravel Docs](https://laravel.com/docs/10.x/installation). They're probably the best docs on the internet.
+
+#### Necessary Laravel Commands
+Copy .env.example to .env
+```bash
+cp .env.example .env
+```
+
+Add personal env values to .env
+```bash
+APP_TIMEZONE="America/New_York"
+ALWAYS_FORWARD_DIRECTORY=path/to/alwaysforward
+BIRTHDAY="1995-11-13"
+DEATH_AGE=90
+```
+
+Install composer packages
+```bash
+composer install
+```
+
+Install Node Packages
+```bash
+yarn
+```
+
+DB Setup
+```bash
+# Run migrations
+php artisan migrate
+
+# Run seeds
+php artisan db:seed
+```
+
+### Keeping AlwaysForward on Always
+#### MacOS
+I have included a simple script which should install [supervisor](http://supervisord.org/) using Homebrew and configure it to run the AlwaysForward application on startup using a simple PHP server. It shouldn't take up much resources at all.
+
+This will keep AlwaysForward running in the background at all times.
+
+```bash
+sh scripts/supervisor.sh
+```
+
+You can always shut it down manually using `supervisorctl` commands.
+
+For more information, see `./scripts/README.md`

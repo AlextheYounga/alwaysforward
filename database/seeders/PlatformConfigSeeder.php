@@ -17,13 +17,13 @@ class PlatformConfigSeeder extends Seeder
 
         PlatformConfig::create([
             'key' => 'birthday',
-            'value' => '1995-11-13',
+            'value' => env('BIRTHDAY'),
             'type' => 'string',
         ]);
 
         PlatformConfig::create([
             'key' => 'death_age',
-            'value' => '90',
+            'value' => env('DEATH_AGE'),
             'type' => 'integer',
         ]);
 
