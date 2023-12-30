@@ -15,7 +15,7 @@ alias fw="cd $ALWAYS_FORWARD_DIRECTORY"
 alias forward="$ALWAYS_FORWARD_DIRECTORY/scripts/start.sh"
 alias taskcli="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:cli )"
 alias openfwdb="( open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )" # TablePlus command
-alias board="$ALWAYS_FORWARD_DIRECTORY/scripts/board.sh"
+alias board="open http://localhost:8123/board"
 
 # Supervisor
 alias fw-server="supervisorctl start fw-server:fw-server_00"
