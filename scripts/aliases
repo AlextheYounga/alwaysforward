@@ -17,6 +17,10 @@ alias taskcli="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:cli )"
 alias openfwdb="( open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )" # TablePlus command
 alias board="$ALWAYS_FORWARD_DIRECTORY/scripts/board.sh"
 
+# Supervisor
+alias fw-server="supervisorctl start fw-server:fw-server_00"
+alias fw-stop="supervisorctl stop fw-server:fw-server_00"
+
 # Goals
 alias goal="( cd $ALWAYS_FORWARD_DIRECTORY ; cal; php artisan goals:new )"
 alias goals="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:show )"
