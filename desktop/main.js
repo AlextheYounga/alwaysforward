@@ -1,7 +1,8 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const path = require('path')
+const { app, BrowserWindow, nativeImage } = require('electron')
 
 const port = 8123, host = '127.0.0.1';
 const serverUrl = `http://${host}:${port}`;
@@ -26,13 +27,22 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
     createWindow()
-    
+
     app.on('activate', () => {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
 })
+
+const image = nativeImage.createFromPath(
+    path.join(__dirname, "icons/icon.png")
+);
+
+// set dock icon for macos
+if (process.platform === 'darwin') {
+    app.dock.setIcon(image);
+}
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
