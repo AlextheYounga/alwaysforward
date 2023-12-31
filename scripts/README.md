@@ -5,7 +5,7 @@ The following scripts contain various helpers, install scripts, and cli commands
 ## Supervisor
 The least dumb way to keep the app running on my computer is by using [supervisor](http://supervisord.org/). This is a fairly common approach to running tasks in the background, and is even recommended by Laravel for running background jobs. 
 
-I have created an install script that can install supervisor on your Mac using Homebrew under `./supervisor.sh`. If you don't have a Mac or would like to install another way, that's fine too. Simply install supervisor however you would like, and then paste the following into your supervisord config file, replacing the `$ALWAYS_FORWARD_DIRECTORY` with the actual path to your directory:
+I have created an install script that can install supervisor on your Mac using Homebrew under `./setup/supervisor.sh`. If you don't have a Mac or would like to install another way, that's fine too. Simply install supervisor however you would like, and then paste the following into your supervisord config file, replacing the `$ALWAYS_FORWARD_DIRECTORY` with the actual path to your directory:
 
 ```bash
 [program:fw-server]
@@ -24,7 +24,7 @@ Setting this up to run in the background has the added benefit of allowing us to
 ## Aliases
 The `./aliases` file can be appended to your shell profile with:
 ```bash
-source path/to/alwaysforward/scripts/.aliases
+source path/to/alwaysforward/scripts/aliases
 ```
 
 This will add a heap of app helpers and CLI tools. Feel free to add whatever you want.
@@ -33,6 +33,6 @@ This will add a heap of app helpers and CLI tools. Feel free to add whatever you
 The `./dev.sh` file is a simple developer script that will concurrently run `php artisan serve` and `yarn dev`
 
 ## Start
-The `./start.sh` file is a simple script that will build the app, start a php server, and then open a browser to http://localhost:8123. 
+The `./setup/start.sh` file is a simple script that will build the app, start a php server, and then open a browser to http://localhost:8123. 
 
 You can pass a --quit flag to this script to kill the php server. 
