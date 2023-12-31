@@ -3,21 +3,19 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Week;
 use Carbon\CarbonImmutable;
-use App\Models\Goal;
 use App\Models\LifeEvent;
 use App\Models\Task;
 use App\Modules\LifeStatistics;
 
-class Terminal extends Command
+class Memento extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:terminal';
+    protected $signature = 'app:memento';
 
     /**
      * The console command description.

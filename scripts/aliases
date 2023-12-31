@@ -8,13 +8,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ALWAYS_FORWARD_DIRECTORY="$(dirname "$SCRIPT_DIR")"
 
 # This command runs on every terminal load
-( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:terminal)
+php $ALWAYS_FORWARD_DIRECTORY/artisan app:memento
 
 # App Commands
 alias fw="cd $ALWAYS_FORWARD_DIRECTORY"
 alias forward="$ALWAYS_FORWARD_DIRECTORY/scripts/start.sh"
-alias taskcli="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan app:cli )"
-alias openfwdb="( open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite )" # TablePlus command
+alias taskcli="php $ALWAYS_FORWARD_DIRECTORY/artisan app:cli"
+alias openfwdb="open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite" # TablePlus command
 alias board="open http://localhost:8123/board"
 
 # Supervisor
@@ -22,17 +22,17 @@ alias fw-server="supervisorctl start fw-server:fw-server_00"
 alias fw-stop="supervisorctl stop fw-server:fw-server_00"
 
 # Goals
-alias goal="( cd $ALWAYS_FORWARD_DIRECTORY ; cal; php artisan goals:new )"
-alias goals="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan goals:show )"
+alias goal="( cal ; php $ALWAYS_FORWARD_DIRECTORY/artisan goals:new )"
+alias goals="php $ALWAYS_FORWARD_DIRECTORY/artisan goals:show"
 
 # Tasks
-alias task="( cd $ALWAYS_FORWARD_DIRECTORY ; cal; php artisan tasks:new )"
-alias tasks="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan tasks:show )"
-alias qt="( cd $ALWAYS_FORWARD_DIRECTORY ; cal; php artisan tasks:quick )" 
+alias task="( cal ; php $ALWAYS_FORWARD_DIRECTORY/artisan tasks:new )"
+alias tasks="php $ALWAYS_FORWARD_DIRECTORY/artisan tasks:show"
+alias qt="( cal ; php $ALWAYS_FORWARD_DIRECTORY/artisan tasks:quick )" 
 
 # Events
-alias event="( cd $ALWAYS_FORWARD_DIRECTORY ; cal; php artisan life-event:new )"
-alias events="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan life-events:show )"
+alias event="( cal ; php $ALWAYS_FORWARD_DIRECTORY/artisan life-event:new )"
+alias events="php $ALWAYS_FORWARD_DIRECTORY/artisan life-events:show"
 
 # Life
-alias t-="( cd $ALWAYS_FORWARD_DIRECTORY ; php artisan life:time )"
+alias t-="php $ALWAYS_FORWARD_DIRECTORY/artisan life:time"
