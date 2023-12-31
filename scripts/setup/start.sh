@@ -1,4 +1,7 @@
 #!/bin/bash
+# Simple script to start the app in the background and open the app in the browser.
+# This is useful if you simply want to start up the application in the background without setting up supervisor.
+# Run with flag --quit to kill the background process.
 
 CURRENT_DIR=$(pwd)
 PORT=8123

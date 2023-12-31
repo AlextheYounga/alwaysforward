@@ -22,7 +22,7 @@ class Memento extends Command
      *
      * @var string
      */
-    protected $description = 'Displays in terminal on each login if enabled in scripts/aliases';
+    protected $description = 'Displays in terminal on each login if enabled in ./aliases';
 
     /**
      * Execute the console command.

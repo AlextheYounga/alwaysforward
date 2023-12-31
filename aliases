@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # Add this code to the bottom of your .bash_profile file in your home directory.
-# source path/to/alwaysforward/scripts/.aliases
+# source path/to/alwaysforward/aliases
 
 # Always Forward App Aliases
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ALWAYS_FORWARD_DIRECTORY="$(dirname "$SCRIPT_DIR")"
+ALWAYS_FORWARD_DIRECTORY=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # This command runs on every terminal load
 php $ALWAYS_FORWARD_DIRECTORY/artisan app:memento

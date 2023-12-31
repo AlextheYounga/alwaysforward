@@ -2,8 +2,7 @@
 # This will allow alwaysforward to start and run in the background on machine startup using the 
 # builtin php server, which is fairly resource efficient and should be fine for most use cases.
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ALWAYS_FORWARD_DIRECTORY="$(dirname "$SCRIPT_DIR")"
+ALWAYS_FORWARD_DIRECTORY=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && cd .. && pwd )
 
 # Create server log
 touch $ALWAYS_FORWARD_DIRECTORY/storage/logs/serve.log

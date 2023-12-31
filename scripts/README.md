@@ -24,7 +24,7 @@ Setting this up to run in the background has the added benefit of allowing us to
 ## Aliases
 The `./aliases` file can be appended to your shell profile with:
 ```bash
-source path/to/alwaysforward/scripts/aliases
+source path/to/alwaysforward/aliases
 ```
 
 This will add a heap of app helpers and CLI tools. Feel free to add whatever you want.
