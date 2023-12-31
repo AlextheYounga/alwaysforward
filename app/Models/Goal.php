@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Task;
 use App\Enums\GoalStatus;
 use App\Enums\Priority;
 use App\Enums\Type;
@@ -35,6 +36,11 @@ class Goal extends Model
         'priority' => Priority::class,
         'status' => GoalStatus::class,
     ];
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 
     protected function timeLeft(): Attribute
     {

@@ -8,6 +8,7 @@ use App\Enums\TaskStatus;
 use App\Enums\Priority;
 use App\Enums\Type;
 use App\Models\Week;
+use App\Models\Goal;
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -52,6 +53,11 @@ class Task extends Model
     public function weeks()
     {
         return $this->belongsToMany(Week::class);
+    }
+
+    public function goal()
+    {
+        return $this->belongsTo(Goal::class);
     }
 
     /**

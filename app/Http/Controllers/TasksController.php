@@ -56,8 +56,8 @@ class TasksController extends Controller
             'status',
         ]);
 
-        $existingGoal = Task::find($task['id']);
-        $existingGoal->update($task);
+        $existingTask = Task::find($task['id']);
+        $existingTask->update($task);
 
         return to_route('tasks');
     }

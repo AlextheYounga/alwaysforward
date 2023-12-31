@@ -40,11 +40,9 @@ class Terminal extends Command
 
         $this->listTimeStats();
 
-        $this->listGoals();
+        $this->listLifeEvents();
 
         $this->listTasks();
-
-        $this->listLifeEvents();
 
         $this->newLine();
     }
@@ -82,75 +80,20 @@ class Terminal extends Command
         $this->newLine();
     }
 
-    private function listGoals()
-    {
-        $work = Goal::work()
-            ->timed()
-            ->active()
-            ->get();
-            
-        $personal = Goal::personal()
-            ->timed()
-            ->active()
-            ->get();
-
-        if ($work->count() === 0 && $personal->count() === 0) {
-            $this->line("No goals yet");
-        } else {
-            $this->comment('Goals');
-
-            // Personal
-            if ($personal->count() !== 0) {
-                $this->line("\t<fg=green> Personal </>");
-            }
-
-            $goalDetails = $this->buildTaskDataTable($personal);
-            $this->table(null, $goalDetails, 'compact');
-
-            // Work
-            if ($work->count() !== 0) {
-                $this->line("\t<fg=green> Work </>");
-            }
-
-            $goalDetails = $this->buildTaskDataTable($work);
-            $this->table(null, $goalDetails, 'compact');
-        }
-
-        $this->newLine();
-    }
-
     private function listTasks()
     {
-        $work = Task::work()
-            ->timed()
-            ->ongoing()
+        $tasks = Task::ongoing()
+            ->orderBy('created_at', 'desc')
+            ->with('goal')
             ->get();
 
-        $personal = Task::personal()
-            ->timed()
-            ->ongoing()
-            ->get();
-
-        if ($work->count() === 0 && $personal->count() === 0) {
+        if ($tasks->count() === 0) {
             $this->line("No tasks yet");
         } else {
             $this->comment('Tasks');
 
-            // Personal
-            if ($personal->count() !== 0) {
-                $this->line("\t<fg=green> Personal </>");
-            }
-
-            $taskDetails = $this->buildTaskDataTable($personal);
-            $this->table(null, $taskDetails, 'compact');
-
-            // Work
-            if ($work->count() !== 0) {
-                $this->line("\t<fg=green> Work </>");
-            }
-
-            $taskDetails = $this->buildTaskDataTable($work);
-            $this->table(null, $taskDetails, 'compact');
+            $tableData = $this->buildTaskTableData($tasks);
+            $this->table($tableData[0], $tableData[1], 'box');
         }
 
         $this->newLine();
@@ -158,13 +101,12 @@ class Terminal extends Command
 
     private function listLifeEvents()
     {
+        $this->comment('Events');
         $events = LifeEvent::upcoming()->get();
 
         if ($events->count() === 0) {
-            $this->line("No events yet");
+            $this->line("\tNo events yet");
         } else {
-            $this->comment('Events');
-
             $taskDetails = $this->buildEventTable($events);
             $this->table(null, $taskDetails, 'compact');
         }
@@ -173,30 +115,36 @@ class Terminal extends Command
         $this->newLine();
     }
 
-    private function buildTaskDataTable($items)
+    private function buildTaskTableData($items)
     {
+        $headers = ['Title', 'Type', 'Due Date', 'Goal', 'Goal Due Date'];
+        $data = $items->map(function ($item) {
+            $taskTitle = '<fg=green>' . $item->title . '</>';
+            $taskDueDate = $item->due_date ? CarbonImmutable::parse($item->due_date)->toFormattedDayDateString() : '';
+            $taskTimeLeft = $this->colorizeTimeLeft($item->time_left);
+            $taskDateField = $taskDueDate !== '' ? $taskDueDate . ' (' . $taskTimeLeft . ')' : '';
 
-        return $items->map(function ($item) {
-            $dueDate = $item->due_date ? CarbonImmutable::parse($item->due_date)->toFormattedDayDateString() : '';
-            $timeLeft = $item->time_left->forHumans(['parts' => 4]);
-            $hoursLeft = $item->time_left->totalHours;
-            $overdue = $hoursLeft < 0;
-            $color = '';
-
-            if ($hoursLeft > 24 && $hoursLeft < 48) {
-                $color = '<fg=yellow>';
-            }
-            if ($hoursLeft < 24) {
-                $color = '<fg=red>';
-            }
-            $colorBreak = $color === '' ? '' : '</>';
+            $goal = $item->goal;
+            $goalTitle = $goal ? $goal->title : '';
+            $goalDueDate = ($goal && $goal->due_date) ?
+                CarbonImmutable::parse($goal->due_date)->toFormattedDayDateString() :
+                '';
+            $goalTimeLeft = $goal ? $this->colorizeTimeLeft($goal->time_left) : '';
+            $goalDateField = $goalDueDate !== '' ? $goalDueDate . ' (' . $goalTimeLeft . ')' : '';
 
             return [
-                "\t  " . $item->title,
-                "\t" . $dueDate,
-                "\t" . $color . ($overdue ? '(Overdue) -' : '') . $timeLeft . $colorBreak,
+                $taskTitle,
+                $item->type->value,
+                $taskDateField,
+                $goalTitle,
+                $goalDateField
             ];
         });
+
+        return [
+            $headers,
+            $data
+        ];
     }
 
     private function buildEventTable($events)
@@ -212,5 +160,29 @@ class Terminal extends Command
                 "\t" . $timeLeft,
             ];
         });
+    }
+
+    private function colorizeTimeLeft($timeLeft)
+    {
+        if (!$timeLeft) {
+            return '';
+        }
+
+        $timeLeftHumanized = $timeLeft->forHumans(['parts' => 3]);
+        $hoursLeft = $timeLeft->totalHours;
+        $overDue = $hoursLeft < 0;
+        $color = '';
+
+        if ($hoursLeft > 24 && $hoursLeft < 48) {
+            $color = '<fg=yellow>';
+        }
+        if ($hoursLeft < 24) {
+            $color = '<fg=red>';
+        }
+
+        $colorBreak = $color === '' ? '' : '</>';
+        $dateString = $overDue ? '-' . $timeLeftHumanized : $timeLeftHumanized;
+
+        return $color . $dateString . $colorBreak;
     }
 }
