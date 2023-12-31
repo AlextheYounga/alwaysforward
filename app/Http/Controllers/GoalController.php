@@ -11,7 +11,9 @@ class GoalController extends Controller
     public function index()
     {
         return Inertia::render('Goal', [
-            'goals' => fn() => Goal::all()
+            'goals' => fn() => Goal::active()
+                ->orderBy('created_at', 'desc')
+                ->get(),
         ]);
     }
 

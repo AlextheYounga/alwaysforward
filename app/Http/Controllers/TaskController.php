@@ -12,7 +12,9 @@ class TaskController extends Controller
     public function index()
     {
         return Inertia::render('Task', [
-            'tasks' => fn() => Task::all()
+            'tasks' => fn() => Task::active()
+                ->orderBy('created_at', 'desc')
+                ->get(),
         ]);
     }
 
