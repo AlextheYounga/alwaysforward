@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Goal;
 
-class GoalController extends Controller
+class GoalsController extends Controller
 {
     public function index()
     {

@@ -3,9 +3,9 @@
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LifeWeeksController;
-use App\Http\Controllers\BoardController;
-use App\Http\Controllers\GoalController;
-use App\Http\Controllers\TaskController;
+use App\Http\Controllers\BoardsController;
+use App\Http\Controllers\GoalsController;
+use App\Http\Controllers\TasksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,31 +26,31 @@ Route::get('/life', [LifeWeeksController::class, 'index'])
 ->name('life');
 
 Route::group(['prefix' => 'board'], function () {
-    Route::get('/', [BoardController::class, 'index'])
+    Route::get('/', [BoardsController::class, 'index'])
         ->name('board');
-    Route::get('/{week}', [BoardController::class, 'show'])
+    Route::get('/{week}', [BoardsController::class, 'show'])
         ->name('board.show');
-    Route::post('/update', [BoardController::class, 'update'])
+    Route::post('/update', [BoardsController::class, 'update'])
         ->name('board.update');
 });
 
 Route::group(['prefix' => 'goals'], function () {
-    Route::get('/', [GoalController::class, 'index'])
+    Route::get('/', [GoalsController::class, 'index'])
         ->name('goals');
-    Route::get('/fetch', [GoalController::class, 'fetch'])
+    Route::get('/fetch', [GoalsController::class, 'fetch'])
         ->name('goals.fetch');
-    Route::post('/new', [GoalController::class, 'new'])
+    Route::post('/new', [GoalsController::class, 'new'])
         ->name('goal.new');
-    Route::post('/update', [GoalController::class, 'update'])
+    Route::post('/update', [GoalsController::class, 'update'])
         ->name('goal.update');
 });
 
 Route::group(['prefix' => 'tasks'], function () {
-    Route::get('/', [TaskController::class, 'index'])
+    Route::get('/', [TasksController::class, 'index'])
         ->name('tasks');
-    Route::post('/new', [TaskController::class, 'new'])
+    Route::post('/new', [TasksController::class, 'new'])
         ->name('task.new');
-    Route::post('/update', [TaskController::class, 'update'])
+    Route::post('/update', [TasksController::class, 'update'])
         ->name('task.update');
 });
 

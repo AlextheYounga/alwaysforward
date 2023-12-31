@@ -7,7 +7,7 @@ use Inertia\Inertia;
 use App\Models\Task;
 use App\Models\Week;
 
-class TaskController extends Controller
+class TasksController extends Controller
 {
     public function index()
     {

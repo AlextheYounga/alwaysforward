@@ -12,7 +12,7 @@ use App\Enums\TaskStatus;
 use App\Enums\Type;
 use Carbon\Carbon;
 
-class BoardController extends Controller
+class BoardsController extends Controller
 {
     public function index()
     {
