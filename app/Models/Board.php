@@ -64,14 +64,15 @@ class Board extends Model
     public function getLanesAttribute()
     {
         $lanes = [];
-
         foreach(Board::lanes() as $lane) {
             $tasks = Task::where('status', '=', TaskStatus::tryFrom($lane['id']))
+                ->where('created_at', '<=', $this->week->start)
                 ->get();
 
             if ($lane['id'] === 'completed') {
                 $tasks = Task::where('status', '=', 'completed')
-                ->completedThisWeek()
+                ->where('created_at', '>=', $this->week->start)
+                ->where('created_at', '<=', $this->week->end)
                 ->get();
             }
 
