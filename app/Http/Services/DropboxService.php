@@ -8,10 +8,14 @@ use Illuminate\Support\Facades\Storage;
 class DropboxService
 {
     protected $token;
+    protected $dropboxPath;
+    protected $localTodoPath;
 
     public function __construct()
     {
         $this->token = env('DROPBOX_API_KEY');
+        $this->dropboxPath = env('DROPBOX_TODO_PATH');
+        $this->localTodoPath = storage_path('app/public/todo.txt');
     }
 
     public function download()
@@ -19,7 +23,7 @@ class DropboxService
         $endpoint = 'https://content.dropboxapi.com/2/files/download';
 
         $payload = [
-            "path" => "/Apps/AlwaysForward/todo.txt"
+            "path" => $this->dropboxPath
         ];
 
         $response = Http::withToken($this->token)
@@ -28,7 +32,7 @@ class DropboxService
             ])
             ->get($endpoint);
 
-        Storage::disk('public')->put('todo-dropbox.bak', $response->body());
+        Storage::disk('public')->put('todo.dropbox.bak', $response->body());
     }
 
     public function upload()
@@ -41,8 +45,7 @@ class DropboxService
         *     --data-binary @$ALWAYS_FORWARD_DIRECTORY/storage/app/public/todo.txt
         */
 
-        $filePath = storage_path('app/public/todo.txt');
-        $uploadPath = "/Apps/AlwaysForward/todo.txt";
+        $uploadPath = $this->dropboxPath;
 
         $params = array(
             "path" => $uploadPath,
@@ -64,7 +67,7 @@ class DropboxService
         // Set cURL options
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents($filePath));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents($this->localTodoPath));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // To return the transfer as a string
 
         // Execute the cURL session and close it
@@ -74,8 +77,10 @@ class DropboxService
         // Handle the response
         if ($response) {
             echo "Success: " . $response . PHP_EOL;
+            return true;
         } else {
             echo "Error: " . curl_error($ch);
+            return false;
         }
     }
 }
