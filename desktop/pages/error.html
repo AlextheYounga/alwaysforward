@@ -17,13 +17,16 @@
     <!-- Scripts -->
     <style type="text/css">
         #main-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
         }
 
         #main-container img {
-            margin-top: 10rem;
             width: 10rem;
             height: 10rem;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -38,6 +41,14 @@
             display: block;
         }
 
+        #main-container h3 {
+            text-align: center;
+            font-family: 'system-ui';
+            width: 100%;
+            color: lightcoral;
+            display: block;
+        }
+
         .bg-dots-dark {
             background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.22676 0C1.91374 0 2.45351 0.539773 2.45351 1.22676C2.45351 1.91374 1.91374 2.45351 1.22676 2.45351C0.539773 2.45351 0 1.91374 0 1.22676C0 0.539773 0.539773 0 1.22676 0Z' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E");
             --tw-bg-opacity: 1;
@@ -47,8 +58,9 @@
 </head>
 
 <body class="bg-dots-dark">
-    <div id="main-container"><img src="icons/icon.png">
-        <h1>Always Forward</h1>
+    <div id="main-container">
+        <img src="../icons/icon.png">
+        <h3>Something went wrong...</h3>
     </div>
 </body>
 

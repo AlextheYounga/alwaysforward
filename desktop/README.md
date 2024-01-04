@@ -1,6 +1,6 @@
 # Always Forward Desktop
 
-This is a simple Electron app that contains no real AlwaysForward code, but simply opens a Chromium window and points to http://localhost:8123. 
+This is a simple Electron app that contains no real AlwaysForward code, but simply opens a Chromium window and points to http://localhost:8124. 
 
 ```js
 const createWindow = () => {
@@ -12,7 +12,7 @@ const createWindow = () => {
     })
 
     // Load the AlwaysForward localhost port
-    mainWindow.loadURL('http://127.0.0.1:8123')
+    mainWindow.loadURL('http://127.0.0.1:8124')
 }
 ```
 

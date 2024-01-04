@@ -4,7 +4,7 @@
 const path = require('path')
 const { app, BrowserWindow, nativeImage } = require('electron')
 
-const port = 8123, host = '127.0.0.1';
+const port = 8124, host = 'localhost';
 const serverUrl = `http://${host}:${port}`;
 
 const createWindow = () => {
@@ -16,7 +16,9 @@ const createWindow = () => {
         height: 600,
     })
 
-    mainWindow.loadURL(serverUrl)
+    mainWindow.loadURL(serverUrl).catch(() => {
+        mainWindow.loadFile('pages/error.html')
+    })
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
