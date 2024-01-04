@@ -9,6 +9,7 @@ use App\Enums\Priority;
 use App\Enums\TaskStatus;
 use App\Enums\Type;
 use App\Models\Week;
+use Exception;
 use Illuminate\Support\Carbon;
 
 class NewTask extends Command
@@ -31,6 +32,29 @@ class NewTask extends Command
      * Execute the console command.
      */
     public function handle()
+    {
+
+        $userInput = $this->getUserInput();
+
+        $task = [
+            'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
+            'title' => !empty($userInput['title']) ? $userInput['title'] : null,
+            'description' => !empty($userInput['description']) ? $userInput['description'] : null,
+            'type' => !empty($userInput['type']) ? Type::tryFrom($userInput['type']) : Type::PERSONAL,
+            'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
+            'due_date' => $this->parseDueDate($userInput['due_date']),
+            'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,
+            'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::BACKLOG,
+        ];
+
+        $week = Week::current();
+        $taskRecord = Task::create($task);
+        $week->tasks()->attach($taskRecord->id);
+
+        $this->info('Task created!');
+    }
+
+    private function getUserInput()
     {
         $userInput = [];
         $skipColumns = ['id', 'status', 'date_completed', 'created_at', 'updated_at'];
@@ -76,22 +100,7 @@ class NewTask extends Command
             $userInput[$column] = $value;
         }
 
-        $task = [
-            'goal_id' => !empty($userInput['goal_id']) ? $userInput['goal_id'] : null,
-            'title' => !empty($userInput['title']) ? $userInput['title'] : null,
-            'description' => !empty($userInput['description']) ? $userInput['description'] : null,
-            'type' => !empty($userInput['type']) ? Type::tryFrom($userInput['type']) : Type::PERSONAL,
-            'priority' => !empty($userInput['priority']) ? Priority::tryFrom($userInput['priority']) : Priority::NORMAL,
-            'due_date' => $this->parseDueDate($userInput['due_date']),
-            'notes' => !empty($userInput['notes']) ? $userInput['notes'] : null,
-            'status' => !empty($userInput['status']) ? TaskStatus::tryFrom($userInput['status']) : TaskStatus::BACKLOG,
-        ];
-
-        $week = Week::current();
-        $taskRecord = Task::create($task);
-        $week->tasks()->attach($taskRecord->id);
-
-        $this->info('Task created!');
+        return $userInput;
     }
 
     private function parseDueDate($input)

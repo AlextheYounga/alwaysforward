@@ -14,7 +14,7 @@ alias fw="cd $ALWAYS_FORWARD_DIRECTORY"
 alias forward="$ALWAYS_FORWARD_DIRECTORY/scripts/setup/start.sh"
 alias taskcli="php $ALWAYS_FORWARD_DIRECTORY/artisan app:cli"
 alias openfwdb="open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite" # TablePlus command
-alias board="open http://localhost:8123/board"
+alias board="open http://localhost:8124/board"
 
 # todo.txt CLI
 alias todo="$ALWAYS_FORWARD_DIRECTORY/scripts/app/todo-txt-cli/todo.sh"

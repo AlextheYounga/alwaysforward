@@ -32,7 +32,7 @@ class Memento extends Command
         $this->info('MEMENTO MORI');
         $this->newLine();
 
-        $this->line('Link to Board: <fg=cyan>http://localhost:8123/board </>');
+        $this->line('Link to Board: <fg=cyan>http://localhost:8124/board </>');
         $this->line('Try to track your time: <fg=cyan>https://track.toggl.com/timer </>');
         $this->newLine();
 
@@ -89,9 +89,10 @@ class Memento extends Command
             $this->line("No tasks yet");
         } else {
             $this->comment('Tasks');
+            $this->newLine();
 
             $tableData = $this->buildTaskTableData($tasks);
-            $this->table($tableData[0], $tableData[1], 'box');
+            $this->table($tableData[0], $tableData[1], 'compact');
         }
 
         $this->newLine();
@@ -117,7 +118,7 @@ class Memento extends Command
     {
         $headers = ['Title', 'Type', 'Due Date', 'Goal', 'Goal Due Date'];
         $data = $items->map(function ($item) {
-            $taskTitle = '<fg=green>' . $item->title . '</>';
+            $taskTitle = '<fg=cyan>' . $item->title . '</>';
             $taskDueDate = $item->due_date ? CarbonImmutable::parse($item->due_date)->toFormattedDayDateString() : '';
             $taskTimeLeft = $this->colorizeTimeLeft($item->time_left);
             $taskDateField = $taskDueDate !== '' ? $taskDueDate . ' (' . $taskTimeLeft . ')' : '';
@@ -129,13 +130,13 @@ class Memento extends Command
                 '';
             $goalTimeLeft = $goal ? $this->colorizeTimeLeft($goal->time_left) : '';
             $goalDateField = $goalDueDate !== '' ? $goalDueDate . ' (' . $goalTimeLeft . ')' : '';
-
+            
             return [
-                $taskTitle,
-                $item->type->value,
-                $taskDateField,
-                $goalTitle,
-                $goalDateField
+                $taskTitle . "  ",
+                $item->type->value . "  ",
+                $taskDateField . "  ",
+                $goalTitle . "  ",
+                $goalDateField . "  "
             ];
         });
 

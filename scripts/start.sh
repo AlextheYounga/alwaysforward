@@ -4,7 +4,7 @@
 # Run with flag --quit to kill the background process.
 
 CURRENT_DIR=$(pwd)
-PORT=8123
+PORT=8124
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd $SCRIPT_DIR
 cd ..
