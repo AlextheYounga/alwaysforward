@@ -17,7 +17,7 @@ alias openfwdb="open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite" # Table
 alias board="open http://localhost:8124/board"
 
 # todo.txt CLI
-alias todo="$ALWAYS_FORWARD_DIRECTORY/app/Modules/TodoTxt/todo.sh"
+alias todo="$ALWAYS_FORWARD_DIRECTORY/app/Console/TodoTxt/todo.sh"
 
 # Supervisor
 alias fw-server="supervisorctl start fw-server:fw-server_00"
