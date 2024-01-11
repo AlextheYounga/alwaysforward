@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules;
+namespace App\Models;
 
 use Carbon\CarbonImmutable;
 use App\Models\Week;

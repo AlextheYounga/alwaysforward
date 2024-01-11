@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Carbon\CarbonImmutable;
 use App\Models\LifeEvent;
 use App\Models\Task;
-use App\Modules\LifeStatistics;
+use App\Models\LifeStatistics;
 
 class Memento extends Command
 {

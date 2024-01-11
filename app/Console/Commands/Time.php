@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Modules\LifeStatistics;
+use App\Models\LifeStatistics;
 
 class Time extends Command
 {

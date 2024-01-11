@@ -63,6 +63,9 @@ shorthelp()
 		    move|mv ITEM# DEST [SRC]
 		    prepend|prep ITEM# "TEXT TO PREPEND"
 		    pri|p ITEM# PRIORITY[, ITEM# PRIORITY, ...]
+		    push
+		    pull
+		    sync
 		    replace ITEM# "UPDATED TODO"
 		    report
 		    shorthelp
@@ -1410,6 +1413,18 @@ note: PRIORITY must be anywhere from A to Z."
         fi
     shift; shift
     done
+    ;;
+
+"push" )
+    /opt/homebrew/bin/php artisan todo:push;
+    ;;
+
+"pull" )
+    /opt/homebrew/bin/php artisan todo:pull;
+    ;;
+
+"sync" )
+    sh $ALWAYS_FORWARD_DIRECTORY/scripts/dropbox/sync.sh;
     ;;
 
 "replace" )

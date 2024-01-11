@@ -7,15 +7,37 @@ use Illuminate\Support\Facades\Storage;
 
 class DropboxService
 {
-    protected $token;
+    protected $accessToken;
+    protected $refreshToken;
     protected $dropboxPath;
     protected $localTodoPath;
+    protected $appKey;
+    protected $appSecret;
 
     public function __construct()
     {
-        $this->token = env('DROPBOX_API_KEY');
+        $refreshToken = Storage::disk('public')->get('.refresh_token');
+
+        if (!empty($refreshToken)) {
+            new \Exception('No Dropbox token found. Please run `scripts/dropbox/auth.sh`');
+        }
+
+        $tokenData = Storage::disk('public')->get('token.json');
+        $tokenData = json_decode($tokenData, true);
+
+        if (time() > $tokenData['expires_at']) {
+            $tokenData = $this->refreshToken();
+        }
+
+        $this->accessToken = isset($tokenData['result']['access_token']) ?
+            $tokenData['result']['access_token'] :
+            $tokenData['access_token'];
+
+        $this->refreshToken = $refreshToken;
         $this->dropboxPath = env('DROPBOX_TODO_PATH');
-        $this->localTodoPath = storage_path('app/public/todo.txt');
+        $this->appKey = env('DROPBOX_APP_KEY');
+        $this->appSecret = env('DROPBOX_APP_SECRET');
+        $this->localTodoPath = storage_path('app/public/todo/todo.txt');
     }
 
     public function download()
@@ -26,13 +48,13 @@ class DropboxService
             "path" => $this->dropboxPath
         ];
 
-        $response = Http::withToken($this->token)
+        $response = Http::withToken($this->accessToken)
             ->withHeaders([
                 'Dropbox-API-Arg' => json_encode($payload),
             ])
             ->get($endpoint);
 
-        Storage::disk('public')->put('todo.dropbox.bak', $response->body());
+        Storage::disk('public')->put('todo/todo.dropbox.bak', $response->body());
     }
 
     public function upload()
@@ -56,7 +78,7 @@ class DropboxService
 
         // Setup the headers and data
         $headers = array(
-            'Authorization: Bearer ' . $this->token,
+            'Authorization: Bearer ' . $this->accessToken,
             'Content-Type: application/octet-stream',
             'Dropbox-API-Arg: ' . json_encode($params)
         );
@@ -76,11 +98,56 @@ class DropboxService
 
         // Handle the response
         if ($response) {
-            echo "Success: " . $response . PHP_EOL;
             return true;
         } else {
             echo "Error: " . curl_error($ch);
             return false;
         }
+    }
+
+    public function refreshToken()
+    {
+        /*
+        * curl https://api.dropbox.com/oauth2/token \
+        *  -d grant_type=refresh_token \
+        *  -d refresh_token=<REFRESH_TOKEN> \
+        *  -d client_id=<APP_KEY> \
+        *  -d client_secret=<APP_SECRET>
+        */
+
+        // Initialize cURL session
+        $ch = curl_init();
+
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_URL, "https://api.dropbox.com/oauth2/token");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $this->refreshToken,
+            'client_id' => $this->appKey,
+            'client_secret' => $this->appSecret,
+        ]));
+
+        // Execute cURL request
+        $response = curl_exec($ch);
+
+        // Check for errors
+        if(curl_errno($ch)) {
+            throw new \Exception(curl_error($ch));
+        }
+
+        // Close cURL session
+        curl_close($ch);
+
+        // Decode the JSON response
+        $responseData = json_decode($response, true);
+
+        $this->accessToken = $responseData['access_token'];
+        $responseData['expires_at'] = time() + $responseData['expires_in'];
+
+        Storage::disk('public')->put('token.json', json_encode($responseData));
+
+        return $responseData;
     }
 }

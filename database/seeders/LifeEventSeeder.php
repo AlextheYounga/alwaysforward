@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Week;
 use App\Models\LifeEvent;
-use App\Modules\LifeStatistics;
+use App\Models\LifeStatistics;
 use App\Enums\LifeEventType;
 
 class LifeEventSeeder extends Seeder

@@ -27,15 +27,16 @@ class Sync extends Command
      */
     public function handle()
     {
-        # Download todos from Dropbox
         $dropbox = new DropboxService();
+
+        # Download todos from Dropbox
         $dropbox->download();
 
-        $dropboxTodos = Storage::disk('public')->get('todo.dropbox.bak');
-        $localTodos = Storage::disk('public')->get('todo.txt');
+        $dropboxTodos = Storage::disk('public')->get('todo/todo.dropbox.bak');
+        $localTodos = Storage::disk('public')->get('todo/todo.txt');
 
         // Backup local todos
-        Storage::disk('public')->put('todo.local.bak', $localTodos);
+        Storage::disk('public')->put('todo/todo.local.bak', $localTodos);
 
         $merged = $dropboxTodos . $localTodos;
 
@@ -43,13 +44,12 @@ class Sync extends Command
         $merged = $this->mergeTodos($localTodos, $dropboxTodos);
         $trimmed = $this->trimTodos($merged);
 
-
         // Save todos
         $this->info($trimmed);
-        Storage::disk('public')->put('todo.txt', $trimmed);
+        Storage::disk('public')->put('todo/todo.txt', $trimmed);
 
         // Upload todos to Dropbox
-        $dropbox->upload();
+        // $dropbox->upload();
     }
 
     private function mergeTodos($local, $remote)

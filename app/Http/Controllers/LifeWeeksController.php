@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Week;
-use App\Modules\LifeStatistics;
+use App\Models\LifeStatistics;
 
 class LifeWeeksController extends Controller
 {
