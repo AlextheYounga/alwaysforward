@@ -106,8 +106,7 @@ class Task extends Model
 
     public function scopeOngoing(Builder $query): void
     {
-        $query->where('status', '!=', TaskStatus::COMPLETED)
-            ->where('status', '!=', TaskStatus::ON_HOLD);
+        $query->where('status', '=', TaskStatus::IN_PROGRESS);
     }
 
     public function scopeTimed(Builder $query): void
