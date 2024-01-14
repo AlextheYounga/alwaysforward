@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbbe833b61634c2a7a0367349805ea2b",
+    "content-hash": "c744d3e920f25b47a53af9cc2f3456cb",
     "packages": [
         {
             "name": "brick/math",
@@ -1460,6 +1460,56 @@
                 }
             ],
             "time": "2023-10-27T10:59:02+00:00"
+        },
+        {
+            "name": "juzim/todo-txt-parser",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/juzim/todo-txt-parser.git",
+                "reference": "33747f9f5b4259b251a6cb3f9579a0d4f3bba38d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/juzim/todo-txt-parser/zipball/33747f9f5b4259b251a6cb3f9579a0d4f3bba38d",
+                "reference": "33747f9f5b4259b251a6cb3f9579a0d4f3bba38d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Julian Zimmermann",
+                    "email": "julianzimmermann@gmail.com",
+                    "homepage": "https://juzim.github.io/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A todo.txt parsing and validation library for PHP",
+            "homepage": "https://github.com/juzim/todo-txt-parser",
+            "keywords": [
+                "todo",
+                "todo.txt"
+            ],
+            "support": {
+                "issues": "https://github.com/juzim/todo-txt-parser/issues",
+                "source": "https://github.com/juzim/todo-txt-parser/tree/0.1.0"
+            },
+            "time": "2016-10-20T09:43:22+00:00"
         },
         {
             "name": "laravel/framework",

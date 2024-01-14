@@ -39,8 +39,10 @@ class Task extends Model
         'type',
         'priority',
         'due_date',
+        'date_completed',
         'notes',
         'status',
+        'created_at'
     ];
 
     protected $casts = [

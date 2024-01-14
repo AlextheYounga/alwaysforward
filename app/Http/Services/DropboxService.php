@@ -54,6 +54,15 @@ class DropboxService
             ])
             ->get($endpoint);
 
+        if (isset($response['error'])) {
+            if (isset($response['error']['.tag']) && $response['error']['.tag'] === 'expired_access_token') {
+                $this->refreshToken();
+                return $this->download();
+            }
+
+            throw new \Exception($response['error_summary']);
+        }
+
         Storage::disk('public')->put('todo/todo.dropbox.bak', $response->body());
     }
 
@@ -95,6 +104,15 @@ class DropboxService
         // Execute the cURL session and close it
         $response = curl_exec($ch);
         curl_close($ch);
+
+        if (isset($response['error'])) {
+            if (isset($response['error']['.tag']) && $response['error']['.tag'] === 'expired_access_token') {
+                $this->refreshToken();
+                return $this->upload();
+            }
+
+            throw new \Exception($response['error_summary']);
+        }
 
         // Handle the response
         if ($response) {
