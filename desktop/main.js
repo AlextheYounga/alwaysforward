@@ -5,13 +5,13 @@ const path = require('path')
 const { exec } = require('child_process');
 const { app, BrowserWindow, nativeImage } = require('electron')
 
-let phpRunning = false;
-let serverUrl = process.env.REMOTE_URL;
+const port = 8124
+const host = 'localhost'; // Change this to an external URL if you want to self host
+const serverUrl = `http://${host}:${port}`;
 
-if (!serverUrl) {
+if (host === 'localhost') {
+	// Set up for local server
 	const electronResources = process.resourcesPath;
-	const port = 8124, host = 'localhost';
-	serverUrl = `http://${host}:${port}`;
 	const php = path.join(electronResources, 'build/php/php');
 	const laravel = path.join(electronResources, 'build/laravel');
 	
