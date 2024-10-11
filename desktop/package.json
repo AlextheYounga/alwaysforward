@@ -1,40 +1,56 @@
 {
-  "name": "alwaysforward",
-  "version": "1.0.0",
-  "description": "A desktop environment for alwaysforward",
-  "main": "main.js",
-  "license": "MIT",
-  "scripts": {
-    "start": "electron .",
-    "build": "electron-builder build"
-  },
-  "build": {
-    "productName": "AlwaysForward",
-    "directories": {
-      "output": "out",
-      "buildResources": "build"
-    },
-    "win": {
-      "asar": false,
-      "target": "nsis",
-      "icon": "icons/win/icon.ico"
-    },
-    "mac": {
-      "icon": "icons/mac/icon.icns"
-    },
-    "linux": {
-      "icon": "icons/icon.png",
-      "target": [
-        "deb",
-        "rpm",
-        "appimage",
-        "tar.gz"
-      ]
-    }
-  },
-  "devDependencies": {
-    "electron": "^28.1.0",
-    "electron-builder": "^24.9.1",
-    "electron-icon-maker": "^0.0.5"
-  }
+	"name": "alwaysforward",
+	"version": "1.0.0",
+	"description": "A desktop environment for alwaysforward",
+	"main": "main.js",
+	"license": "MIT",
+	"scripts": {
+		"start": "electron .",
+		"build": "./scripts/install_php && ./scripts/build"
+	},
+	"build": {
+		"productName": "AlwaysForward",
+		"extraResources": [
+			{
+				"from": "./php/php",
+				"to": "build/php/php"
+			},
+			{
+				"from": "./laravel",
+				"to": "build/laravel",
+				"filter": [
+					"**/*",
+					".git",
+					"!desktop",
+					"!tests"
+				]
+			}
+		],
+		"directories": {
+			"output": "out",
+			"buildResources": "build"
+		},
+		"win": {
+			"asar": false,
+			"target": "nsis",
+			"icon": "icons/win/icon.ico"
+		},
+		"mac": {
+			"icon": "icons/mac/icon.icns"
+		},
+		"linux": {
+			"icon": "icons/icon.png",
+			"target": [
+				"deb",
+				"rpm",
+				"appimage",
+				"tar.gz"
+			]
+		}
+	},
+	"devDependencies": {
+		"electron": "^28.1.0",
+		"electron-builder": "^24.9.1",
+		"electron-icon-maker": "^0.0.5"
+	}
 }

@@ -1,0 +1,22 @@
+# bin/bash
+
+# Build the desktop app
+cd ../
+
+# From project root
+mkdir -p desktop/laravel
+compose install
+yarn build
+git clone ./ desktop/laravel
+cp -r vendor desktop/laravel/vendor
+cp -r public/build desktop/laravel/public/build
+cp .env desktop/laravel/.env
+cd desktop/laravel
+
+# From desktop/laravel
+php artisan migrate
+php artisan db:seed
+cd ../
+
+# From desktop directory
+electron-builder build

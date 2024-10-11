@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import AlwaysForwardLogo from '../../images/always_forward.jpeg';
+import AlwaysForwardLogo from '../../images/always_forward.jpeg.webp';
 import {
     ViewColumnsIcon,
     CalendarDaysIcon,

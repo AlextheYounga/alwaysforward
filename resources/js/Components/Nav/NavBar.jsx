@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import AlwaysForwardLogo from '../../../images/always_forward.jpeg';
+import AlwaysForwardLogo from '../../../images/always_forward.jpeg.webp';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')

@@ -2,13 +2,25 @@
 
 // Modules to control application life and create native browser window
 const path = require('path')
+const { exec } = require('child_process');
 const { app, BrowserWindow, nativeImage } = require('electron')
 
-const port = 8124, host = 'localhost';
-const serverUrl = `http://${host}:${port}`;
+let phpRunning = false;
+let serverUrl = process.env.REMOTE_URL;
+
+if (!serverUrl) {
+	const electronResources = process.resourcesPath;
+	const port = 8124, host = 'localhost';
+	serverUrl = `http://${host}:${port}`;
+	const php = path.join(electronResources, 'build/php/php');
+	const laravel = path.join(electronResources, 'build/laravel');
+	
+	// Start php server
+	exec(`${php} -S localhost:8124 -t ${laravel}/public`);
+	phpRunning = true;
+}
 
 const createWindow = () => {
-
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         icon: '/icons/icon.png',
@@ -50,6 +62,7 @@ if (process.platform === 'darwin') {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
+	if (phpRunning) exec('killall php');
     if (process.platform !== 'darwin') app.quit()
 })
 
