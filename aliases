@@ -8,33 +8,3 @@ ALWAYS_FORWARD_DIRECTORY=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/
 
 # This command runs on every terminal load
 php $ALWAYS_FORWARD_DIRECTORY/artisan app:memento
-
-# App Commands
-alias fw="cd $ALWAYS_FORWARD_DIRECTORY"
-alias forward="$ALWAYS_FORWARD_DIRECTORY/scripts/setup/start.sh"
-alias taskcli="php $ALWAYS_FORWARD_DIRECTORY/artisan app:cli"
-alias fwdb="open $ALWAYS_FORWARD_DIRECTORY/database/database.sqlite" # TablePlus command
-alias board="open http://localhost:8124/board"
-
-# todo.txt CLI
-alias todo="$ALWAYS_FORWARD_DIRECTORY/app/Console/TodoTxt/todo.sh"
-
-# Supervisor
-alias fw-server="supervisorctl start fw-server:fw-server_00"
-alias fw-stop="supervisorctl stop fw-server:fw-server_00"
-
-# Goals
-alias goal="( cal ; php $ALWAYS_FORWARD_DIRECTORY/artisan goals:new )"
-alias goals="php $ALWAYS_FORWARD_DIRECTORY/artisan goals:show"
-
-# Tasks
-alias task="( cal ; php $ALWAYS_FORWARD_DIRECTORY/artisan tasks:new )"
-alias tasks="php $ALWAYS_FORWARD_DIRECTORY/artisan tasks:show"
-alias qt="( cal ; php $ALWAYS_FORWARD_DIRECTORY/artisan tasks:quick )" 
-
-# Events
-alias event="( cal ; php $ALWAYS_FORWARD_DIRECTORY/artisan life-event:new )"
-alias events="php $ALWAYS_FORWARD_DIRECTORY/artisan life-events:show"
-
-# Life
-alias t-="php $ALWAYS_FORWARD_DIRECTORY/artisan life:time"

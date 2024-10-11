@@ -31,17 +31,12 @@ class Memento extends Command
     {
         $this->info('MEMENTO MORI');
         $this->newLine();
-
-        $this->line('Link to Board: <fg=cyan>http://localhost:8124/board </>');
+        $this->line('Link to Board: <fg=cyan>' . env('APP_URL') . ':' . env('APP_PORT') . '/board </>');
         $this->line('Try to track your time: <fg=cyan>https://track.toggl.com/timer </>');
         $this->newLine();
-
         $this->listTimeStats();
-
         $this->listLifeEvents();
-
         $this->listTasks();
-
         $this->newLine();
     }
 

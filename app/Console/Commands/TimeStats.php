@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\LifeStatistics;
 
-class Time extends Command
+class TimeStats extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'life:time';
+    protected $signature = 'app:timestats';
 
     /**
      * The console command description.
