@@ -6,11 +6,15 @@
 	"license": "MIT",
 	"scripts": {
 		"start": "electron .",
-		"build": "./scripts/install_php && ./scripts/build"
+		"build": "./scripts/build"
 	},
 	"build": {
 		"productName": "AlwaysForward",
 		"extraResources": [
+			{
+				"from": "./app_url",
+				"to": "build/app_url"
+			},
 			{
 				"from": "./php/php",
 				"to": "build/php/php"

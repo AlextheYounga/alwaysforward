@@ -1,23 +1,39 @@
 # bin/bash
 
 # Build the desktop app
-cd ../
+APP_URL=$(cat "app_url")
 
-# From project root
-mkdir -p desktop/laravel
-compose install
-yarn build
-git clone ./ desktop/laravel
-cp -r vendor desktop/laravel/vendor
-cp -r public/build desktop/laravel/public/build
-cp .env.example desktop/laravel/.env
-cd desktop/laravel
+# If localhost, run local build scripts
+if [[ $APP_URL == *"localhost"* ]]; then
+	echo "AlwaysForward: Packaging Laravel app and PHP binaries for localhost build.\n"
+	
+	# Run php install
+	./scripts/install_php
 
-# From desktop/laravel
-source ../../.env
-php artisan migrate
-php artisan db:seed
-cd ../
+	# From project root
+	cd ../
+	rm -rf desktop/laravel # Remove old build
+	mkdir -p desktop/laravel # Make new build folder to place laravel app
+
+	# Ensure our laravel app is built
+	composer install
+	yarn build
+
+	git clone ./ desktop/laravel # Copy the laravel app to the desktop folder
+	cp -r vendor desktop/laravel/vendor
+	cp -r public/build desktop/laravel/public/build
+	cp .env.example desktop/laravel/.env
+	cd desktop/laravel
+
+	# From desktop/laravel
+	php artisan migrate
+	php artisan db:seed
+	cd ../
+else
+	echo "AlwaysForward: Running plain Electron build for an external app. Not packaging local laravel or PHP binaries."
+	echo "AlwaysForward: Ignore any Electron warnings about php/php and laravel file sources missing. This is expected. \n"
+fi
 
 # From desktop directory
+rm -rf out # Remove old build
 electron-builder build
