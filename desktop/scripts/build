@@ -10,6 +10,7 @@ yarn build
 git clone ./ desktop/laravel
 cp -r vendor desktop/laravel/vendor
 cp -r public/build desktop/laravel/public/build
+cp .env.example desktop/laravel/.env
 cd desktop/laravel
 
 # From desktop/laravel

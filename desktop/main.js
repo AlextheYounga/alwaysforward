@@ -5,6 +5,7 @@ const path = require('path')
 const { exec } = require('child_process');
 const { app, BrowserWindow, nativeImage } = require('electron')
 
+let phpRunning = false;
 const port = 8124
 const host = 'localhost'; // Change this to an external URL if you want to self host
 const serverUrl = `http://${host}:${port}`;
